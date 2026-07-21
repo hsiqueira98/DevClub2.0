@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+
+/*
+ * DevClub Premium — design tokens.
+ * Every value below comes from docs/BRAND.md (extracted from the real
+ * devclub.com.br) or docs/MOTION.md. Components reference these tokens,
+ * never raw hex values.
+ */
+@theme {
+  /* Typography — BRAND.md */
+  --font-display: 'Aldrich', sans-serif;
+  --font-sans: 'Albert Sans', sans-serif;
+
+  /* Primary green — BRAND.md */
+  --color-green-300: #5bf175;
+  --color-green-400: #49eb64;
+  --color-green-450: #4ae363;
+  --color-green-500: #39d353;
+  --color-green-600: #23a639;
+  --color-green-700: #148527;
+  --color-green-800: #0cae53;
+
+  /* Secondary purple — BRAND.md */
+  --color-purple-300: #c084fc;
+  --color-purple-400: #a855f7;
+  --color-purple-450: #984bff;
+  --color-purple-500: #8532f2;
+  --color-purple-600: #721ae7;
+  --color-purple-700: #5300c2;
+  --color-purple-800: #5217a0;
+  --color-purple-950: #1c0830;
+
+  /* Neutral dark scale (dominant backgrounds) — BRAND.md */
+  --color-night-950: #0a0a0a;
+  --color-night-900: #141414;
+  --color-night-850: #181719;
+  --color-night-800: #1a1a1a;
+  --color-night-750: #1e1e1e;
+  --color-night-700: #202227;
+  --color-night-650: #222222;
+  --color-night-600: #262527;
+  --color-night-500: #333333;
+
+  /* Gray text scale — BRAND.md */
+  --color-gray-300: #c8cacc;
+  --color-gray-400: #aaaeb3;
+  --color-gray-500: #91959a;
+  --color-gray-600: #777c81;
+  --color-gray-700: #5e6368;
+
+  /* Warm off-white, for text on/near purple — BRAND.md */
+  --color-white-warm: #fbf5ff;
+
+  /* Per-track accents (signature UI device) — BRAND.md */
+  --color-track-js: #eab308;
+  --color-track-front: #22d3ee;
+  --color-track-back: #39d353;
+  --color-track-mobile: #3b82f6;
+  --color-track-mba: #14b8a6;
+
+  /* Motion durations — MOTION.md (CSS side; GSAP reads the same scale
+     from src/animations/motion.tokens.js) */
+  --duration-fast: 200ms;
+  --duration-base: 500ms;
+  --duration-slow: 900ms;
+  --duration-cinematic: 1400ms;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-night-950 font-sans text-gray-300 antialiased;
+}
+
+/* Visible focus everywhere — accessibility baseline (CLAUDE.md override) */
+:focus-visible {
+  outline: 2px solid var(--color-green-500);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--color-purple-500);
+  color: var(--color-white-warm);
+}
