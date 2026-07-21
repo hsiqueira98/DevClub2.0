@@ -55,7 +55,10 @@ export default function FirstDecision() {
         className="bg-night-950 pointer-events-none absolute inset-0 opacity-0"
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pt-24 pb-24 text-center">
+      <div
+        data-hero-content
+        className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pt-24 pb-24 text-center"
+      >
         <p
           data-hero-kicker
           className="font-display mb-8 text-sm tracking-[0.3em] text-green-500 lowercase"

@@ -3,20 +3,27 @@ import { DURATION, EASE } from './motion.tokens'
 
 /*
  * Chapter 01 signature moment (docs/MOTION.md, revised after PO review
- * — see DECISION_LOG.md): the headline must NEVER read as broken on
- * load, so the Prólogo/assemble phase is a time-based entrance, and
- * only rest → shatter stays scroll-scrubbed.
+ * — see DECISION_LOG.md): a settled, legible opening (time-based
+ * Prólogo), then rest → shatter driven by the visitor's scroll while
+ * the hero stays pinned.
  *
- *  - load-in (time-based, once): chars rise into the lockup with a
- *    stagger; kicker, typewriter line and scroll cue breathe in after.
- *  - rest (scrub 0 → 0.25): the pinned composition holds — deliberate
- *    dead time so the visitor reads before anything is asked.
- *  - shatter (scrub 0.25 → 1): SplitText chars tumble apart with
- *    randomized stagger and 3D rotation — a deliberate exception to
- *    the "avoid rotation" note, it narrates disintegration
- *    (docs/DECISION_LOG.md).
+ * Two structural rules, learned the hard way (see DECISION_LOG.md):
  *
- * Reduced motion: no pin, no scrub — a single opacity fade.
+ * 1. NO gsap.matchMedia here. Its cleanups are not captured by the
+ *    useGSAP context, so React StrictMode's double-mount left ghost
+ *    tweens and a nested SplitText that froze chars mid-animation.
+ *    Reduced motion is a plain window.matchMedia check instead —
+ *    captured, deterministic, reverted on unmount. (A live change of
+ *    the OS motion setting needs a reload; acceptable.)
+ *
+ * 2. The intro and the scrub timeline share NO targets. The intro
+ *    rises the content wrapper and fades the photo in; chars, kicker,
+ *    glow and blackout belong exclusively to the scrub. Two owners on
+ *    one element freeze it whenever a kill or refresh lands between
+ *    them.
+ *
+ * Caller must run the returned cleanup (useGSAP does this with the
+ * callback's return value) so SplitText unwraps the headline.
  */
 export function createHeroTimeline(section) {
   const headline = section.querySelector('[data-hero-headline]')
@@ -26,70 +33,63 @@ export function createHeroTimeline(section) {
   const cue = section.querySelector('[data-hero-cue]')
   const photo = section.querySelector('[data-hero-photo]')
   const blackout = section.querySelector('[data-hero-blackout]')
+  const content = section.querySelector('[data-hero-content]')
 
-  const mm = gsap.matchMedia(section)
-
-  mm.add('(prefers-reduced-motion: reduce)', () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.from([headline, kicker, typeLine], {
       autoAlpha: 0,
       duration: DURATION.fast,
       stagger: 0.1,
     })
+    return
+  }
+
+  const split = new SplitText(headline, { type: 'chars,words' })
+  gsap.set(headline, { transformPerspective: 800 })
+
+  // Prólogo — time-based, plays once, wrapper + photo only.
+  gsap
+    .timeline({ defaults: { ease: EASE.out } })
+    .from(photo, { opacity: 0, duration: DURATION.cinematic })
+    .from(content, { autoAlpha: 0, y: 48, duration: DURATION.slow }, 0.2)
+
+  // Rest → shatter. Plain .to() tweens: their start values are
+  // captured lazily on first render, which is safe precisely BECAUSE
+  // the intro never touches these targets — they are always in the
+  // settled state when captured, at any scroll timing. (fromTo +
+  // immediateRender:false was tried here and left frozen mixed states
+  // on fast scroll cycles — see DECISION_LOG.md.)
+  const tl = gsap.timeline({
+    defaults: { ease: EASE.inOut },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: '+=160%',
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+    },
   })
 
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    const split = new SplitText(headline, { type: 'chars,words' })
-    gsap.set(headline, { transformPerspective: 800 })
+  tl.to({}, { duration: 0.25 }) // deliberate hold — let the hero rest
+  tl.to([kicker, typeLine, cue], { autoAlpha: 0, duration: 0.08 }, 0.25)
+  tl.to(
+    split.chars,
+    {
+      x: () => gsap.utils.random(-420, 420),
+      y: () => gsap.utils.random(-260, 520),
+      rotation: () => gsap.utils.random(-140, 140),
+      rotationY: () => gsap.utils.random(-90, 90),
+      autoAlpha: 0,
+      duration: 0.6,
+      stagger: { each: 0.008, from: 'random' },
+    },
+    0.3,
+  )
+  // The black mask surfaces while the text breaks apart, so the scene
+  // lands on Ch02's dark background, not on the photo.
+  tl.to(blackout, { opacity: 1, duration: 0.45 }, 0.35)
+  tl.to(glow, { opacity: 0, duration: 0.25 }, 0.6)
 
-    // Prólogo — a settled, legible opening. Time-based, plays once.
-    const intro = gsap.timeline({ defaults: { ease: EASE.out } })
-    intro.from([glow, photo], { opacity: 0, duration: DURATION.cinematic })
-    intro.from(
-      split.chars,
-      { autoAlpha: 0, y: 56, duration: DURATION.slow, stagger: 0.016 },
-      0.15,
-    )
-    intro.from(
-      [kicker, typeLine, cue],
-      { autoAlpha: 0, y: 20, duration: DURATION.base, stagger: 0.12 },
-      '-=0.5',
-    )
-
-    // Rest → shatter, tied to the visitor's own scroll.
-    const tl = gsap.timeline({
-      defaults: { ease: EASE.inOut },
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '+=160%',
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
-    })
-
-    tl.to({}, { duration: 0.25 }) // deliberate hold — let the hero rest
-    tl.to([kicker, typeLine, cue], { autoAlpha: 0, duration: 0.08 }, 0.25)
-    tl.to(
-      split.chars,
-      {
-        x: () => gsap.utils.random(-420, 420),
-        y: () => gsap.utils.random(-260, 520),
-        rotation: () => gsap.utils.random(-140, 140),
-        rotationY: () => gsap.utils.random(-90, 90),
-        autoAlpha: 0,
-        duration: 0.6,
-        stagger: { each: 0.008, from: 'random' },
-      },
-      0.3,
-    )
-    // The black mask surfaces while the text breaks apart, so the
-    // scene lands on Ch02's dark background, not on the photo.
-    tl.to(blackout, { opacity: 1, duration: 0.45 }, 0.35)
-    tl.to(glow, { opacity: 0, duration: 0.25 }, 0.6)
-
-    return () => split.revert()
-  })
-
-  return mm
+  return () => split.revert()
 }

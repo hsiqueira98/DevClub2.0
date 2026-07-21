@@ -138,6 +138,19 @@ Requested on top of the first review round:
 
 ---
 
+## 2026-07-21 — PO review, third round: three scroll-behavior fixes
+
+1. **Shatter didn't fully reconstruct when scrolling back up.** Two real root causes, found by DOM forensics (frozen chars kept mid-animation inline styles while the timeline reported progress 0):
+   - The load-in intro and the scrub timeline animated the SAME elements. Any kill/refresh landing between two owners (the window `load` event fires a ScrollTrigger refresh right in that window) froze the loser's styles. **Rule: intro and scrub share NO targets** — the intro rises the content wrapper and fades the photo; chars/kicker/glow/blackout belong exclusively to the scrub.
+   - `gsap.matchMedia` cleanups are not captured by the `useGSAP` context, leaving ghost tweens/SplitText on remount. `hero.timeline.js` and `navbar.timeline.js` now use a plain `window.matchMedia` check (a live OS motion-setting change needs a reload — acceptable).
+   - The scrub tweens are plain `.to()`s again: lazy start-capture is safe now precisely because the targets are always settled when captured. An intermediate `fromTo + immediateRender:false` attempt left frozen mixed per-property states on fast scroll cycles — do not reintroduce it.
+2. **Floatbar now grows with the scroll** (was a binary toggle at 80px, which could also get stuck expanded), reaching 100% width exactly when Chapter 02 arrives (the hero pin's `+=160%` range). Implementation: manual lerp writes in a ScrollTrigger `onUpdate` — both `fromTo` and lazy `.to()` dropped the pill's `max-width` when value capture raced the window-load refresh. No GSAP value capture, so progress 0 always lands on the exact pill.
+3. **"Matricule-se" rendered outside the pill.** The pill's `max-width` (48rem) was smaller than its content (~1050px with logo + 7 links + Login + CTA), so the CTA overflowed the rounded border. The pill now starts at `min(1120px, viewport - 32px)`.
+
+**How to apply:** navbar width/margin/radius are driven inline by `animations/navbar.timeline.js` — don't reintroduce those as Tailwind classes on the nav, they'd fight the writes. Verified in dev and production builds with fast full-page scroll cycles in both directions.
+
+---
+
 ## 2026-07-21 — Small additive updates from the PO's summary
 
 Added without needing a decision (purely additive, no conflict): Stripe as a sixth reference (experience quality) and an explicit "never copy layouts, only UX principles" rule in `PROJECT_VISION.md`; Framer Motion as a fallback-only animation tool in `ARCHITECTURE.md`; SOLID/DRY/KISS named explicitly alongside the existing architecture principles in `ARCHITECTURE.md`; basic SEO (title, meta description, OG tags, favicon, one `<h1>` per page) folded into Phase 4 of `ROADMAP.md`, since it was missing from every doc and is a cheap, credibility-building win.

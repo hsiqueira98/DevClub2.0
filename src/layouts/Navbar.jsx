@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import LogoMark from '../components/LogoMark'
-import { cn } from '../lib/cn'
+import { createNavbarTimeline } from '../animations/navbar.timeline'
 
 const LINKS = [
   { href: '#mercado', label: 'Mercado' },
@@ -18,30 +19,24 @@ const STUDENT_AREA = 'https://alunos.devclub.com.br'
 
 /*
  * Floating navbar (PO request — see DECISION_LOG.md): rests as a
- * centered pill over the hero, and expands to a full-width blurred bar
- * once the visitor scrolls. Width/radius/spacing morph via CSS
- * transitions between fixed values (auto keywords don't interpolate).
+ * centered pill over the hero and grows continuously with the scroll,
+ * reaching full width when Chapter 02 arrives. The growth is a
+ * scrub-linked tween in animations/navbar.timeline.js; width, margin
+ * and radius are driven inline there, so this markup carries only the
+ * static styles.
  */
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
+  const headerRef = useRef(null)
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  useGSAP(() => createNavbarTimeline(headerRef.current), {
+    scope: headerRef,
+  })
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50">
       <nav
         aria-label="Navegação principal"
-        className={cn(
-          'duration-slow mx-auto flex w-full items-center justify-between gap-6 border backdrop-blur-md transition-all',
-          scrolled
-            ? 'border-night-700 bg-night-950/85 max-w-[120rem] rounded-none border-x-0 border-t-0 px-6 py-3 md:px-12'
-            : 'border-night-600 bg-night-900/60 mt-5 max-w-[calc(100%-3rem)] rounded-full px-6 py-2.5 md:max-w-3xl',
-        )}
+        className="border-night-600 bg-night-950/75 mx-auto flex w-full items-center justify-between gap-6 border px-6 py-2.5 backdrop-blur-md md:px-8"
       >
         <a href="#inicio" className="flex shrink-0 items-center gap-2.5">
           <LogoMark size={22} className="text-green-500" />
