@@ -9,11 +9,15 @@ const GRADIENTS = {
   purple: 'from-purple-300 to-purple-600',
 }
 
-export default function AccentText({ color = 'green', className = '', children }) {
+export default function AccentText({
+  color = 'green',
+  className = '',
+  children,
+}) {
   return (
     <em
       className={cn(
-        'bg-gradient-to-r bg-clip-text italic text-transparent',
+        'bg-gradient-to-r bg-clip-text text-transparent italic',
         GRADIENTS[color],
         className,
       )}

@@ -54,22 +54,22 @@ export default function Instructors() {
           <li key={person.name} className="shrink-0 snap-center">
             <figure
               tabIndex={0}
-              className="group relative h-[26rem] w-[19rem] overflow-hidden rounded-2xl bg-night-800"
+              className="group bg-night-800 relative h-[26rem] w-[19rem] overflow-hidden rounded-2xl"
             >
               {/* Eager: lazy-load inside a transformed (pinned) strip
                   defers offscreen portraits and they pop in mid-scrub */}
               <img
                 src={person.photo}
                 alt={`Retrato de ${person.name}`}
-                className="size-full object-cover grayscale transition-all duration-slow group-hover:grayscale-0 group-focus-visible:grayscale-0"
+                className="duration-slow size-full object-cover grayscale transition-all group-hover:grayscale-0 group-focus-visible:grayscale-0"
               />
               {/* Duotone grade over the placeholder portraits */}
               <div
                 aria-hidden="true"
                 data-grade
-                className="absolute inset-0 bg-gradient-to-t from-night-950 via-purple-950/40 to-transparent transition-opacity duration-slow group-hover:opacity-60"
+                className="from-night-950 duration-slow absolute inset-0 bg-gradient-to-t via-purple-950/40 to-transparent transition-opacity group-hover:opacity-60"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-0 transition-all duration-base group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+              <figcaption className="duration-base absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
                 <p className="font-display text-xl text-white">{person.name}</p>
                 <p className="mt-1 text-sm text-green-500">{person.role}</p>
               </figcaption>

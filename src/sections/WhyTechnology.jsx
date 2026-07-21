@@ -32,10 +32,7 @@ export default function WhyTechnology() {
 
       <dl data-reveal-group className="mt-20 grid gap-6 md:grid-cols-3">
         {MARKET_STATS.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-3xl bg-night-800 p-10"
-          >
+          <div key={stat.label} className="bg-night-800 rounded-3xl p-10">
             <dd className="font-display text-6xl text-green-500 md:text-7xl">
               <span data-countup={stat.value}>{stat.value}</span>
               <span className="text-4xl md:text-5xl">{stat.suffix}</span>
@@ -48,7 +45,10 @@ export default function WhyTechnology() {
 
       <ul data-reveal-group className="mt-16 flex flex-wrap gap-x-12 gap-y-6">
         {FREEDOMS.map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-center gap-3 text-lg text-gray-300">
+          <li
+            key={text}
+            className="flex items-center gap-3 text-lg text-gray-300"
+          >
             <Icon size={22} className="text-purple-400" aria-hidden="true" />
             {text}
           </li>

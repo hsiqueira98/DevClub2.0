@@ -58,7 +58,10 @@ export default function MeetDevClub() {
             <AccentText color="green">caminho</AccentText>.
           </h2>
 
-          <p data-reveal className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
+          <p
+            data-reveal
+            className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400"
+          >
             Uma metodologia que já formou {STATS.studentsLong}, com roadmap
             claro, mentoria de quem está no mercado e uma comunidade que não
             deixa ninguém travado para trás.
@@ -74,7 +77,7 @@ export default function MeetDevClub() {
         <div className="relative mx-auto hidden aspect-square w-full max-w-md lg:block">
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-full border border-dashed border-night-500"
+            className="border-night-500 absolute inset-0 rounded-full border border-dashed"
           />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <LogoMark size={72} className="text-green-500" />
@@ -84,7 +87,7 @@ export default function MeetDevClub() {
               <li
                 key={pillar}
                 data-orbit-pillar
-                className={`absolute rounded-full border border-night-500 bg-night-750 px-5 py-2.5 text-sm font-medium text-gray-300 ${ORBIT_POSITIONS[i]}`}
+                className={`border-night-500 bg-night-750 absolute rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300 ${ORBIT_POSITIONS[i]}`}
               >
                 {pillar}
               </li>
@@ -96,7 +99,7 @@ export default function MeetDevClub() {
           {PILLARS.map((pillar) => (
             <li
               key={pillar}
-              className="rounded-full border border-night-500 bg-night-750 px-5 py-2.5 text-sm font-medium text-gray-300"
+              className="border-night-500 bg-night-750 rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300"
             >
               {pillar}
             </li>

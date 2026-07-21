@@ -25,7 +25,7 @@ export default function FirstDecision() {
       ref={sectionRef}
       id="inicio"
       data-chapter
-      className="relative flex min-h-screen flex-col overflow-hidden bg-night-950 px-6 md:px-12"
+      className="bg-night-950 relative flex min-h-screen flex-col overflow-hidden px-6 md:px-12"
     >
       {/* Ambient purple glow — atmosphere only, never a surface color */}
       <div
@@ -80,7 +80,7 @@ export default function FirstDecision() {
       <a
         href="#mercado"
         data-hero-cue
-        className="relative z-10 mx-auto mb-10 flex flex-col items-center gap-2 text-sm text-gray-600 transition-colors duration-fast hover:text-gray-400"
+        className="duration-fast relative z-10 mx-auto mb-10 flex flex-col items-center gap-2 text-sm text-gray-600 transition-colors hover:text-gray-400"
       >
         role para começar
         <ChevronDown size={18} aria-hidden="true" />

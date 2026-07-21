@@ -17,7 +17,7 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer className="relative bg-night-950 px-6 py-16 md:px-12">
+    <footer className="bg-night-950 relative px-6 py-16 md:px-12">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-10 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <LogoMark size={24} className="text-green-500" />
@@ -35,7 +35,7 @@ export default function Footer() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-sm text-gray-500 transition-colors duration-fast hover:text-white"
+                  className="duration-fast text-sm text-gray-500 transition-colors hover:text-white"
                 >
                   {item.label}
                 </a>
@@ -49,7 +49,7 @@ export default function Footer() {
             <li key={label}>
               <a
                 href={href}
-                className="rounded-full border border-night-600 px-4 py-2 text-sm text-gray-500 transition-colors duration-fast hover:border-green-500 hover:text-green-500"
+                className="border-night-600 duration-fast rounded-full border px-4 py-2 text-sm text-gray-500 transition-colors hover:border-green-500 hover:text-green-500"
               >
                 {label}
               </a>
@@ -58,7 +58,7 @@ export default function Footer() {
         </ul>
       </div>
 
-      <p className="mx-auto mt-12 max-w-[1280px] text-xs text-gray-700">
+      <p className="mx-auto mt-12 max-w-[1280px] text-xs text-gray-600">
         © 2026 DevClub. Página conceitual — conteúdo ilustrativo.
       </p>
     </footer>

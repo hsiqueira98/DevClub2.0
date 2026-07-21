@@ -22,7 +22,10 @@ export default function BeyondCode() {
         Mais que código: <AccentText color="purple">pertencimento</AccentText>.
       </h2>
 
-      <p data-reveal className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
+      <p
+        data-reveal
+        className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400"
+      >
         Amizades, networking, eventos e gente que entende exatamente o momento
         que você está vivendo.
       </p>
@@ -38,13 +41,13 @@ export default function BeyondCode() {
                 src={photo.src}
                 alt={photo.caption}
                 loading="lazy"
-                className={`w-full object-cover grayscale-[0.4] transition-transform duration-slow group-hover:scale-105 ${
+                className={`duration-slow w-full object-cover grayscale-[0.4] transition-transform group-hover:scale-105 ${
                   photo.tall ? 'aspect-[4/5]' : 'aspect-[4/3]'
                 }`}
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-night-950/90 via-transparent to-transparent"
+                className="from-night-950/90 absolute inset-0 bg-gradient-to-t via-transparent to-transparent"
               />
               <figcaption className="absolute bottom-0 p-5 text-sm font-medium text-gray-300">
                 {photo.caption}

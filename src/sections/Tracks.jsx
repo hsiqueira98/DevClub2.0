@@ -28,11 +28,11 @@ export default function Tracks() {
           <li
             key={track.number}
             data-track-line
-            className="group border-t border-night-600 last:border-b"
+            className="group border-night-600 border-t last:border-b"
           >
             <a
               href="#futuro"
-              className="flex flex-col gap-2 py-8 transition-colors duration-fast md:flex-row md:items-baseline md:gap-10 md:py-10"
+              className="duration-fast flex flex-col gap-2 py-8 transition-colors md:flex-row md:items-baseline md:gap-10 md:py-10"
             >
               <span
                 className={`font-display text-sm ${track.textClass}`}
@@ -40,14 +40,14 @@ export default function Tracks() {
               >
                 {track.number}
               </span>
-              <span className="font-display flex items-center gap-4 text-3xl text-white transition-transform duration-fast group-hover:translate-x-3 md:text-5xl">
+              <span className="font-display duration-fast flex items-center gap-4 text-3xl text-white transition-transform group-hover:translate-x-3 md:text-5xl">
                 <span
                   aria-hidden="true"
                   className={`size-2.5 shrink-0 rounded-full ${track.colorClass}`}
                 />
                 {track.name}
               </span>
-              <span className="text-lg text-gray-600 transition-colors duration-fast group-hover:text-gray-400 md:ml-auto">
+              <span className="duration-fast text-lg text-gray-600 transition-colors group-hover:text-gray-400 md:ml-auto">
                 {track.qualifier}
               </span>
             </a>

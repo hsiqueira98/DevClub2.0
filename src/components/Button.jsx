@@ -26,7 +26,7 @@ export default function Button({
     <Tag
       href={href}
       className={cn(
-        'inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-sans text-base font-semibold transition-colors duration-fast',
+        'duration-fast inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-sans text-base font-semibold transition-colors',
         VARIANTS[variant],
         className,
       )}

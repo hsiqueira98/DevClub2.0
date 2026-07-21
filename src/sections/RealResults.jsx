@@ -4,7 +4,12 @@ import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import StarBadge from '../components/StarBadge'
-import { TESTIMONIALS, SALARIES, SALARY_SOURCE, COMPANIES } from '../data/testimonials'
+import {
+  TESTIMONIALS,
+  SALARIES,
+  SALARY_SOURCE,
+  COMPANIES,
+} from '../data/testimonials'
 import { STATS } from '../data/stats'
 import { createResultsAnimations } from '../animations/results.timeline'
 
@@ -32,8 +37,7 @@ export default function RealResults() {
         data-reveal
         className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
       >
-        Histórias <AccentText color="green">reais</AccentText>. Salários
-        reais.
+        Histórias <AccentText color="green">reais</AccentText>. Salários reais.
       </h2>
 
       {/* Salary comparison chart */}
@@ -51,7 +55,7 @@ export default function RealResults() {
                   R$ {row.amount.toLocaleString('pt-BR')}
                 </span>
               </dt>
-              <dd className="mt-3 h-3 overflow-hidden rounded-full bg-night-750">
+              <dd className="bg-night-750 mt-3 h-3 overflow-hidden rounded-full">
                 <div
                   data-salary-bar
                   className={`h-full rounded-full ${row.barClass}`}

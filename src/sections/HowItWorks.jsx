@@ -26,10 +26,10 @@ export default function HowItWorks() {
 
       <h2
         data-reveal
-        className="font-display max-w-3xl text-4xl leading-tight text-night-950 md:text-6xl"
+        className="font-display text-night-950 max-w-3xl text-4xl leading-tight md:text-6xl"
       >
         Simples. Estruturado.{' '}
-        <em className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text italic text-transparent">
+        <em className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent italic">
           Passo a passo
         </em>
         .
@@ -40,7 +40,7 @@ export default function HowItWorks() {
         <div
           aria-hidden="true"
           data-timeline-path
-          className="absolute top-2 bottom-2 left-[1.35rem] w-px bg-night-950/15"
+          className="bg-night-950/15 absolute top-2 bottom-2 left-[1.35rem] w-px"
         />
 
         {JOURNEY_STEPS.map((step) => (
@@ -52,15 +52,15 @@ export default function HowItWorks() {
           >
             <span
               aria-hidden="true"
-              className="font-display z-10 flex size-11 shrink-0 items-center justify-center rounded-full bg-night-950 text-sm text-green-500"
+              className="font-display bg-night-950 z-10 flex size-11 shrink-0 items-center justify-center rounded-full text-sm text-green-500"
             >
               {step.number}
             </span>
             <div className="pt-1.5">
-              <h3 className="font-display text-2xl text-night-950 md:text-3xl">
+              <h3 className="font-display text-night-950 text-2xl md:text-3xl">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-xl text-lg leading-relaxed text-night-500">
+              <p className="text-night-500 mt-3 max-w-xl text-lg leading-relaxed">
                 {step.description}
               </p>
             </div>

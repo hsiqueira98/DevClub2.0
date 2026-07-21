@@ -28,7 +28,7 @@ export default function FutureCta() {
       <div className="flex flex-col items-center text-center">
         <p
           data-reveal
-          className="font-display text-sm tracking-[0.3em] text-night-950/70 lowercase"
+          className="font-display text-night-950/70 text-sm tracking-[0.3em] lowercase"
         >
           sua vez
           <span aria-hidden="true" className="animate-blink">
@@ -38,7 +38,7 @@ export default function FutureCta() {
 
         <h2
           data-reveal
-          className="font-display mt-8 max-w-4xl text-5xl leading-tight text-night-950 md:text-7xl"
+          className="font-display text-night-950 mt-8 max-w-4xl text-5xl leading-tight md:text-7xl"
         >
           A única diferença entre você e um dev é a decisão de começar.
         </h2>
@@ -59,7 +59,7 @@ export default function FutureCta() {
         data-epilogue
         className="flex flex-col items-center pt-48 pb-10 text-center md:pt-64"
       >
-        <p className="font-display text-lg text-night-950/60">
+        <p className="font-display text-night-950/60 text-lg">
           A próxima história de sucesso pode ser a sua
           <span aria-hidden="true" className="animate-blink">
             _

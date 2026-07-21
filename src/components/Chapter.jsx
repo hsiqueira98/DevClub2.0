@@ -18,10 +18,16 @@ export default function Chapter({
     <section
       id={id}
       data-chapter
-      className={cn('relative -mt-10 rounded-t-[2.5rem] px-6 md:px-12', bg, className)}
+      className={cn(
+        'relative -mt-10 rounded-t-[2.5rem] px-6 md:px-12',
+        bg,
+        className,
+      )}
       {...props}
     >
-      <div className={cn('mx-auto max-w-[1280px] py-28 md:py-40', innerClassName)}>
+      <div
+        className={cn('mx-auto max-w-[1280px] py-28 md:py-40', innerClassName)}
+      >
         {children}
       </div>
     </section>
