@@ -11,19 +11,19 @@ import { FAQ } from '../data/faq'
  */
 export default function Faq() {
   return (
-    <Chapter id="faq" bg="bg-night-950">
+    <Chapter id="faq" bg="bg-night-950" innerClassName="text-center">
       <Kicker className="mb-6" data-reveal>
         faq
       </Kicker>
 
       <h2
         data-reveal
-        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+        className="font-display mx-auto max-w-3xl text-4xl leading-tight text-white md:text-6xl"
       >
         Perguntas <AccentText color="green">frequentes</AccentText>.
       </h2>
 
-      <div data-reveal-group className="mt-16 max-w-3xl">
+      <div data-reveal-group className="mx-auto mt-16 max-w-3xl text-left">
         {FAQ.map((item) => (
           <details
             key={item.question}

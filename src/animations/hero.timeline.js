@@ -24,6 +24,8 @@ export function createHeroTimeline(section) {
   const typeLine = section.querySelector('[data-hero-typeline]')
   const glow = section.querySelector('[data-hero-glow]')
   const cue = section.querySelector('[data-hero-cue]')
+  const photo = section.querySelector('[data-hero-photo]')
+  const blackout = section.querySelector('[data-hero-blackout]')
 
   const mm = gsap.matchMedia(section)
 
@@ -41,7 +43,7 @@ export function createHeroTimeline(section) {
 
     // Prólogo — a settled, legible opening. Time-based, plays once.
     const intro = gsap.timeline({ defaults: { ease: EASE.out } })
-    intro.from(glow, { opacity: 0, duration: DURATION.cinematic })
+    intro.from([glow, photo], { opacity: 0, duration: DURATION.cinematic })
     intro.from(
       split.chars,
       { autoAlpha: 0, y: 56, duration: DURATION.slow, stagger: 0.016 },
@@ -81,6 +83,9 @@ export function createHeroTimeline(section) {
       },
       0.3,
     )
+    // The black mask surfaces while the text breaks apart, so the
+    // scene lands on Ch02's dark background, not on the photo.
+    tl.to(blackout, { opacity: 1, duration: 0.45 }, 0.35)
     tl.to(glow, { opacity: 0, duration: 0.25 }, 0.6)
 
     return () => split.revert()

@@ -14,6 +14,7 @@ import Instructors from '../sections/Instructors'
 import HowItWorks from '../sections/HowItWorks'
 import RealResults from '../sections/RealResults'
 import BeyondCode from '../sections/BeyondCode'
+import Blog from '../sections/Blog'
 import Faq from '../sections/Faq'
 import FutureCta from '../sections/FutureCta'
 import Footer from '../layouts/Footer'
@@ -48,10 +49,13 @@ export default function App() {
         <HowItWorks />
         <RealResults />
         <BeyondCode />
+        <Blog />
         <Faq />
         <FutureCta />
       </main>
       <Footer />
+      {/* Film grain above everything — depth, not decoration */}
+      <div aria-hidden="true" className="grain" />
     </SmoothScrollProvider>
   )
 }

@@ -8,8 +8,13 @@ const LINKS = [
   { href: '#tutores', label: 'Tutores' },
   { href: '#metodo', label: 'Método' },
   { href: '#resultados', label: 'Resultados' },
+  { href: '#blog', label: 'Blog' },
   { href: '#faq', label: 'FAQ' },
 ]
+
+// Students' platform — separate product, hence an external URL
+// (invented but plausible, per contest rules).
+const STUDENT_AREA = 'https://alunos.devclub.com.br'
 
 /*
  * Floating navbar (PO request — see DECISION_LOG.md): rests as a
@@ -56,12 +61,20 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#futuro"
-          className="duration-fast text-night-950 shrink-0 rounded-full bg-green-500 px-4 py-2 text-sm font-semibold transition-colors hover:bg-green-400"
-        >
-          Matricule-se
-        </a>
+        <div className="flex shrink-0 items-center gap-4">
+          <a
+            href={STUDENT_AREA}
+            className="duration-fast hidden text-sm font-medium text-gray-300 transition-colors hover:text-white sm:block"
+          >
+            Login
+          </a>
+          <a
+            href="#futuro"
+            className="duration-fast text-night-950 rounded-full bg-green-500 px-4 py-2 text-sm font-semibold transition-colors hover:bg-green-400"
+          >
+            Matricule-se
+          </a>
+        </div>
       </nav>
     </header>
   )

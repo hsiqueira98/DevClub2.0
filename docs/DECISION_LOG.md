@@ -122,6 +122,22 @@ The PO's reference screenshot (parenthetical kicker, "Matricule-se" nav) was tre
 
 ---
 
+## 2026-07-21 — PO review, second round: product surface + atmosphere
+
+Requested on top of the first review round:
+
+1. **Login button** in the navbar linking to the students' platform (`alunos.devclub.com.br` — invented but plausible URL; the real product has a separate logged area).
+2. **Newsletter capture** — a band at the top of the footer, demo-only submit (no backend; flips to a confirmation state).
+3. **Blog section** (`#blog`, between Beyond Code and FAQ) — three invented editorial teasers, no images, category colors reusing the per-track accent device. Also added to navbar and footer.
+4. **Sitemap footer** — newsletter band, brand column + Navegação/Formações/Recursos columns, legal line.
+5. **Global film grain** ("granulado com profundidade") — fixed SVG-turbulence overlay, `mix-blend-mode: overlay`, stepped shift animation, static under reduced motion.
+6. **FAQ centered.**
+7. **Hero backdrop photo** — blurred low-key photo (BRAND.md imagery style) under a purple gradient mask that obscures it; during the shatter phase a black mask fades in scrub-linked, so the scene lands on Chapter 02's dark background. Mirrors the PO's reference print in intent (photo + colored mask + dark handoff) without copying its layout.
+
+**How to apply:** the hero now has four stacked backdrop layers (photo → purple mask → glow → blackout) — the blackout is driven by `hero.timeline.js`, everything else is static CSS. Newsletter/Blog/Login are surface-level demo affordances; no backend exists.
+
+---
+
 ## 2026-07-21 — Small additive updates from the PO's summary
 
 Added without needing a decision (purely additive, no conflict): Stripe as a sixth reference (experience quality) and an explicit "never copy layouts, only UX principles" rule in `PROJECT_VISION.md`; Framer Motion as a fallback-only animation tool in `ARCHITECTURE.md`; SOLID/DRY/KISS named explicitly alongside the existing architecture principles in `ARCHITECTURE.md`; basic SEO (title, meta description, OG tags, favicon, one `<h1>` per page) folded into Phase 4 of `ROADMAP.md`, since it was missing from every doc and is a cheap, credibility-building win.

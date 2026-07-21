@@ -26,11 +26,33 @@ export default function FirstDecision() {
       data-chapter
       className="bg-night-950 relative flex min-h-screen flex-col overflow-hidden px-6 md:px-12"
     >
+      {/* Layered backdrop (PO request — see DECISION_LOG.md):
+          photo blurred at the bottom of the stack, purple mask
+          obscuring it, black mask that the shatter phase fades in. */}
+      <img
+        src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=70"
+        alt=""
+        aria-hidden="true"
+        data-hero-photo
+        className="absolute inset-0 size-full scale-105 object-cover blur-sm"
+      />
+      <div
+        aria-hidden="true"
+        className="from-night-950/80 to-night-950/95 absolute inset-0 bg-gradient-to-b via-purple-950/80"
+      />
+
       {/* Ambient purple glow — atmosphere only, never a surface color */}
       <div
         aria-hidden="true"
         data-hero-glow
-        className="pointer-events-none absolute top-1/4 left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]"
+        className="pointer-events-none absolute top-1/4 left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-purple-700/25 blur-[160px]"
+      />
+
+      {/* Fades to black in sync with the shatter, handing off to Ch02 */}
+      <div
+        aria-hidden="true"
+        data-hero-blackout
+        className="bg-night-950 pointer-events-none absolute inset-0 opacity-0"
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pt-24 pb-24 text-center">
