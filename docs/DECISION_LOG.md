@@ -106,6 +106,22 @@ The PO created `https://github.com/hsiqueira98/DevClub2.0` as a **private** repo
 
 ---
 
+## 2026-07-21 — PO review of the Phase 1–4 build: five changes
+
+After reviewing the running site, the PO requested:
+
+1. **Hero must not open scattered.** The scrub-linked "assemble" phase meant scroll-position 0 showed oversized cropped letters — the PO's first impression was "the site is broken". **Decision:** the Prólogo/assemble became a time-based entrance (chars rise into the settled lockup on load); only rest → shatter remains scroll-scrubbed. The shatter — which the PO explicitly praised — is untouched. The navbardigital.com reference used scrub for all three phases; deviating is deliberate, first impressions outrank reference fidelity.
+2. **Italic accent glyphs rendered cut off.** `background-clip: text` only paints inside the element box and the last italic glyph slants past it. Fixed with trailing padding in `AccentText` (and the one inline gradient em in HowItWorks).
+3. **Floating navbar** (was deliberately absent — STORYBOARD had no nav): a centered pill over the hero that expands to a full-width blurred bar on scroll. PO asked for it explicitly ("floatbar animado que ocupa toda a largura ao dar scroll").
+4. **FAQ chapter** before the final CTA, using the site's own `faq_` terminal-cursor device. Native details/summary for zero-JS accessibility. Answers stay consistent with `src/data/stats.js`.
+5. **More story/information density**: an interstitial "virada" beat between The Challenge and Meet DevClub ("E se você não precisasse fazer isso sozinho?", word-by-word scrub reveal — the narrative hinge Chapter 04 answers); institutional trust chips in Chapter 04 (MEC, certificações, garantia — BRAND.md trust pillar); a numbers strip in Chapter 08 fed from the single stats source.
+
+The PO's reference screenshot (parenthetical kicker, "Matricule-se" nav) was treated as intent — hero legible at load, nav present — not as layout to copy; DevClub's native devices (terminal-cursor kicker, typewriter) still take precedence per `BRAND.md`.
+
+**How to apply:** the page now has 12 scroll beats (10 storyboard chapters + virada interstitial + FAQ); STORYBOARD.md numbering still refers to the 10 core chapters.
+
+---
+
 ## 2026-07-21 — Small additive updates from the PO's summary
 
 Added without needing a decision (purely additive, no conflict): Stripe as a sixth reference (experience quality) and an explicit "never copy layouts, only UX principles" rule in `PROJECT_VISION.md`; Framer Motion as a fallback-only animation tool in `ARCHITECTURE.md`; SOLID/DRY/KISS named explicitly alongside the existing architecture principles in `ARCHITECTURE.md`; basic SEO (title, meta description, OG tags, favicon, one `<h1>` per page) folded into Phase 4 of `ROADMAP.md`, since it was missing from every doc and is a cheap, credibility-building win.

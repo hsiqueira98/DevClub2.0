@@ -5,6 +5,7 @@ const NAV = [
   { href: '#formacoes', label: 'Formações' },
   { href: '#tutores', label: 'Tutores' },
   { href: '#resultados', label: 'Resultados' },
+  { href: '#faq', label: 'FAQ' },
 ]
 
 // Text links, not icons: lucide-react 1.x dropped brand icons, and

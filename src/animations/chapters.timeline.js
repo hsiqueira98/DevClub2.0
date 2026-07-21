@@ -1,4 +1,4 @@
-import { gsap } from '../lib/gsap'
+import { gsap, SplitText } from '../lib/gsap'
 import { DURATION, EASE } from './motion.tokens'
 
 /*
@@ -38,6 +38,37 @@ export function createChallengeAnimations(section) {
         },
       })
     })
+  })
+
+  return mm
+}
+
+/* Interstitial "virada" beat: the line surfaces word by word, tied to
+ * scroll — the visitor uncovers the question at their own pace. */
+export function createTurnAnimations(section) {
+  const line = section.querySelector('[data-turn-line]')
+  const mm = gsap.matchMedia(section)
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const split = new SplitText(line, { type: 'words' })
+
+    gsap.fromTo(
+      split.words,
+      { opacity: 0.15 },
+      {
+        opacity: 1,
+        stagger: 0.35,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 65%',
+          end: 'center 40%',
+          scrub: 1,
+        },
+      },
+    )
+
+    return () => split.revert()
   })
 
   return mm

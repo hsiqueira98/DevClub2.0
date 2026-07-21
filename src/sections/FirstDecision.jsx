@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
-import LogoMark from '../components/LogoMark'
 import { ChevronDown } from 'lucide-react'
 import { createHeroTimeline } from '../animations/hero.timeline'
 import { useTypewriter } from '../hooks/useTypewriter'
@@ -34,14 +33,7 @@ export default function FirstDecision() {
         className="pointer-events-none absolute top-1/4 left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]"
       />
 
-      <header className="relative z-10 mx-auto flex w-full max-w-[1280px] items-center gap-3 py-8">
-        <LogoMark size={28} className="text-green-500" />
-        <span className="font-display text-lg tracking-wide text-white">
-          DevClub
-        </span>
-      </header>
-
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 text-center">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pt-24 pb-24 text-center">
         <p
           data-hero-kicker
           className="font-display mb-8 text-sm tracking-[0.3em] text-green-500 lowercase"

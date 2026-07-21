@@ -29,7 +29,8 @@ export default function HowItWorks() {
         className="font-display text-night-950 max-w-3xl text-4xl leading-tight md:text-6xl"
       >
         Simples. Estruturado.{' '}
-        <em className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent italic">
+        {/* pr: last italic glyph slants past the clip box — see AccentText */}
+        <em className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text pr-[0.12em] text-transparent italic">
           Passo a passo
         </em>
         .

@@ -68,6 +68,26 @@ export default function RealResults() {
         <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
       </div>
 
+      {/* Numbers strip — every value from the single source in stats.js */}
+      <dl
+        data-reveal-group
+        className="border-night-700 mt-24 grid grid-cols-2 gap-10 border-t pt-12 md:grid-cols-4"
+      >
+        {[
+          { value: STATS.students, label: 'alunos formados' },
+          { value: STATS.hiringCompanies, label: 'empresas contratando' },
+          { value: STATS.projectsBuilt, label: 'projetos por formação' },
+          { value: STATS.rating, label: 'avaliação dos alunos' },
+        ].map((stat) => (
+          <div key={stat.label}>
+            <dd className="font-display text-4xl text-white md:text-5xl">
+              {stat.value}
+            </dd>
+            <dt className="mt-2 text-sm text-gray-500">{stat.label}</dt>
+          </div>
+        ))}
+      </dl>
+
       {/* Minimal testimonials */}
       <ul data-reveal-group className="mt-28 grid gap-10 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (

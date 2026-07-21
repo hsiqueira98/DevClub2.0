@@ -71,6 +71,26 @@ export default function MeetDevClub() {
             <AvatarCluster label={`${STATS.students} alunos formados`} />
             <StarBadge rating={STATS.rating} />
           </div>
+
+          {/* Institutional trust — BRAND.md voice pillar */}
+          <ul data-reveal className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+            {[
+              'Pós-graduação reconhecida pelo MEC',
+              'Certificações internacionais',
+              'Garantia de 7 dias',
+            ].map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-2 text-sm text-gray-500"
+              >
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-green-500"
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Orbital pillars — desktop; collapses to pills on mobile */}

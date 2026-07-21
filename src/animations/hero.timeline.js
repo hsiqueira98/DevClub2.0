@@ -2,19 +2,18 @@ import { gsap, SplitText } from '../lib/gsap'
 import { DURATION, EASE } from './motion.tokens'
 
 /*
- * Chapter 01 signature moment (docs/MOTION.md — navbardigital.com
- * reference): assemble → rest → shatter, driven by ONE scrub-linked
- * timeline while the hero stays pinned.
+ * Chapter 01 signature moment (docs/MOTION.md, revised after PO review
+ * — see DECISION_LOG.md): the headline must NEVER read as broken on
+ * load, so the Prólogo/assemble phase is a time-based entrance, and
+ * only rest → shatter stays scroll-scrubbed.
  *
- *  - assemble (0 → 0.30): the headline starts oversized, cropped by
- *    the viewport edges (the Prólogo — nothing asked, only shown),
- *    and scales down into a legible lockup.
- *  - rest (0.30 → 0.62): composition holds; kicker + typewriter line
- *    breathe in over an intensified glow. The hold is deliberate dead
- *    time so the visitor can actually read.
- *  - shatter (0.62 → 1): SplitText chars tumble apart with randomized
- *    stagger and 3D rotation — a deliberate exception to the
- *    "avoid rotation" note, it narrates disintegration
+ *  - load-in (time-based, once): chars rise into the lockup with a
+ *    stagger; kicker, typewriter line and scroll cue breathe in after.
+ *  - rest (scrub 0 → 0.25): the pinned composition holds — deliberate
+ *    dead time so the visitor reads before anything is asked.
+ *  - shatter (scrub 0.25 → 1): SplitText chars tumble apart with
+ *    randomized stagger and 3D rotation — a deliberate exception to
+ *    the "avoid rotation" note, it narrates disintegration
  *    (docs/DECISION_LOG.md).
  *
  * Reduced motion: no pin, no scrub — a single opacity fade.
@@ -39,41 +38,36 @@ export function createHeroTimeline(section) {
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const split = new SplitText(headline, { type: 'chars,words' })
     gsap.set(headline, { transformPerspective: 800 })
-    // Hidden until the rest phase — the Prólogo shows, never asks.
-    gsap.set([kicker, typeLine], { autoAlpha: 0 })
 
+    // Prólogo — a settled, legible opening. Time-based, plays once.
+    const intro = gsap.timeline({ defaults: { ease: EASE.out } })
+    intro.from(glow, { opacity: 0, duration: DURATION.cinematic })
+    intro.from(
+      split.chars,
+      { autoAlpha: 0, y: 56, duration: DURATION.slow, stagger: 0.016 },
+      0.15,
+    )
+    intro.from(
+      [kicker, typeLine, cue],
+      { autoAlpha: 0, y: 20, duration: DURATION.base, stagger: 0.12 },
+      '-=0.5',
+    )
+
+    // Rest → shatter, tied to the visitor's own scroll.
     const tl = gsap.timeline({
       defaults: { ease: EASE.inOut },
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: '+=280%',
+        end: '+=160%',
         scrub: 1,
         pin: true,
         anticipatePin: 1,
       },
     })
 
-    // Prólogo/assemble — oversized and cropped, settling into rest.
-    tl.fromTo(
-      headline,
-      { scale: 2.8, yPercent: 18 },
-      { scale: 1, yPercent: 0, duration: 0.3 },
-      0,
-    )
-
-    // Rest — supporting cast breathes in while the composition holds.
-    tl.fromTo(glow, { opacity: 0.4 }, { opacity: 1, duration: 0.12 }, 0.3)
-    tl.fromTo(
-      [kicker, typeLine],
-      { autoAlpha: 0, y: 24 },
-      { autoAlpha: 1, y: 0, duration: 0.08, stagger: 0.04, ease: EASE.out },
-      0.32,
-    )
-    tl.to({}, { duration: 0.18 }) // deliberate hold
-
-    // Shatter — chars tumble away with randomized stagger.
-    tl.to([kicker, typeLine, cue], { autoAlpha: 0, duration: 0.06 }, 0.62)
+    tl.to({}, { duration: 0.25 }) // deliberate hold — let the hero rest
+    tl.to([kicker, typeLine, cue], { autoAlpha: 0, duration: 0.08 }, 0.25)
     tl.to(
       split.chars,
       {
@@ -82,20 +76,12 @@ export function createHeroTimeline(section) {
         rotation: () => gsap.utils.random(-140, 140),
         rotationY: () => gsap.utils.random(-90, 90),
         autoAlpha: 0,
-        duration: 0.34,
-        stagger: { each: 0.006, from: 'random' },
-        ease: EASE.inOut,
+        duration: 0.6,
+        stagger: { each: 0.008, from: 'random' },
       },
-      0.64,
+      0.3,
     )
-    tl.to(glow, { opacity: 0, duration: 0.2 }, 0.75)
-
-    // Load-in beat (time-based, once): the page breathes into view.
-    gsap.from(section, {
-      autoAlpha: 0,
-      duration: DURATION.cinematic / 2,
-      ease: EASE.out,
-    })
+    tl.to(glow, { opacity: 0, duration: 0.25 }, 0.6)
 
     return () => split.revert()
   })
