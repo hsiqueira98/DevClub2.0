@@ -18,24 +18,26 @@ const FREEDOMS = [
 export default function WhyTechnology() {
   return (
     <Chapter id="mercado" bg="bg-night-900">
-      <Kicker className="mb-6">mercado</Kicker>
+      <Kicker className="mb-6" data-reveal>
+        mercado
+      </Kicker>
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+      >
         Programar não é escrever código. É construir{' '}
         <AccentText color="green">liberdade</AccentText>.
       </h2>
 
-      <dl className="mt-20 grid gap-6 md:grid-cols-3">
+      <dl data-reveal-group className="mt-20 grid gap-6 md:grid-cols-3">
         {MARKET_STATS.map((stat) => (
           <div
             key={stat.label}
             className="rounded-3xl bg-night-800 p-10"
           >
-            <dd
-              className="font-display text-6xl text-green-500 md:text-7xl"
-              data-countup={stat.value}
-            >
-              {stat.value}
+            <dd className="font-display text-6xl text-green-500 md:text-7xl">
+              <span data-countup={stat.value}>{stat.value}</span>
               <span className="text-4xl md:text-5xl">{stat.suffix}</span>
             </dd>
             <dt className="mt-4 text-lg text-gray-400">{stat.label}</dt>
@@ -44,7 +46,7 @@ export default function WhyTechnology() {
         ))}
       </dl>
 
-      <ul className="mt-16 flex flex-wrap gap-x-12 gap-y-6">
+      <ul data-reveal-group className="mt-16 flex flex-wrap gap-x-12 gap-y-6">
         {FREEDOMS.map(({ icon: Icon, text }) => (
           <li key={text} className="flex items-center gap-3 text-lg text-gray-300">
             <Icon size={22} className="text-purple-400" aria-hidden="true" />

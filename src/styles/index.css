@@ -98,3 +98,22 @@ body {
   background-color: var(--color-purple-500);
   color: var(--color-white-warm);
 }
+
+/*
+ * Film-strip focal state (Chapter 06): applied by
+ * animations/filmstrip.timeline.js as a portrait crosses the viewport
+ * center — reveals name/role and lifts the duotone grade, mirroring
+ * the hover/focus treatment for pointer users.
+ */
+[data-filmstrip] .is-focal img {
+  filter: none;
+}
+
+[data-filmstrip] .is-focal figcaption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-filmstrip] .is-focal [data-grade] {
+  opacity: 0.6;
+}

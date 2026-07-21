@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
@@ -5,6 +7,7 @@ import AvatarCluster from '../components/AvatarCluster'
 import StarBadge from '../components/StarBadge'
 import LogoMark from '../components/LogoMark'
 import { STATS } from '../data/stats'
+import { createOrbitAnimations } from '../animations/chapters.timeline'
 
 /*
  * Chapter 04 — Meet DevClub. Trust: the answer to Chapter 03. The five
@@ -23,8 +26,19 @@ const ORBIT_POSITIONS = [
 ]
 
 export default function MeetDevClub() {
+  const sectionRef = useRef(null)
+
+  useGSAP(() => createOrbitAnimations(sectionRef.current), {
+    scope: sectionRef,
+  })
+
   return (
-    <Chapter id="devclub" bg="bg-night-850" className="overflow-hidden">
+    <Chapter
+      ref={sectionRef}
+      id="devclub"
+      bg="bg-night-850"
+      className="overflow-hidden"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute top-0 right-0 size-[40rem] translate-x-1/3 -translate-y-1/3 rounded-full bg-purple-700/25 blur-[140px]"
@@ -32,20 +46,25 @@ export default function MeetDevClub() {
 
       <div className="relative grid items-center gap-20 lg:grid-cols-2">
         <div>
-          <Kicker className="mb-6">apresentação</Kicker>
+          <Kicker className="mb-6" data-reveal>
+            apresentação
+          </Kicker>
 
-          <h2 className="font-display text-4xl leading-tight text-white md:text-6xl">
+          <h2
+            data-reveal
+            className="font-display text-4xl leading-tight text-white md:text-6xl"
+          >
             O DevClub não é um curso. É um{' '}
             <AccentText color="green">caminho</AccentText>.
           </h2>
 
-          <p className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
+          <p data-reveal className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
             Uma metodologia que já formou {STATS.studentsLong}, com roadmap
             claro, mentoria de quem está no mercado e uma comunidade que não
             deixa ninguém travado para trás.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-6">
+          <div data-reveal className="mt-10 flex flex-wrap items-center gap-6">
             <AvatarCluster label={`${STATS.students} alunos formados`} />
             <StarBadge rating={STATS.rating} />
           </div>

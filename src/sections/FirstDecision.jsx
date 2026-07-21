@@ -1,18 +1,28 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import LogoMark from '../components/LogoMark'
-import Kicker from '../components/Kicker'
-import AccentText from '../components/AccentText'
 import { ChevronDown } from 'lucide-react'
+import { createHeroTimeline } from '../animations/hero.timeline'
+import { useTypewriter } from '../hooks/useTypewriter'
+
+const ROLES = ['Front-End', 'Back-End', 'FullStack', 'Mobile']
 
 /*
  * Chapter 01 — The First Decision.
  * Opens with the Prólogo beat: minimal, dark, typography-first
- * (docs/STORYBOARD.md). The headline receives the assemble→rest→shatter
- * choreography in Phase 3; the cycling role line is DevClub's own
- * typewriter hero device (docs/BRAND.md).
+ * (docs/STORYBOARD.md). Choreography lives in
+ * animations/hero.timeline.js (assemble → rest → shatter); the cycling
+ * role line is DevClub's own typewriter hero device (docs/BRAND.md).
  */
 export default function FirstDecision() {
+  const sectionRef = useRef(null)
+  const role = useTypewriter(ROLES)
+
+  useGSAP(() => createHeroTimeline(sectionRef.current), { scope: sectionRef })
+
   return (
     <section
+      ref={sectionRef}
       id="inicio"
       data-chapter
       className="relative flex min-h-screen flex-col overflow-hidden bg-night-950 px-6 md:px-12"
@@ -20,6 +30,7 @@ export default function FirstDecision() {
       {/* Ambient purple glow — atmosphere only, never a surface color */}
       <div
         aria-hidden="true"
+        data-hero-glow
         className="pointer-events-none absolute top-1/4 left-1/2 size-[60rem] -translate-x-1/2 rounded-full bg-purple-700/20 blur-[160px]"
       />
 
@@ -31,20 +42,34 @@ export default function FirstDecision() {
       </header>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pb-24 text-center">
-        <Kicker className="mb-8">início</Kicker>
+        <p
+          data-hero-kicker
+          className="font-display mb-8 text-sm tracking-[0.3em] text-green-500 lowercase"
+        >
+          início
+          <span aria-hidden="true" className="animate-blink">
+            _
+          </span>
+        </p>
 
+        {/* Solid green accent (not the gradient signature): SplitText
+            re-wraps every char in its own transformed span, which
+            background-clip:text does not survive. */}
         <h1
           data-hero-headline
           className="font-display max-w-5xl text-5xl leading-tight text-white md:text-7xl lg:text-8xl"
         >
           Toda carreira em tecnologia começa com{' '}
-          <AccentText color="green">uma decisão</AccentText>.
+          <em className="text-green-500 italic">uma decisão</em>.
         </h1>
 
-        <p className="mt-10 font-sans text-xl text-gray-400 md:text-2xl">
+        <p
+          data-hero-typeline
+          className="mt-10 font-sans text-xl text-gray-400 md:text-2xl"
+        >
           E a sua pode ser em{' '}
-          <span data-typewriter className="font-display text-green-500">
-            Front-End
+          <span className="font-display text-green-500">
+            {role}
             <span aria-hidden="true" className="animate-blink">
               _
             </span>
@@ -54,6 +79,7 @@ export default function FirstDecision() {
 
       <a
         href="#mercado"
+        data-hero-cue
         className="relative z-10 mx-auto mb-10 flex flex-col items-center gap-2 text-sm text-gray-600 transition-colors duration-fast hover:text-gray-400"
       >
         role para começar

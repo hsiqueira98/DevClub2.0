@@ -1,7 +1,10 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import { INSTRUCTORS } from '../data/instructors'
+import { createFilmstripTimeline } from '../animations/filmstrip.timeline'
 
 /*
  * Chapter 06 — Conheça Quem Ensina. A horizontal film-strip of
@@ -11,22 +14,40 @@ import { INSTRUCTORS } from '../data/instructors'
  * from docs/BRAND.md. Phase 3 links the strip to scroll.
  */
 export default function Instructors() {
-  return (
-    <Chapter id="tutores" bg="bg-night-900" innerClassName="max-w-none px-0 py-28 md:py-40">
-      <div className="mx-auto max-w-[1280px]">
-        <Kicker className="mb-6">quem ensina</Kicker>
+  const sectionRef = useRef(null)
 
-        <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+  useGSAP(() => createFilmstripTimeline(sectionRef.current), {
+    scope: sectionRef,
+  })
+
+  return (
+    <Chapter
+      ref={sectionRef}
+      id="tutores"
+      bg="bg-night-900"
+      className="overflow-hidden"
+      innerClassName="max-w-none px-0 py-28 md:py-40"
+    >
+      <div className="mx-auto max-w-[1280px]">
+        <Kicker className="mb-6" data-reveal>
+          quem ensina
+        </Kicker>
+
+        <h2
+          data-reveal
+          className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+        >
           Quem ensina, <AccentText color="purple">vive disso</AccentText>.
         </h2>
 
-        <p className="mt-6 max-w-xl text-lg text-gray-500">
+        <p data-reveal className="mt-6 max-w-xl text-lg text-gray-500">
           Especialistas que trabalham no mercado — não slides gravados.
         </p>
       </div>
 
       <ul
         data-filmstrip
+        data-reveal-group
         className="mt-16 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 pl-[max(1.5rem,calc((100vw-1280px)/2))]"
       >
         {INSTRUCTORS.map((person) => (
@@ -35,15 +56,17 @@ export default function Instructors() {
               tabIndex={0}
               className="group relative h-[26rem] w-[19rem] overflow-hidden rounded-2xl bg-night-800"
             >
+              {/* Eager: lazy-load inside a transformed (pinned) strip
+                  defers offscreen portraits and they pop in mid-scrub */}
               <img
                 src={person.photo}
                 alt={`Retrato de ${person.name}`}
-                loading="lazy"
                 className="size-full object-cover grayscale transition-all duration-slow group-hover:grayscale-0 group-focus-visible:grayscale-0"
               />
               {/* Duotone grade over the placeholder portraits */}
               <div
                 aria-hidden="true"
+                data-grade
                 className="absolute inset-0 bg-gradient-to-t from-night-950 via-purple-950/40 to-transparent transition-opacity duration-slow group-hover:opacity-60"
               />
               <figcaption className="absolute inset-x-0 bottom-0 translate-y-2 p-6 opacity-0 transition-all duration-base group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">

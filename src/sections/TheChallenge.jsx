@@ -1,7 +1,10 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import { STRUGGLES } from '../data/journey'
+import { createChallengeAnimations } from '../animations/chapters.timeline'
 
 /*
  * Chapter 03 — The Challenge. Visual tension on purpose: the struggle
@@ -18,11 +21,22 @@ const FRAGMENT_STYLES = [
 ]
 
 export default function TheChallenge() {
-  return (
-    <Chapter id="desafio" bg="bg-night-950">
-      <Kicker className="mb-6">o problema</Kicker>
+  const sectionRef = useRef(null)
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+  useGSAP(() => createChallengeAnimations(sectionRef.current), {
+    scope: sectionRef,
+  })
+
+  return (
+    <Chapter ref={sectionRef} id="desafio" bg="bg-night-950">
+      <Kicker className="mb-6" data-reveal>
+        o problema
+      </Kicker>
+
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+      >
         Aprender sozinho é <AccentText color="purple">difícil</AccentText>.
       </h2>
 
@@ -38,7 +52,10 @@ export default function TheChallenge() {
         ))}
       </ul>
 
-      <p className="mt-20 max-w-2xl text-2xl leading-relaxed text-gray-300 md:text-3xl">
+      <p
+        data-reveal
+        className="mt-20 max-w-2xl text-2xl leading-relaxed text-gray-300 md:text-3xl"
+      >
         Muita gente desiste antes mesmo de começar.
         <span className="mt-4 block text-gray-600">
           Não por falta de capacidade — por falta de direção.

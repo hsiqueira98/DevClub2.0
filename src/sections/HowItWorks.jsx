@@ -1,6 +1,9 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import { JOURNEY_STEPS } from '../data/journey'
+import { createMethodAnimations } from '../animations/chapters.timeline'
 
 /*
  * Chapter 07 — How It Works. The one light section on the page: both
@@ -9,11 +12,22 @@ import { JOURNEY_STEPS } from '../data/journey'
  * Vertical timeline; the connecting path is animated in Phase 3.
  */
 export default function HowItWorks() {
-  return (
-    <Chapter id="metodo" bg="bg-white-warm">
-      <Kicker className="mb-6">método</Kicker>
+  const sectionRef = useRef(null)
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-night-950 md:text-6xl">
+  useGSAP(() => createMethodAnimations(sectionRef.current), {
+    scope: sectionRef,
+  })
+
+  return (
+    <Chapter ref={sectionRef} id="metodo" bg="bg-white-warm">
+      <Kicker className="mb-6" data-reveal>
+        método
+      </Kicker>
+
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-night-950 md:text-6xl"
+      >
         Simples. Estruturado.{' '}
         <em className="bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text italic text-transparent">
           Passo a passo
@@ -30,7 +44,12 @@ export default function HowItWorks() {
         />
 
         {JOURNEY_STEPS.map((step) => (
-          <li key={step.number} data-step className="relative flex gap-8 pb-16 last:pb-0">
+          <li
+            key={step.number}
+            data-step
+            data-reveal
+            className="relative flex gap-8 pb-16 last:pb-0"
+          >
             <span
               aria-hidden="true"
               className="font-display z-10 flex size-11 shrink-0 items-center justify-center rounded-full bg-night-950 text-sm text-green-500"

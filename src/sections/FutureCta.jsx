@@ -1,6 +1,9 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Button from '../components/Button'
 import { ArrowRight } from 'lucide-react'
+import { createEpilogueAnimations } from '../animations/chapters.timeline'
 
 /*
  * Chapter 10 — Your Future Starts Now. Full inversion to solid green
@@ -9,23 +12,41 @@ import { ArrowRight } from 'lucide-react'
  * one final breath of near-empty space before the footer.
  */
 export default function FutureCta() {
+  const sectionRef = useRef(null)
+
+  useGSAP(() => createEpilogueAnimations(sectionRef.current), {
+    scope: sectionRef,
+  })
+
   return (
-    <Chapter id="futuro" bg="bg-green-500" innerClassName="py-40 md:py-56">
+    <Chapter
+      ref={sectionRef}
+      id="futuro"
+      bg="bg-green-500"
+      innerClassName="py-40 md:py-56"
+    >
       <div className="flex flex-col items-center text-center">
-        <p className="font-display text-sm tracking-[0.3em] text-night-950/70 lowercase">
+        <p
+          data-reveal
+          className="font-display text-sm tracking-[0.3em] text-night-950/70 lowercase"
+        >
           sua vez
           <span aria-hidden="true" className="animate-blink">
             _
           </span>
         </p>
 
-        <h2 className="font-display mt-8 max-w-4xl text-5xl leading-tight text-night-950 md:text-7xl">
+        <h2
+          data-reveal
+          className="font-display mt-8 max-w-4xl text-5xl leading-tight text-night-950 md:text-7xl"
+        >
           A única diferença entre você e um dev é a decisão de começar.
         </h2>
 
         <Button
           href="#inicio"
           variant="inverted"
+          data-reveal
           className="mt-14 px-10 py-5 text-lg"
         >
           Começar minha jornada

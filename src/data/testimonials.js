@@ -33,9 +33,9 @@ export const TESTIMONIALS = [
  * `widthPct` is the bar length the Phase 3 animation grows to.
  */
 export const SALARIES = [
-  { level: 'Júnior', value: 'R$ 3.800', widthPct: 32, barClass: 'bg-gray-500' },
-  { level: 'Pleno', value: 'R$ 8.400', widthPct: 62, barClass: 'bg-purple-500' },
-  { level: 'Sênior', value: 'R$ 14.500', widthPct: 100, barClass: 'bg-green-500' },
+  { level: 'Júnior', amount: 3800, widthPct: 32, barClass: 'bg-gray-500' },
+  { level: 'Pleno', amount: 8400, widthPct: 62, barClass: 'bg-purple-500' },
+  { level: 'Sênior', amount: 14500, widthPct: 100, barClass: 'bg-green-500' },
 ]
 
 export const SALARY_SOURCE =

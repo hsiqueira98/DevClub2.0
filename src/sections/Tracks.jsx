@@ -12,13 +12,18 @@ import { TRACKS } from '../data/tracks'
 export default function Tracks() {
   return (
     <Chapter id="formacoes" bg="bg-night-950">
-      <Kicker className="mb-6">formações</Kicker>
+      <Kicker className="mb-6" data-reveal>
+        formações
+      </Kicker>
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+      >
         Uma trilha para <AccentText color="green">cada destino</AccentText>.
       </h2>
 
-      <ol className="mt-20">
+      <ol data-reveal-group className="mt-20">
         {TRACKS.map((track) => (
           <li
             key={track.number}

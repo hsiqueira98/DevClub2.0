@@ -11,18 +11,26 @@ import { GALLERY } from '../data/journey'
 export default function BeyondCode() {
   return (
     <Chapter id="comunidade" bg="bg-night-900">
-      <Kicker className="mb-6">comunidade</Kicker>
+      <Kicker className="mb-6" data-reveal>
+        comunidade
+      </Kicker>
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+      >
         Mais que código: <AccentText color="purple">pertencimento</AccentText>.
       </h2>
 
-      <p className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
+      <p data-reveal className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400">
         Amizades, networking, eventos e gente que entende exatamente o momento
         que você está vivendo.
       </p>
 
-      <ul className="mt-20 columns-1 gap-6 sm:columns-2 lg:columns-3 [&>li]:mb-6">
+      <ul
+        data-reveal-group
+        className="mt-20 columns-1 gap-6 sm:columns-2 lg:columns-3 [&>li]:mb-6"
+      >
         {GALLERY.map((photo) => (
           <li key={photo.src} data-gallery-item className="break-inside-avoid">
             <figure className="group relative overflow-hidden rounded-2xl">

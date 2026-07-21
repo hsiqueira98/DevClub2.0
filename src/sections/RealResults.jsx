@@ -1,36 +1,54 @@
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import StarBadge from '../components/StarBadge'
 import { TESTIMONIALS, SALARIES, SALARY_SOURCE, COMPANIES } from '../data/testimonials'
 import { STATS } from '../data/stats'
+import { createResultsAnimations } from '../animations/results.timeline'
 
 /*
  * Chapter 08 — Real Results. Signature moment: the salary bar chart
  * that already exists on the current DevClub site (gray→purple→green,
- * with source citation — docs/BRAND.md "Cited data"). Bars grow on
- * scroll in Phase 3. Testimonials kept minimal; companies as a text
- * wordmark strip (marquee in Phase 3).
+ * with source citation — docs/BRAND.md "Cited data"). Bars grow and
+ * values count up on scroll entry; companies loop as a continuous
+ * marquee (duplicated list for a seamless -50% translate).
  */
 export default function RealResults() {
-  return (
-    <Chapter id="resultados" bg="bg-night-950">
-      <Kicker className="mb-6">salário</Kicker>
+  const sectionRef = useRef(null)
 
-      <h2 className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl">
+  useGSAP(() => createResultsAnimations(sectionRef.current), {
+    scope: sectionRef,
+  })
+
+  return (
+    <Chapter ref={sectionRef} id="resultados" bg="bg-night-950">
+      <Kicker className="mb-6" data-reveal>
+        salário
+      </Kicker>
+
+      <h2
+        data-reveal
+        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+      >
         Histórias <AccentText color="green">reais</AccentText>. Salários
         reais.
       </h2>
 
       {/* Salary comparison chart */}
-      <div className="mt-20 max-w-3xl">
+      <div data-salary-chart className="mt-20 max-w-3xl">
         <dl className="flex flex-col gap-8">
           {SALARIES.map((row) => (
             <div key={row.level} data-salary-row>
               <dt className="flex items-baseline justify-between text-lg text-gray-400">
                 {row.level}
-                <span className="font-display text-2xl text-white md:text-3xl">
-                  {row.value}
+                <span
+                  data-countup={row.amount}
+                  data-countup-format="brl"
+                  className="font-display text-2xl text-white md:text-3xl"
+                >
+                  R$ {row.amount.toLocaleString('pt-BR')}
                 </span>
               </dt>
               <dd className="mt-3 h-3 overflow-hidden rounded-full bg-night-750">
@@ -47,9 +65,9 @@ export default function RealResults() {
       </div>
 
       {/* Minimal testimonials */}
-      <ul className="mt-28 grid gap-10 md:grid-cols-3">
+      <ul data-reveal-group className="mt-28 grid gap-10 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <li key={t.name} data-testimonial className="flex flex-col">
+          <li key={t.name} className="flex flex-col">
             <blockquote className="text-xl leading-relaxed text-gray-300">
               “{t.quote}”
             </blockquote>
@@ -70,21 +88,24 @@ export default function RealResults() {
         ))}
       </ul>
 
-      {/* Hiring companies — text wordmarks, no fake logo files */}
-      <div className="mt-28">
+      {/* Hiring companies — text wordmarks in a continuous marquee */}
+      <div data-reveal className="mt-28">
         <p className="text-sm text-gray-600">
           Alunos contratados por {STATS.hiringCompanies} empresas, incluindo
         </p>
-        <ul data-marquee className="mt-8 flex flex-wrap gap-x-14 gap-y-6">
-          {COMPANIES.map((company) => (
-            <li
-              key={company}
-              className="font-display text-2xl text-gray-600 transition-colors duration-fast hover:text-gray-400"
-            >
-              {company}
-            </li>
-          ))}
-        </ul>
+        <div className="mt-8 overflow-hidden">
+          <ul data-marquee-inner className="flex w-max">
+            {[...COMPANIES, ...COMPANIES].map((company, i) => (
+              <li
+                key={`${company}-${i}`}
+                aria-hidden={i >= COMPANIES.length || undefined}
+                className="font-display pr-14 text-2xl whitespace-nowrap text-gray-600"
+              >
+                {company}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </Chapter>
   )
