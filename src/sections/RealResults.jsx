@@ -8,11 +8,11 @@ import {
   TESTIMONIALS,
   SALARIES,
   SALARY_SOURCE,
-  CAREER_JOURNEY,
+  CAREER_COMPARISON,
   COMPANIES,
 } from '../data/testimonials'
 import { STATS } from '../data/stats'
-import CareerJourney from '../components/CareerJourney'
+import CareerComparison from '../components/CareerComparison'
 import { createResultsAnimations } from '../animations/results.timeline'
 
 /*
@@ -53,9 +53,9 @@ export default function RealResults() {
         mesma coisa para todos: o contracheque no fim do mês.
       </p>
 
-      {/* Two complementary views: the market as a snapshot (bars) and
-          the visitor's own path over time (a scroll-lit career journey)
-          — not the same data twice (PO round — see DECISION_LOG.md) */}
+      {/* Left: the market as a snapshot (bars). Right: the cost of
+          waiting — two scroll-lit paths that both land on R$ 21.600,
+          once lost, once gained (PO round — see DECISION_LOG.md) */}
       <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
         <div data-salary-chart>
           <p className="font-display mb-8 text-lg font-semibold text-white">
@@ -87,7 +87,11 @@ export default function RealResults() {
           <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
         </div>
 
-        <CareerJourney steps={CAREER_JOURNEY} />
+        <CareerComparison
+          title={CAREER_COMPARISON.title}
+          note={CAREER_COMPARISON.note}
+          paths={CAREER_COMPARISON.paths}
+        />
       </div>
 
       {/* Numbers strip — every value from the single source in stats.js */}

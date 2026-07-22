@@ -42,21 +42,42 @@ export const SALARY_SOURCE =
   'Fonte: Glassdoor e LinkedIn. *Valores aproximados — variam por região, empresa e senioridade.'
 
 /*
- * Chapter 08 career journey — the milestones lit up beside the salary
- * bars (PO round — see DECISION_LOG.md). A personal story to the bars'
- * market snapshot, not a second chart of the same data. The final step
- * repeats the Sênior bar figure (14.500) so the two columns stay
- * consistent. Invented but plausible.
+ * Chapter 08 loss-aversion comparison (PO round — see DECISION_LOG.md):
+ * two parallel paths landing on the SAME figure (R$ 21.600), once as a
+ * loss and once as a gain — the cost of waiting a year vs. starting now.
+ * Colour stays in-palette: gray = inaction (echoes the Júnior bar),
+ * green = action (echoes the Sênior bar) — no red. The maths is
+ * consistent: R$ 3.800 (a first dev salary, = the Júnior bar) − R$ 2.000
+ * = R$ 1.800/mês × 12 = R$ 21.600/ano. The right column leads with a
+ * blank row (the "↓") so both final rows share an index and light in
+ * sync. Invented but plausible.
  */
-export const CAREER_JOURNEY = [
-  { label: 'Você hoje' },
-  { label: 'HTML, CSS, JavaScript' },
-  { label: 'Primeiro projeto no GitHub' },
-  { label: 'Primeira entrevista' },
-  { label: 'Primeiro emprego como dev' },
-  { label: 'Promoção a Pleno' },
-  { label: 'Sênior — R$ 14.500+', highlight: true },
-]
+export const CAREER_COMPARISON = {
+  title: 'Quanto custa NÃO começar hoje?',
+  note: '*Diferença de 12 meses entre R$ 2.000 e um primeiro salário dev (R$ 3.800).',
+  paths: [
+    {
+      key: 'wait',
+      title: 'Esperar 1 ano',
+      tone: 'gray',
+      rows: [
+        { value: 'R$ 2.000', label: 'Salário atual' },
+        { label: 'Continuar igual' },
+        { value: 'R$ 21.600', label: 'perdidos em diferença salarial', highlight: true },
+      ],
+    },
+    {
+      key: 'start',
+      title: 'Começar hoje',
+      tone: 'green',
+      rows: [
+        null,
+        { value: 'R$ 3.800', label: 'Primeiro emprego' },
+        { value: '+R$ 21.600/ano', label: '+R$ 1.800 por mês', highlight: true },
+      ],
+    },
+  ],
+}
 
 /*
  * Hiring-company wordmarks, rendered as styled text (no fake logo

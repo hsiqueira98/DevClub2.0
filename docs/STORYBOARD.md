@@ -351,7 +351,7 @@ Numbers.
 
 Signature moment: an animated salary comparison bar chart — Junior/Pleno/Senior, gray → purple → green, exactly as the current DevClub site already does (real existing content, not a borrowed idea — see `BRAND.md`). Keep the source-citation line (e.g. "Fonte: GlassDoor e LinkedIn...") even with invented numbers — it's a cheap, real credibility signal already in use.
 
-Second signature moment, beside the bars: not a second chart, a vertical career journey — a scroll-lit path from "Você hoje" through concrete milestones (learning, first project, first interview, first job, promotion) ending on a salary figure. Turns the market snapshot on the left into a personal story on the right, without duplicating the same data in a second shape (see `DECISION_LOG.md` for why this replaced an earlier line-chart idea).
+Second signature moment, beside the bars: "Quanto custa NÃO começar hoje?" — two scroll-lit paths compared side by side, not a single journey. "Esperar 1 ano" (stay at today's salary, ends in a loss figure) beside "Começar hoje" (first job, ends in a gain figure) — both landing on the same magnitude (R$21.600), once as what you lose, once as what you gain. Turns the market snapshot on the left into an opportunity-cost story on the right (see `DECISION_LOG.md` for the evolution from a single career-journey path to this comparison).
 
 ## Visual Direction
 
@@ -365,7 +365,7 @@ Community.
 
 Animated horizontal bar chart, three bars (Junior/Pleno/Senior) growing to different lengths with the gray→purple→green progression already used on the current site.
 
-The journey: a thin vertical line with small dot markers, each with a short label — minimal, more "commit log" than the descriptive step-list already used in Chapter 07's method timeline. Different enough from Chapter 07 to not repeat the same device two chapters in a row.
+The comparison: two thin vertical lines side by side, each with small dot markers and short labels — minimal, more "commit log" than the descriptive step-list already used in Chapter 07's method timeline. "Esperar 1 ano" in muted gray tones (echoing the Júnior bar), "Começar hoje" in green (echoing the Sênior bar) — no new color introduced for "loss," the existing gray→green logic already carries the meaning.
 
 ## Motion
 
@@ -379,7 +379,7 @@ Hover interactions.
 
 Bars grow into place on scroll entry, staggered per row.
 
-The journey's connecting line draws itself as the visitor scrolls (same scrub-linked technique as Chapter 07's timeline path — reused, not reinvented); each milestone dot/label lights up as the drawn line reaches it.
+Both connecting lines draw themselves as the visitor scrolls (same scrub-linked technique as Chapter 07's timeline path — reused, not reinvented), in sync with each other; each dot/label lights up as its line reaches it. The two final figures (R$21.600 lost, R$21.600 gained) land at the same scroll position, not staggered — the comparison should read in one glance.
 
 ---
 

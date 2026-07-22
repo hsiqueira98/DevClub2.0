@@ -11,9 +11,8 @@ export function createResultsAnimations(section) {
   const bars = section.querySelectorAll('[data-salary-bar]')
   const chart = section.querySelector('[data-salary-chart]')
   const marquee = section.querySelector('[data-marquee-inner]')
-  const journey = section.querySelector('[data-journey]')
-  const journeyLine = section.querySelector('[data-journey-line]')
-  const journeySteps = section.querySelectorAll('[data-journey-step]')
+  const comparison = section.querySelector('[data-comparison]')
+  const paths = section.querySelectorAll('[data-path]')
 
   const mm = gsap.matchMedia(section)
 
@@ -31,40 +30,47 @@ export function createResultsAnimations(section) {
       },
     })
 
-    // Career journey: one scrub timeline (the same scaleY line-draw as
-    // Chapter 07's method path). The connecting line grows top→bottom
-    // over the whole timeline; each milestone lights up at a sequential
-    // position, so it fires exactly as the line's leading edge reaches
-    // it — all in ONE timeline, not a timeline per point. Dim/scaled
-    // start state lives here (no-preference only), so reduced-motion
-    // users see every milestone already lit.
-    if (journeyLine && journeySteps.length) {
-      const span = journeySteps.length - 1 // one time-unit per gap
-      const dots = section.querySelectorAll('[data-journey-dot]')
+    // Loss-aversion comparison: TWO scroll-lit paths (the same scaleY
+    // line-draw as Chapter 07's method path, duplicated) sharing ONE
+    // scrub timeline. Both lines draw from position 0, and each row
+    // lights up at time = its row index — so the two columns' final rows
+    // (same index) brighten at the exact same scroll position, which is
+    // the whole point (same R$ 21.600, once lost, once gained). The
+    // dim/scaled start state lives here (no-preference only), so
+    // reduced-motion users see both paths already fully lit.
+    if (comparison && paths.length) {
+      const nodes = section.querySelectorAll('[data-path-node]')
+      const dots = section.querySelectorAll('[data-path-dot]')
+      const rowCount = paths[0].querySelectorAll('[data-path-row]').length
 
-      gsap.set(journeySteps, { opacity: 0.3 })
+      gsap.set(nodes, { opacity: 0.3 })
       gsap.set(dots, { scale: 0.5, transformOrigin: 'center' })
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: journey,
-          start: 'top 78%',
-          end: 'bottom 45%',
+          trigger: comparison,
+          start: 'top 75%',
+          end: 'bottom 55%',
           scrub: 1,
         },
       })
 
-      tl.fromTo(
-        journeyLine,
-        { scaleY: 0, transformOrigin: 'top center' },
-        { scaleY: 1, ease: 'none', duration: span },
-        0,
-      )
+      paths.forEach((path) => {
+        const line = path.querySelector('[data-path-line]')
+        tl.fromTo(
+          line,
+          { scaleY: 0, transformOrigin: 'top center' },
+          { scaleY: 1, ease: 'none', duration: rowCount - 1 },
+          0,
+        )
 
-      journeySteps.forEach((step, i) => {
-        const dot = step.querySelector('[data-journey-dot]')
-        tl.to(step, { opacity: 1, duration: 0.4, ease: EASE.out }, i)
-        tl.to(dot, { scale: 1, duration: 0.4, ease: EASE.out }, i)
+        path.querySelectorAll('[data-path-row]').forEach((row, i) => {
+          const node = row.querySelector('[data-path-node]')
+          const dot = row.querySelector('[data-path-dot]')
+          if (!node) return // blank leading row (the "↓")
+          tl.to(node, { opacity: 1, duration: 0.5, ease: EASE.out }, i)
+          tl.to(dot, { scale: 1, duration: 0.5, ease: EASE.out }, i)
+        })
       })
     }
 
