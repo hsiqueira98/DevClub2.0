@@ -7,9 +7,10 @@
  * never raw hex values.
  */
 @theme {
-  /* Typography — BRAND.md */
-  --font-display: 'Aldrich', sans-serif;
-  --font-sans: 'Albert Sans', sans-serif;
+  /* Typography — BRAND.md (Sora superseded Aldrich + Albert Sans by
+     PO decision; hierarchy now comes from weight, not typeface) */
+  --font-display: 'Sora', sans-serif;
+  --font-sans: 'Sora', sans-serif;
 
   /* Primary green — BRAND.md */
   --color-green-300: #5bf175;
@@ -50,6 +51,9 @@
 
   /* Warm off-white, for text on/near purple — BRAND.md */
   --color-white-warm: #fbf5ff;
+  /* Deeper off-white for light SECTIONS: enough midtone for the
+     global grain overlay to stay visible (white-warm washes it out) */
+  --color-white-soft: #efe9f4;
 
   /* Per-track accents (signature UI device) — BRAND.md */
   --color-track-js: #eab308;
@@ -78,6 +82,47 @@
       opacity: 0;
     }
   }
+}
+
+/*
+ * With one typeface site-wide, display text is distinguished by
+ * weight (BRAND.md: 700–800 headlines, 500–600 labels, 400 body).
+ * @layer base so weight utilities (font-semibold etc.) still win.
+ */
+@layer base {
+  .font-display {
+    font-weight: 700;
+  }
+}
+
+/* Track-modal backdrop (native <dialog>) */
+dialog::backdrop {
+  background: rgb(10 10 10 / 0.7);
+  backdrop-filter: blur(4px);
+}
+
+/*
+ * Chapter 05 track rows: a cursor-following glow in the track's own
+ * accent color (--track-glow set inline, --mx/--my updated on
+ * mousemove) — an invitation to click, subtle by design.
+ */
+.track-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    16rem circle at var(--mx, 50%) var(--my, 50%),
+    var(--track-glow),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-base);
+}
+
+.track-row:hover::before,
+.track-row:focus-visible::before {
+  opacity: 0.08;
 }
 
 html {

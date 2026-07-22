@@ -43,30 +43,41 @@ export function createChallengeAnimations(section) {
   return mm
 }
 
-/* Interstitial "virada" beat: the line surfaces word by word, tied to
- * scroll — the visitor uncovers the question at their own pace. */
+/* Interstitial "virada" beat: the question surfaces word by word,
+ * holds, then the answer + CTA rise — one scrub timeline, two phases
+ * (PO round — the virada invites, Chapter 05 delivers). */
 export function createTurnAnimations(section) {
   const line = section.querySelector('[data-turn-line]')
+  const answer = section.querySelector('[data-turn-answer]')
+  const cta = section.querySelector('[data-turn-cta]')
   const mm = gsap.matchMedia(section)
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const split = new SplitText(line, { type: 'words' })
+    gsap.set([answer, cta], { autoAlpha: 0, y: 24 })
 
-    gsap.fromTo(
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 60%',
+        end: 'bottom 90%',
+        scrub: 1,
+      },
+    })
+
+    tl.fromTo(
       split.words,
       { opacity: 0.15 },
-      {
-        opacity: 1,
-        stagger: 0.35,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 65%',
-          end: 'center 40%',
-          scrub: 1,
-        },
-      },
+      { opacity: 1, stagger: 0.35, ease: 'none', duration: 2.5 },
     )
+    tl.to({}, { duration: 0.8 }) // brief hold on the question
+    tl.to([answer, cta], {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.25,
+      ease: EASE.out,
+    })
 
     return () => split.revert()
   })

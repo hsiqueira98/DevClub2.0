@@ -61,7 +61,7 @@ export default function FirstDecision() {
       >
         <p
           data-hero-kicker
-          className="font-display mb-8 text-sm tracking-[0.3em] text-green-500 lowercase"
+          className="font-display mb-8 text-sm font-semibold tracking-[0.3em] text-green-500 lowercase"
         >
           início
           <span aria-hidden="true" className="animate-blink">
@@ -74,7 +74,7 @@ export default function FirstDecision() {
             background-clip:text does not survive. */}
         <h1
           data-hero-headline
-          className="font-display max-w-5xl text-5xl leading-tight text-white md:text-7xl lg:text-8xl"
+          className="font-display max-w-5xl text-5xl leading-tight font-extrabold text-white md:text-7xl lg:text-8xl"
         >
           Toda carreira em tecnologia começa com{' '}
           <em className="text-green-500 italic">uma decisão</em>.

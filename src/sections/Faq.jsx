@@ -7,7 +7,9 @@ import { FAQ } from '../data/faq'
 /*
  * FAQ chapter (added on PO review — see DECISION_LOG.md), using the
  * site's own `faq_` terminal-cursor device. Native details/summary:
- * accessible and keyboard-operable with zero JS state.
+ * accessible and keyboard-operable with zero JS state. The shared
+ * name="faq" makes the accordion exclusive (opening one closes the
+ * others) — also native, no React state.
  */
 export default function Faq() {
   return (
@@ -27,6 +29,7 @@ export default function Faq() {
         {FAQ.map((item) => (
           <details
             key={item.question}
+            name="faq"
             className="group border-night-600 border-t last:border-b"
           >
             <summary className="duration-fast flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-lg font-medium text-gray-300 transition-colors hover:text-white [&::-webkit-details-marker]:hidden">

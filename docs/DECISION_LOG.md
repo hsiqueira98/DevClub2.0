@@ -154,3 +154,30 @@ Requested on top of the first review round:
 ## 2026-07-21 — Small additive updates from the PO's summary
 
 Added without needing a decision (purely additive, no conflict): Stripe as a sixth reference (experience quality) and an explicit "never copy layouts, only UX principles" rule in `PROJECT_VISION.md`; Framer Motion as a fallback-only animation tool in `ARCHITECTURE.md`; SOLID/DRY/KISS named explicitly alongside the existing architecture principles in `ARCHITECTURE.md`; basic SEO (title, meta description, OG tags, favicon, one `<h1>` per page) folded into Phase 4 of `ROADMAP.md`, since it was missing from every doc and is a cheap, credibility-building win.
+
+---
+
+## 2026-07-21 — Post-Phase-4 code review found one real bug: Kicker contrast on light background
+
+A full review (lint, production build, headless-browser walkthrough of all chapters, and a targeted stress test of the shatter-reconstruction) found the build otherwise clean: no console errors, no stuck animation state after scrolling into the shatter zone and back, all files well under the ~200-line guideline.
+
+**Bug found:** `Kicker` hardcodes `text-green-500`. On Chapter 07 (`bg-white-warm`), that's roughly a 1.85:1 contrast ratio — far under the 4.5:1 baseline the Contest Context Override in `CLAUDE.md` still requires. Chapter 10's own on-brand kicker (built separately, not via the shared component) correctly uses a dark tone on its green background, so the component needs a tone/variant prop rather than relying on `className` override precedence, which Tailwind doesn't guarantee.
+
+**How to apply:** fix `Kicker` to accept a tone prop (e.g. dark for light/bright backgrounds) before treating Chapter 07 as done. This is folded into the next round of changes below, since that round already touches Chapter 07's background.
+
+---
+
+## 2026-07-21 — PO round: narrative/marketing refinements + typography swap
+
+Six changes requested after reviewing the running build, plus a font change:
+
+1. **Chapter 03 (The Challenge)** gets a photo on the right — same layered technique as the hero backdrop (photo, edge gradient fading into `bg-night-950`, a 50%-opacity black mask on top so the photo reads as present but subdued, not decorative).
+2. **The "virada" interstitial** gets a second beat: after the word-by-word question reveals and holds, a short answer line + a CTA ("Ver trilhas") fade in, scrolling to Chapter 05 on click. Chosen over inventing a new mechanism — it extends the existing scrub timeline in `chapters.timeline.js` by one more phase, and creates continuity with change 3 below (the virada invites, Trilhas delivers).
+3. **Chapter 05 (Trilhas de Formação)** rows become clickable, opening an animated modal per track (what the track means + a CTA), with a hover/idle affordance that invites clicking. This does NOT reintroduce the card-grid look ruled out earlier (see the "PO summary cross-check" entry above) — the typographic list stays as-is, the affordance and modal are additive interaction, not a layout change.
+4. **Chapter 07 (How It Works)** background becomes an off-white (not pure white) with the existing global film-grain visible, plus a very-subdued photo (heavy white mask, edge gradient into the background) beside the content, mirroring change 1's technique in light-mode form. The `Kicker` contrast fix above is applied as part of this same change, since it's the same file.
+5. **Chapter 08 (Real Results)** headline "Histórias reais. Salários reais." reads as vague — add a bridging line connecting the transformation stories to the salary data before the chart, so the "why does this matter" question is answered before the numbers.
+6. **FAQ** accordion becomes mutually exclusive (opening one closes the others) via the native `<details name="faq">` grouping — no JS state needed, keeping the zero-JS accessibility property already in place.
+
+**Typography:** Sora (weight 100–800) replaces both Aldrich and Albert Sans site-wide — see the correction in `BRAND.md`. Deliberate identity trade-off, decided by the PO: Sora reads as more generic-SaaS than Aldrich's geometric/terminal character, but the signature devices (kicker underscore, typewriter cycling) stay, just rendered in the new typeface.
+
+**How to apply:** none of this changes `STORYBOARD.md`'s chapter structure or content intent — it's presentation and interaction refinement on chapters that already exist.

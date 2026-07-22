@@ -28,7 +28,7 @@ export default function FutureCta() {
       <div className="flex flex-col items-center text-center">
         <p
           data-reveal
-          className="font-display text-night-950/70 text-sm tracking-[0.3em] lowercase"
+          className="font-display text-night-950/70 text-sm font-semibold tracking-[0.3em] lowercase"
         >
           sua vez
           <span aria-hidden="true" className="animate-blink">

@@ -40,6 +40,17 @@ export default function RealResults() {
         Histórias <AccentText color="green">reais</AccentText>. Salários reais.
       </h2>
 
+      {/* Bridge: connect the transformation stories to the salary data
+          — answer "why does this matter to me" before the numbers */}
+      <p
+        data-reveal
+        className="mt-6 max-w-2xl text-xl leading-relaxed text-gray-400"
+      >
+        Motorista de aplicativo, atendente, analista financeiro — cada aluno
+        chegou de um lugar diferente. O que muda quando a transição dá certo é a
+        mesma coisa para todos: o contracheque no fim do mês.
+      </p>
+
       {/* Salary comparison chart */}
       <div data-salary-chart className="mt-20 max-w-3xl">
         <dl className="flex flex-col gap-8">

@@ -24,17 +24,13 @@ Preserve the geometric, grid-based construction. Do not soften it into a rounded
 
 # Typography
 
-## Display / Headline — Aldrich
+## Sora (superseding Aldrich + Albert Sans)
 
-Geometric, techy, monospace-adjacent sans-serif.
+Both the original display font (Aldrich, geometric/monospace-adjacent) and body font (Albert Sans) were replaced by a PO decision with **Sora** (variable weight 100–800) site-wide — see `DECISION_LOG.md`.
 
-Used for headlines and short, high-impact statements — consistent with the Design System rule that typography is the main visual element.
+This is a deliberate identity change, not an implementation detail: Aldrich was real, extracted DevClub typography, and it's what gave the terminal-cursor kicker labels and typewriter hero their "geometric/code" flavor. Sora is rounder and more generic-SaaS. Keep the kicker/typewriter _devices_ (the underscore cursor, the cycling role text) — they're still DevClub's own vocabulary — just rendered in Sora now instead of Aldrich.
 
-## Body / UI — Albert Sans
-
-Weights in use: 400, 500, 600, 700.
-
-Used for body copy, labels, buttons and UI text. Should always feel secondary to Aldrich in visual weight.
+Use font-weight for the hierarchy Aldrich used to carry from typeface alone: heaviest weights (700–800) for headlines, mid weights (500–600) for sub-heads/labels, 400 for body.
 
 ---
 
