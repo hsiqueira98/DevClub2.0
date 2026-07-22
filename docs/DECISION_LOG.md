@@ -194,3 +194,15 @@ Six changes requested after reviewing the running build, plus a font change:
 **Typography:** Sora (weight 100–800) replaces both Aldrich and Albert Sans site-wide — see the correction in `BRAND.md`. Deliberate identity trade-off, decided by the PO: Sora reads as more generic-SaaS than Aldrich's geometric/terminal character, but the signature devices (kicker underscore, typewriter cycling) stay, just rendered in the new typeface.
 
 **How to apply:** none of this changes `STORYBOARD.md`'s chapter structure or content intent — it's presentation and interaction refinement on chapters that already exist.
+
+---
+
+## 2026-07-21 — Full re-review after the photo/accordion/chart round: one real finding
+
+Re-ran lint, build, and a headless-browser walkthrough (desktop + mobile viewport, plus targeted checks) after the previous round shipped. Verified, not just eyeballed: `Kicker`'s `tone="dark"` resolves to `purple-700`, which computes to ~9.1:1 contrast on `bg-white-warm` (comfortably past AA); the mobile/touch context correctly resolves `(hover: none)` and renders the permanent border-glow on `.track-summary`, while desktop resolves `(hover: hover) and (pointer: fine)` and gets the cursor glow; Chapter 03's photo fade and Chapter 07's full-bleed photo both render correctly through the whole section height; the Chapter 08 growth-line chart's anchor values match the bar chart's (R$3.800 Início = Júnior, consistent).
+
+**Finding:** Chapter 05 (Tracks) rows butt directly against each other (`border-t`/`border-b`, no gap, no radius) — reads as too dry/flat, and the per-row hover/glow effect looks visually clipped by the hard rectangle edges. PO feedback: wants a small gap between rows (~8px or less) and rounded corners.
+
+**Decision:** add a small gap between `<details>` rows and round their corners — enough to let each row read as a soft, separate surface (which also gives the glow effect a contained edge to work within), without turning them into the card grid that was explicitly ruled out earlier in this log. Spacing/radius only, not a layout change.
+
+**Implemented (resolving the open hairline-vs-fill question):** with an 8px `gap-2` on the flex container, the old `border-t`/`border-b` hairlines no longer share an edge — each row would gain its own full outline top *and* bottom, which reads as the boxed/outlined card look we're avoiding. So the hairlines were dropped in favour of a subtle `bg-night-900/40` fill per `<details>`, plus `rounded-2xl` (the site's existing surface radius — Instructors cards, BeyondCode figures) and `overflow-hidden` so the glow `::before` (cursor-follow radial on fine pointers, permanent left-edge linear on coarse) is clipped to the rounded corners instead of bleeding past them. Content got matching `px-6 md:px-8` so text breathes inside the surface. Verified desktop + mobile: computed container `gap` is exactly 8px, radius 16px, `overflow: hidden`; both glow affordances render legibly within the rounded edges; no console errors; lint + build clean.

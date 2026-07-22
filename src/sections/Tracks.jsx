@@ -36,17 +36,17 @@ export default function Tracks() {
         Uma trilha para <AccentText color="green">cada destino</AccentText>.
       </h2>
 
-      <div data-reveal-group className="mt-20">
+      <div data-reveal-group className="mt-20 flex flex-col gap-2">
         {TRACKS.map((track) => (
           <details
             key={track.number}
             name="tracks"
             style={{ '--track-glow': track.glow }}
-            className="track-row group border-night-600 border-t last:border-b"
+            className="track-row group bg-night-900/40 overflow-hidden rounded-2xl"
           >
             <summary
               onMouseMove={trackGlow}
-              className="track-summary relative flex cursor-pointer list-none flex-col gap-2 py-8 md:flex-row md:items-baseline md:gap-10 md:py-10 [&::-webkit-details-marker]:hidden"
+              className="track-summary relative flex cursor-pointer list-none flex-col gap-2 px-6 py-8 md:flex-row md:items-baseline md:gap-10 md:px-8 md:py-10 [&::-webkit-details-marker]:hidden"
             >
               <span
                 className={`font-display text-sm ${track.textClass}`}
@@ -71,7 +71,7 @@ export default function Tracks() {
               />
             </summary>
 
-            <div className="max-w-2xl pb-10 md:pl-14">
+            <div className="max-w-2xl px-6 pb-10 md:px-8">
               <p className="leading-relaxed text-gray-400">
                 {track.description}
               </p>
