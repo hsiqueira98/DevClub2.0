@@ -2,17 +2,18 @@ import { gsap } from '../lib/gsap'
 
 /*
  * Chapter 06 (docs/STORYBOARD.md): the instructor film-strip is pinned
- * and translated horizontally by the visitor's scroll (scrub). As each
- * portrait crosses the focal zone (viewport center), it gains
- * .is-focal — CSS reveals name/role and lifts the duotone grade —
- * and loses it as it passes.
+ * and translated horizontally by the visitor's scroll (scrub).
+ *
+ * Portrait treatment (color, grade, caption) is CSS-only: hover/focus
+ * on fine pointers, permanently-visible captions on touch — the
+ * automatic scroll-focal state was removed (PO round: lighting should
+ * respond to the visitor's own pointer, not the scrub).
  *
  * Touch devices and reduced motion keep the native horizontal scroll:
  * same content, no pin.
  */
 export function createFilmstripTimeline(section) {
   const strip = section.querySelector('[data-filmstrip]')
-  const items = gsap.utils.toArray(strip.children)
 
   const mm = gsap.matchMedia(section)
 
@@ -26,18 +27,6 @@ export function createFilmstripTimeline(section) {
 
     const distance = () => strip.scrollWidth - window.innerWidth
 
-    const updateFocal = () => {
-      const center = window.innerWidth / 2
-      items.forEach((item) => {
-        const rect = item.getBoundingClientRect()
-        const itemCenter = rect.left + rect.width / 2
-        item.classList.toggle(
-          'is-focal',
-          Math.abs(itemCenter - center) < rect.width * 0.75,
-        )
-      })
-    }
-
     gsap.to(strip, {
       x: () => -distance(),
       ease: 'none',
@@ -50,11 +39,8 @@ export function createFilmstripTimeline(section) {
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        onUpdate: updateFocal,
       },
     })
-
-    return () => items.forEach((i) => i.classList.remove('is-focal'))
   })
 
   return mm

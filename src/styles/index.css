@@ -196,20 +196,19 @@ body {
 }
 
 /*
- * Film-strip focal state (Chapter 06): applied by
- * animations/filmstrip.timeline.js as a portrait crosses the viewport
- * center — reveals name/role and lifts the duotone grade, mirroring
- * the hover/focus treatment for pointer users.
+ * Film-strip captions (Chapter 06): revealed by hover/focus for
+ * pointer users (see Instructors.jsx — PO round dropped the automatic
+ * scroll-focal state). Touch has no hover to discover them, so
+ * coarse-pointer devices keep name/role — and the grade backing them —
+ * permanently visible: the same input-type split as the track rows.
  */
-[data-filmstrip] .is-focal img {
-  filter: none;
-}
+@media (hover: none), (pointer: coarse) {
+  [data-filmstrip] figcaption {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-[data-filmstrip] .is-focal figcaption {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-[data-filmstrip] .is-focal [data-grade] {
-  opacity: 0.6;
+  [data-filmstrip] [data-grade] {
+    opacity: 0.6;
+  }
 }

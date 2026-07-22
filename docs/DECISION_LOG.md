@@ -206,3 +206,16 @@ Re-ran lint, build, and a headless-browser walkthrough (desktop + mobile viewpor
 **Decision:** add a small gap between `<details>` rows and round their corners — enough to let each row read as a soft, separate surface (which also gives the glow effect a contained edge to work within), without turning them into the card grid that was explicitly ruled out earlier in this log. Spacing/radius only, not a layout change.
 
 **Implemented (resolving the open hairline-vs-fill question):** with an 8px `gap-2` on the flex container, the old `border-t`/`border-b` hairlines no longer share an edge — each row would gain its own full outline top *and* bottom, which reads as the boxed/outlined card look we're avoiding. So the hairlines were dropped in favour of a subtle `bg-night-900/40` fill per `<details>`, plus `rounded-2xl` (the site's existing surface radius — Instructors cards, BeyondCode figures) and `overflow-hidden` so the glow `::before` (cursor-follow radial on fine pointers, permanent left-edge linear on coarse) is clipped to the rounded corners instead of bleeding past them. Content is inset from the surface (`px-6` on mobile; on desktop `md:pl-12 md:pr-8`, a slightly larger left indent — PO follow-up — so the description + CTA read as a body block hanging just inside the left border rather than flush against it). Verified desktop + mobile: computed container `gap` is exactly 8px, radius 16px, `overflow: hidden`; both glow affordances render legibly within the rounded edges; no console errors; lint + build clean.
+
+---
+
+## 2026-07-22 — PO round: instructor lighting becomes hover-only
+
+The PO edited the film-strip directly, wanting the portrait "lighting" to respond only to the visitor's own pointer — and removed the automatic `.is-focal` scroll state from `filmstrip.timeline.js` (a sound simplification, kept). The accompanying `opacity-0` on `[data-grade]`, though, broke the resting presentation: that gradient is not the lighting effect but the duotone grade that unifies the placeholder portraits (BRAND.md imagery style). With it off, resting cards became raw flat grayscale, and hover *darkened* the card (grade 0 → 0.6) instead of lighting it.
+
+**Fix + improvements, keeping the PO's intent:**
+- Resting state restored: grayscale + full grade (moody, unified). Hover/focus lifts the grade to 0.6, returns color, reveals the caption — reads as the portrait lighting up. Kept the PO's `group-focus-visible` addition on the grade (it was a real inconsistency).
+- Subtle hover zoom on the portrait (`scale 1.04`, clipped by the rounded card) — approach/focus, matching the lighting metaphor.
+- Touch affordance: hover doesn't exist on coarse pointers, so captions (and the grade backing them) stay permanently visible there — the same input-type split decided for the track rows. Replaces the now-dead `.is-focal` CSS.
+
+**How to apply:** portrait treatment is CSS-only now; `filmstrip.timeline.js` only pins/scrubs the strip. Don't reintroduce a scroll-driven focal state.

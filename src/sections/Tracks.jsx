@@ -71,7 +71,7 @@ export default function Tracks() {
               />
             </summary>
 
-            <div className="max-w-2xl px-6 pb-10 md:pr-8 md:pl-12">
+            <div className="max-w-2xl px-6 pb-10 md:px-8 md:pl-12 mt-6"  >
               <p className="leading-relaxed text-gray-400">
                 {track.description}
               </p>
