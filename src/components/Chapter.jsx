@@ -11,6 +11,7 @@ export default function Chapter({
   bg = 'bg-night-950',
   className = '',
   innerClassName = '',
+  backdrop,
   children,
   ...props
 }) {
@@ -25,8 +26,15 @@ export default function Chapter({
       )}
       {...props}
     >
+      {/* Full-bleed layer (e.g. a section-height photo) — a direct
+          child of the section, so it escapes the max-width container.
+          Callers that use it pass overflow-hidden via className. */}
+      {backdrop}
       <div
-        className={cn('mx-auto max-w-[1280px] py-28 md:py-40', innerClassName)}
+        className={cn(
+          'relative mx-auto max-w-[1280px] py-28 md:py-40',
+          innerClassName,
+        )}
       >
         {children}
       </div>

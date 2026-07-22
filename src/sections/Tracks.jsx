@@ -1,21 +1,22 @@
-import { useState } from 'react'
+import { Plus, ArrowRight } from 'lucide-react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
-import TrackModal from '../components/TrackModal'
+import Button from '../components/Button'
 import { TRACKS } from '../data/tracks'
 
 /*
- * Chapter 05 — Trilhas de Formação. Deliberately NOT a card grid: a
- * large typographic numbered index (docs/STORYBOARD.md), with the
- * per-track accent color as a small marker. The PO round added
- * interaction ON TOP of the unchanged list (see DECISION_LOG.md):
- * each row opens a per-track modal, and a cursor-following glow in
- * the track's color invites the click.
+ * Chapter 05 — Trilhas de Formação. Typographic numbered index
+ * (docs/STORYBOARD.md), never a card grid. Interaction is a native
+ * <details name="tracks"> accordion — the same zero-JS mechanism as
+ * the FAQ (PO round replaced the popup modal — see DECISION_LOG.md):
+ * a row expands in place, pushing the list down, revealing the track's
+ * description + CTA. The click affordance splits by input type in CSS
+ * (.track-summary): a cursor-following glow on real-mouse desktops, a
+ * permanent border glow on touch/coarse pointers (no hover to reveal
+ * that a row is clickable).
  */
 export default function Tracks() {
-  const [openTrack, setOpenTrack] = useState(null)
-
   const trackGlow = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
     e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`)
@@ -35,19 +36,17 @@ export default function Tracks() {
         Uma trilha para <AccentText color="green">cada destino</AccentText>.
       </h2>
 
-      <ol data-reveal-group className="mt-20">
+      <div data-reveal-group className="mt-20">
         {TRACKS.map((track) => (
-          <li
+          <details
             key={track.number}
-            data-track-line
-            className="group border-night-600 relative border-t last:border-b"
+            name="tracks"
+            style={{ '--track-glow': track.glow }}
+            className="track-row group border-night-600 border-t last:border-b"
           >
-            <button
-              type="button"
-              onClick={() => setOpenTrack(track)}
+            <summary
               onMouseMove={trackGlow}
-              style={{ '--track-glow': track.glow }}
-              className="track-row relative flex w-full cursor-pointer flex-col gap-2 py-8 text-left md:flex-row md:items-baseline md:gap-10 md:py-10"
+              className="track-summary relative flex cursor-pointer list-none flex-col gap-2 py-8 md:flex-row md:items-baseline md:gap-10 md:py-10 [&::-webkit-details-marker]:hidden"
             >
               <span
                 className={`font-display text-sm ${track.textClass}`}
@@ -55,24 +54,35 @@ export default function Tracks() {
               >
                 {track.number}
               </span>
-              <span className="font-display duration-fast flex items-center gap-4 text-3xl text-white transition-transform group-hover:translate-x-3 md:text-5xl">
+              <span className="font-display flex items-center gap-4 text-3xl text-white md:text-5xl">
                 <span
                   aria-hidden="true"
                   className={`size-2.5 shrink-0 rounded-full ${track.colorClass}`}
                 />
                 {track.name}
               </span>
-              <span className="duration-fast text-lg text-gray-600 transition-colors group-hover:text-gray-400 md:ml-auto">
+              <span className="text-lg text-gray-600 md:ml-auto">
                 {track.qualifier}
               </span>
-            </button>
-          </li>
-        ))}
-      </ol>
+              <Plus
+                size={22}
+                aria-hidden="true"
+                className="duration-fast hidden shrink-0 self-center text-green-500 transition-transform group-open:rotate-45 md:block"
+              />
+            </summary>
 
-      {openTrack && (
-        <TrackModal track={openTrack} onClose={() => setOpenTrack(null)} />
-      )}
+            <div className="max-w-2xl pb-10 md:pl-14">
+              <p className="leading-relaxed text-gray-400">
+                {track.description}
+              </p>
+              <Button href="#futuro" className="mt-6">
+                Quero essa trilha
+                <ArrowRight size={18} aria-hidden="true" />
+              </Button>
+            </div>
+          </details>
+        ))}
+      </div>
     </Chapter>
   )
 }

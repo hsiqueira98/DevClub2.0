@@ -95,34 +95,44 @@
   }
 }
 
-/* Track-modal backdrop (native <dialog>) */
-dialog::backdrop {
-  background: rgb(10 10 10 / 0.7);
-  backdrop-filter: blur(4px);
-}
-
 /*
- * Chapter 05 track rows: a cursor-following glow in the track's own
- * accent color (--track-glow set inline, --mx/--my updated on
- * mousemove) — an invitation to click, subtle by design.
+ * Chapter 05 track rows (native <details> accordion). The click
+ * affordance depends on input type (PO round — see DECISION_LOG.md):
+ *  - real-mouse desktop: a cursor-following glow in the track color.
+ *  - touch / coarse pointer: a permanent left-edge glow, always
+ *    visible, since there's no hover to reveal a row is clickable.
+ * --track-glow is the track accent (set inline); --mx/--my track the
+ * cursor (set on mousemove).
  */
-.track-row::before {
+.track-summary::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    16rem circle at var(--mx, 50%) var(--my, 50%),
-    var(--track-glow),
-    transparent 70%
-  );
-  opacity: 0;
   transition: opacity var(--duration-base);
 }
 
-.track-row:hover::before,
-.track-row:focus-visible::before {
-  opacity: 0.08;
+@media (hover: hover) and (pointer: fine) {
+  .track-summary::before {
+    opacity: 0;
+    background: radial-gradient(
+      16rem circle at var(--mx, 50%) var(--my, 50%),
+      var(--track-glow),
+      transparent 70%
+    );
+  }
+
+  .track-summary:hover::before,
+  .track-summary:focus-visible::before {
+    opacity: 0.1;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .track-summary::before {
+    opacity: 0.14;
+    background: linear-gradient(90deg, var(--track-glow), transparent 45%);
+  }
 }
 
 html {

@@ -11,6 +11,10 @@ export function createResultsAnimations(section) {
   const bars = section.querySelectorAll('[data-salary-bar]')
   const chart = section.querySelector('[data-salary-chart]')
   const marquee = section.querySelector('[data-marquee-inner]')
+  const growthChart = section.querySelector('[data-growth-chart]')
+  const growthPath = section.querySelector('[data-growth-path]')
+  const growthArea = section.querySelector('[data-growth-area]')
+  const growthDots = section.querySelectorAll('[data-growth-dot]')
 
   const mm = gsap.matchMedia(section)
 
@@ -27,6 +31,37 @@ export function createResultsAnimations(section) {
         toggleActions: 'play none none reverse',
       },
     })
+
+    // Second chart: the line draws itself (stroke-dashoffset), then the
+    // area fills and the point markers pop in. Reverses on scroll back.
+    if (growthPath) {
+      const len = growthPath.getTotalLength()
+      gsap.set(growthPath, { strokeDasharray: len, strokeDashoffset: len })
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: growthChart,
+          start: 'top 75%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+      tl.to(growthPath, {
+        strokeDashoffset: 0,
+        duration: DURATION.cinematic,
+        ease: EASE.out,
+      })
+      tl.to(growthArea, { opacity: 1, duration: DURATION.base }, '-=0.5')
+      tl.from(
+        growthDots,
+        {
+          attr: { r: 0 },
+          stagger: 0.12,
+          duration: DURATION.fast,
+          ease: EASE.out,
+        },
+        '-=0.7',
+      )
+    }
 
     if (marquee) {
       gsap.to(marquee, {

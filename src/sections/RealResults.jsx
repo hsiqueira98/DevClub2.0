@@ -8,9 +8,12 @@ import {
   TESTIMONIALS,
   SALARIES,
   SALARY_SOURCE,
+  SALARY_GROWTH,
+  GROWTH_SOURCE,
   COMPANIES,
 } from '../data/testimonials'
 import { STATS } from '../data/stats'
+import SalaryGrowthChart from '../components/SalaryGrowthChart'
 import { createResultsAnimations } from '../animations/results.timeline'
 
 /*
@@ -51,32 +54,45 @@ export default function RealResults() {
         mesma coisa para todos: o contracheque no fim do mês.
       </p>
 
-      {/* Salary comparison chart */}
-      <div data-salary-chart className="mt-20 max-w-3xl">
-        <dl className="flex flex-col gap-8">
-          {SALARIES.map((row) => (
-            <div key={row.level} data-salary-row>
-              <dt className="flex items-baseline justify-between text-lg text-gray-400">
-                {row.level}
-                <span
-                  data-countup={row.amount}
-                  data-countup-format="brl"
-                  className="font-display text-2xl text-white md:text-3xl"
-                >
-                  R$ {row.amount.toLocaleString('pt-BR')}
-                </span>
-              </dt>
-              <dd className="bg-night-750 mt-3 h-3 overflow-hidden rounded-full">
-                <div
-                  data-salary-bar
-                  className={`h-full rounded-full ${row.barClass}`}
-                  style={{ width: `${row.widthPct}%` }}
-                />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
+      {/* Two complementary charts: the market as a snapshot (bars) and
+          the individual trajectory over time (line) — not the same
+          data twice (PO round — see DECISION_LOG.md) */}
+      <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div data-salary-chart>
+          <p className="font-display mb-8 text-lg font-semibold text-white">
+            O mercado hoje
+          </p>
+          <dl className="flex flex-col gap-8">
+            {SALARIES.map((row) => (
+              <div key={row.level} data-salary-row>
+                <dt className="flex items-baseline justify-between text-lg text-gray-400">
+                  {row.level}
+                  <span
+                    data-countup={row.amount}
+                    data-countup-format="brl"
+                    className="font-display text-2xl text-white md:text-3xl"
+                  >
+                    R$ {row.amount.toLocaleString('pt-BR')}
+                  </span>
+                </dt>
+                <dd className="bg-night-750 mt-3 h-3 overflow-hidden rounded-full">
+                  <div
+                    data-salary-bar
+                    className={`h-full rounded-full ${row.barClass}`}
+                    style={{ width: `${row.widthPct}%` }}
+                  />
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
+        </div>
+
+        <SalaryGrowthChart
+          data={SALARY_GROWTH}
+          title="Sua evolução em 3 anos"
+          source={GROWTH_SOURCE}
+        />
       </div>
 
       {/* Numbers strip — every value from the single source in stats.js */}

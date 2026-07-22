@@ -167,6 +167,19 @@ A full review (lint, production build, headless-browser walkthrough of all chapt
 
 ---
 
+## 2026-07-21 — PO round: photo treatment refinements + Tracks interaction reversal
+
+After seeing the previous round built, the PO requested:
+
+1. **Chapters 03 and 07 photos become full-bleed** — edge-to-edge, full section height on the right, not a contained block. Chapter 07's gets a scroll-linked zoom-in (subtle Ken Burns). Chapter 03's gets a scroll-linked opacity fade instead — full → 0 across the section's own scroll range, so the photo is gone by the time the "virada" (TheTurn) appears next, keeping the reading focus on the struggle-fragment text as intended.
+2. **Chapters 05 (Tracks) reverses from popup modal to in-place accordion**, reusing the exact `<details name="...">` mechanism just built for the FAQ, instead of a separate modal component — CTA lives inside each row's expanded content.
+3. **The Tracks hover-glow is desktop-only by design, not an oversight.** The PO caught that a hover effect is meaningless on touch — no cursor, no way to discover it's clickable. Decision: gate the cursor-following glow behind `(hover: hover) and (pointer: fine)`, and give touch/coarse-pointer devices a permanently-visible subtle border glow instead. Two different affordances for two different input types, not one effect that silently does nothing on mobile.
+4. **Chapter 08's right column was empty and unjustified** ("por que isso tá aqui?"). Proposed and accepted: a second chart — a 3-year salary growth line ("Sua evolução em 3 anos"), animated as a drawn path on scroll entry. Complements the Jr/Pleno/Sr bars (market bands, a snapshot) with an individual growth arc (progress over time) rather than duplicating the same data in a second shape.
+
+**How to apply:** the Tracks modal component built in the previous round should be removed/replaced, not kept alongside the accordion — one interaction pattern per chapter, not two competing ones.
+
+---
+
 ## 2026-07-21 — PO round: narrative/marketing refinements + typography swap
 
 Six changes requested after reviewing the running build, plus a font change:

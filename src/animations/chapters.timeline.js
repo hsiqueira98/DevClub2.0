@@ -7,9 +7,12 @@ import { DURATION, EASE } from './motion.tokens'
  */
 
 /* Chapter 03: fade, blur, depth — fragments sharpen out of a blur and
- * drift at slightly different scroll speeds (visual tension). */
+ * drift at slightly different scroll speeds (visual tension). The
+ * full-bleed photo fades to nothing across the section's own scroll,
+ * so it's gone before the "virada" arrives (PO round). */
 export function createChallengeAnimations(section) {
   const fragments = section.querySelectorAll('[data-struggle]')
+  const photo = section.querySelector('[data-challenge-photo]')
   const mm = gsap.matchMedia(section)
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
@@ -38,6 +41,21 @@ export function createChallengeAnimations(section) {
         },
       })
     })
+
+    if (photo) {
+      // From the current dimmed state to fully gone, reaching 0 as the
+      // section's bottom hits the viewport bottom (before TheTurn).
+      gsap.to(photo, {
+        autoAlpha: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
+        },
+      })
+    }
   })
 
   return mm
@@ -107,9 +125,11 @@ export function createOrbitAnimations(section) {
 }
 
 /* Chapter 07: scroll-driven timeline — the connecting path draws
- * itself as the visitor moves through the steps. */
+ * itself as the visitor moves through the steps. The full-bleed photo
+ * gets a subtle scroll-linked Ken Burns zoom (PO round). */
 export function createMethodAnimations(section) {
   const path = section.querySelector('[data-timeline-path]')
+  const photo = section.querySelector('[data-method-photo]')
   const mm = gsap.matchMedia(section)
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
@@ -127,6 +147,23 @@ export function createMethodAnimations(section) {
         },
       },
     )
+
+    if (photo) {
+      gsap.fromTo(
+        photo,
+        { scale: 1 },
+        {
+          scale: 1.13,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        },
+      )
+    }
   })
 
   return mm
