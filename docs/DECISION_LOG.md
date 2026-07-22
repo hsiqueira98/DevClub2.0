@@ -238,4 +238,18 @@ The page has no real checkout or enrollment backend (see the "hiring contest sub
 
 **How to apply:** if a new CTA-labeled button is added later, ask whether it's a conversion action (→ WhatsApp) or an exploratory/internal one (→ anchor link) — don't default to WhatsApp just because it looks like a button.
 
+---
+
+## 2026-07-22 — Chapter 08's growth chart replaced by a scroll-lit career journey
+
+The PO felt the "Sua evolução em 3 anos" line chart (added a few rounds ago to fill the empty right column — see the earlier "empty and unjustified" entry) still didn't land: it's data, but not a story.
+
+**Decision:** replace it with a vertical career journey — "Você hoje" → learning milestones → first project → first interview → first job → promotion → a final salary figure — each point lighting up as a scroll-drawn line reaches it. Reuses the exact scrub-linked line-draw technique already built for Chapter 07's method timeline, so it's proven, not new.
+
+**Why it's not just Chapter 07 again:** Chapter 07's timeline is a descriptive step-list (numbered circles, paragraph-length explanations, light background) about the *method*. Chapter 08's journey is deliberately terser — a dot and a short label per milestone, dark background — about the *outcome*. Different content, different density, positioned two capítulos apart in the rhythm (`DESIGN_SYSTEM.md`: alternate storytelling/data/proof, avoid repetitive layouts) so they don't read as the same device twice in a row.
+
+**How to apply:** the bar chart (Júnior/Pleno/Sênior market snapshot) stays untouched on the left — only the right column's second element changes, from a line chart to this journey. See `STORYBOARD.md` Chapter 08 for the updated Visual Direction/Motion.
+
 **Implemented:** the URL is a single export, `WHATSAPP_ENROLL_URL` in `src/lib/constants.js` (alongside the existing `cn.js`/`gsap.js` lib modules), imported into Navbar, FutureCta, Tracks and Footer — never pasted raw. All four open in a new tab (`target="_blank" rel="noopener noreferrer"`, since they now leave the site). The footer's links are data-driven, so the "Matricule-se" row carries an `external: true` flag and the row map spreads the target/rel only when that flag is set — keeping the internal anchors (and the untouched "Área do aluno" link) as same-tab navigation. Verified: all four resolve to the exact WhatsApp URL (number 5516990482444, message "quero me matricular"), a real click opens a popup to that URL, and "Ver trilhas" still scrolls to `#formacoes`; lint + build clean.
+
+**Implemented:** `SalaryGrowthChart.jsx` and its `SALARY_GROWTH`/`GROWTH_SOURCE` data were deleted (no dead code left in the bundle — the JS chunk got slightly smaller). The journey is a new presentational `CareerJourney.jsx` (a fixed-height `<ol>` so the absolutely-positioned line passes through every dot's centre) fed by `CAREER_JOURNEY` in `testimonials.js`, whose final step ("Sênior — R$ 14.500+") repeats the Sênior bar figure for consistency. Motion lives in `createResultsAnimations` (Chapter 08's existing function): ONE scrub timeline reusing Chapter 07's scaleY line-draw — the line grows top→bottom over the whole timeline while each milestone lights up (opacity 0.3→1, dot scale 0.5→1) at sequential integer positions, so a point brightens exactly as the line's leading edge reaches it. The dim start state is set only under `no-preference`, so reduced-motion users see every milestone already lit. Verified desktop + mobile: points light strictly in order (leading-edge mid-transition captured, e.g. `[1, 1, 0.66, 0.3, …]`), reverses on scroll-up, zero console errors, lint + build clean.

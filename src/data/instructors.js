@@ -11,7 +11,7 @@ export const INSTRUCTORS = [
     name: 'Rodolfo Mori',
     role: 'Fundador · DevClub',
     photo:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=640&h=860&q=80',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6xlWs1pH6C90Ys0KgYqeeCAKDqWsMwNnqr2fikZbKatFE7nGPZAYlHPU&s=10',
   },
   {
     name: 'Marina Castro',

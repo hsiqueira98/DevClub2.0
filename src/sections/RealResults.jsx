@@ -8,12 +8,11 @@ import {
   TESTIMONIALS,
   SALARIES,
   SALARY_SOURCE,
-  SALARY_GROWTH,
-  GROWTH_SOURCE,
+  CAREER_JOURNEY,
   COMPANIES,
 } from '../data/testimonials'
 import { STATS } from '../data/stats'
-import SalaryGrowthChart from '../components/SalaryGrowthChart'
+import CareerJourney from '../components/CareerJourney'
 import { createResultsAnimations } from '../animations/results.timeline'
 
 /*
@@ -54,9 +53,9 @@ export default function RealResults() {
         mesma coisa para todos: o contracheque no fim do mês.
       </p>
 
-      {/* Two complementary charts: the market as a snapshot (bars) and
-          the individual trajectory over time (line) — not the same
-          data twice (PO round — see DECISION_LOG.md) */}
+      {/* Two complementary views: the market as a snapshot (bars) and
+          the visitor's own path over time (a scroll-lit career journey)
+          — not the same data twice (PO round — see DECISION_LOG.md) */}
       <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
         <div data-salary-chart>
           <p className="font-display mb-8 text-lg font-semibold text-white">
@@ -88,11 +87,7 @@ export default function RealResults() {
           <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
         </div>
 
-        <SalaryGrowthChart
-          data={SALARY_GROWTH}
-          title="Sua evolução em 3 anos"
-          source={GROWTH_SOURCE}
-        />
+        <CareerJourney steps={CAREER_JOURNEY} />
       </div>
 
       {/* Numbers strip — every value from the single source in stats.js */}

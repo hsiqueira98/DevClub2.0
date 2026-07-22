@@ -42,20 +42,21 @@ export const SALARY_SOURCE =
   'Fonte: Glassdoor e LinkedIn. *Valores aproximados — variam por região, empresa e senioridade.'
 
 /*
- * Chapter 08 second chart — an individual 3-year salary-growth arc,
- * plotted as a drawn line (PO round — see DECISION_LOG.md). Complements
- * the Jr/Pleno/Sr bars (a market snapshot) with progress over time,
- * not a repeat of the same data. Invented but plausible.
+ * Chapter 08 career journey — the milestones lit up beside the salary
+ * bars (PO round — see DECISION_LOG.md). A personal story to the bars'
+ * market snapshot, not a second chart of the same data. The final step
+ * repeats the Sênior bar figure (14.500) so the two columns stay
+ * consistent. Invented but plausible.
  */
-export const SALARY_GROWTH = [
-  { label: 'Início', amount: 3800 },
-  { label: 'Ano 1', amount: 6200 },
-  { label: 'Ano 2', amount: 9500 },
-  { label: 'Ano 3', amount: 14500 },
+export const CAREER_JOURNEY = [
+  { label: 'Você hoje' },
+  { label: 'HTML, CSS, JavaScript' },
+  { label: 'Primeiro projeto no GitHub' },
+  { label: 'Primeira entrevista' },
+  { label: 'Primeiro emprego como dev' },
+  { label: 'Promoção a Pleno' },
+  { label: 'Sênior — R$ 14.500+', highlight: true },
 ]
-
-export const GROWTH_SOURCE =
-  'Trajetória média de alunos formados. *Ilustrativo — o ritmo varia por dedicação e área.'
 
 /*
  * Hiring-company wordmarks, rendered as styled text (no fake logo

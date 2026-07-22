@@ -349,7 +349,9 @@ Achievements.
 
 Numbers.
 
-Signature moment: an animated salary comparison bar chart — Junior/Pleno/Senior, gray → purple → green, exactly as the current DevClub site already does (real existing content, not a borrowed idea — see `BRAND.md`). Keep the source-citation line (e.g. "Fonte: GlassDoor e LinkedIn...") even with invented numbers — it's a cheap, real credibility signal already in use. Optionally extend with a Brazil-vs-international comparison layer, which is the one piece actually inspired by the reference moodboard rather than the current site.
+Signature moment: an animated salary comparison bar chart — Junior/Pleno/Senior, gray → purple → green, exactly as the current DevClub site already does (real existing content, not a borrowed idea — see `BRAND.md`). Keep the source-citation line (e.g. "Fonte: GlassDoor e LinkedIn...") even with invented numbers — it's a cheap, real credibility signal already in use.
+
+Second signature moment, beside the bars: not a second chart, a vertical career journey — a scroll-lit path from "Você hoje" through concrete milestones (learning, first project, first interview, first job, promotion) ending on a salary figure. Turns the market snapshot on the left into a personal story on the right, without duplicating the same data in a second shape (see `DECISION_LOG.md` for why this replaced an earlier line-chart idea).
 
 ## Visual Direction
 
@@ -363,6 +365,8 @@ Community.
 
 Animated horizontal bar chart, three bars (Junior/Pleno/Senior) growing to different lengths with the gray→purple→green progression already used on the current site.
 
+The journey: a thin vertical line with small dot markers, each with a short label — minimal, more "commit log" than the descriptive step-list already used in Chapter 07's method timeline. Different enough from Chapter 07 to not repeat the same device two chapters in a row.
+
 ## Motion
 
 Carousel.
@@ -374,6 +378,8 @@ Reveal.
 Hover interactions.
 
 Bars grow into place on scroll entry, staggered per row.
+
+The journey's connecting line draws itself as the visitor scrolls (same scrub-linked technique as Chapter 07's timeline path — reused, not reinvented); each milestone dot/label lights up as the drawn line reaches it.
 
 ---
 

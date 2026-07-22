@@ -11,10 +11,9 @@ export function createResultsAnimations(section) {
   const bars = section.querySelectorAll('[data-salary-bar]')
   const chart = section.querySelector('[data-salary-chart]')
   const marquee = section.querySelector('[data-marquee-inner]')
-  const growthChart = section.querySelector('[data-growth-chart]')
-  const growthPath = section.querySelector('[data-growth-path]')
-  const growthArea = section.querySelector('[data-growth-area]')
-  const growthDots = section.querySelectorAll('[data-growth-dot]')
+  const journey = section.querySelector('[data-journey]')
+  const journeyLine = section.querySelector('[data-journey-line]')
+  const journeySteps = section.querySelectorAll('[data-journey-step]')
 
   const mm = gsap.matchMedia(section)
 
@@ -32,35 +31,41 @@ export function createResultsAnimations(section) {
       },
     })
 
-    // Second chart: the line draws itself (stroke-dashoffset), then the
-    // area fills and the point markers pop in. Reverses on scroll back.
-    if (growthPath) {
-      const len = growthPath.getTotalLength()
-      gsap.set(growthPath, { strokeDasharray: len, strokeDashoffset: len })
+    // Career journey: one scrub timeline (the same scaleY line-draw as
+    // Chapter 07's method path). The connecting line grows top→bottom
+    // over the whole timeline; each milestone lights up at a sequential
+    // position, so it fires exactly as the line's leading edge reaches
+    // it — all in ONE timeline, not a timeline per point. Dim/scaled
+    // start state lives here (no-preference only), so reduced-motion
+    // users see every milestone already lit.
+    if (journeyLine && journeySteps.length) {
+      const span = journeySteps.length - 1 // one time-unit per gap
+      const dots = section.querySelectorAll('[data-journey-dot]')
+
+      gsap.set(journeySteps, { opacity: 0.3 })
+      gsap.set(dots, { scale: 0.5, transformOrigin: 'center' })
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: growthChart,
-          start: 'top 75%',
-          toggleActions: 'play none none reverse',
+          trigger: journey,
+          start: 'top 78%',
+          end: 'bottom 45%',
+          scrub: 1,
         },
       })
-      tl.to(growthPath, {
-        strokeDashoffset: 0,
-        duration: DURATION.cinematic,
-        ease: EASE.out,
-      })
-      tl.to(growthArea, { opacity: 1, duration: DURATION.base }, '-=0.5')
-      tl.from(
-        growthDots,
-        {
-          attr: { r: 0 },
-          stagger: 0.12,
-          duration: DURATION.fast,
-          ease: EASE.out,
-        },
-        '-=0.7',
+
+      tl.fromTo(
+        journeyLine,
+        { scaleY: 0, transformOrigin: 'top center' },
+        { scaleY: 1, ease: 'none', duration: span },
+        0,
       )
+
+      journeySteps.forEach((step, i) => {
+        const dot = step.querySelector('[data-journey-dot]')
+        tl.to(step, { opacity: 1, duration: 0.4, ease: EASE.out }, i)
+        tl.to(dot, { scale: 1, duration: 0.4, ease: EASE.out }, i)
+      })
     }
 
     if (marquee) {
