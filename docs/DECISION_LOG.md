@@ -219,3 +219,23 @@ The PO edited the film-strip directly, wanting the portrait "lighting" to respon
 - Touch affordance: hover doesn't exist on coarse pointers, so captions (and the grade backing them) stay permanently visible there — the same input-type split decided for the track rows. Replaces the now-dead `.is-focal` CSS.
 
 **How to apply:** portrait treatment is CSS-only now; `filmstrip.timeline.js` only pins/scrubs the strip. Don't reintroduce a scroll-driven focal state.
+
+---
+
+## 2026-07-22 — Post-round-2 fine-tooth review: no new defects
+
+Re-ran lint, production build, and a headless-browser walkthrough (desktop + mobile, keyboard tab-through) after the Tracks spacing fix and the instructor hover-lighting change. Both confirmed working as intended (Tracks: 8px gap, 16px radius, glow contained within it; Instructors: hover lights exactly one portrait, others stay dimmed). Chased one suspected bug — the newsletter "Assinar" button's keyboard-focus outline looked black-on-black in an initial check — and ruled it out: that check used a scripted `.focus()`, which Chromium doesn't treat as genuine keyboard navigation, so `:focus-visible` styling never engaged and a different native fallback rendered instead. A real mouse-click-then-Tab sequence (matching how an actual user tabs through the page) confirmed the outline is green and clearly visible. No code change made. Zero console/page errors across every test.
+
+---
+
+## 2026-07-22 — CTA buttons now redirect to WhatsApp; "Ver trilhas" stays internal
+
+The page has no real checkout or enrollment backend (see the "hiring contest submission" entry near the top of this log) — the PO decided actual conversion buttons should open a real WhatsApp conversation (`https://api.whatsapp.com/send/?phone=5516990482444&text=quero%20me%20matricular...`) instead of pointing nowhere or scrolling to a CTA section with no real destination.
+
+**Why "Ver trilhas" is excluded:** that button (in the "virada" interstitial) was deliberately built as an internal, exploratory link — "the virada invites, Formações delivers" (see the earlier entry adding it). Sending someone straight to a sales conversation before they've seen a single track contradicts `DESIGN_SYSTEM.md`'s "buttons invite, they never pressure." It keeps scrolling to `#formacoes`.
+
+**Decision:** WhatsApp now backs every button whose own label is a conversion action — "Matricule-se" (navbar), "Começar minha jornada" (Chapter 10), "Quero essa trilha" (each of the 5 tracks in Chapter 05), and the "Matricule-se" sitemap link in the footer. The WhatsApp URL lives in one place (a shared constant), not pasted per-file, so the number/message can change in one spot later.
+
+**How to apply:** if a new CTA-labeled button is added later, ask whether it's a conversion action (→ WhatsApp) or an exploratory/internal one (→ anchor link) — don't default to WhatsApp just because it looks like a button.
+
+**Implemented:** the URL is a single export, `WHATSAPP_ENROLL_URL` in `src/lib/constants.js` (alongside the existing `cn.js`/`gsap.js` lib modules), imported into Navbar, FutureCta, Tracks and Footer — never pasted raw. All four open in a new tab (`target="_blank" rel="noopener noreferrer"`, since they now leave the site). The footer's links are data-driven, so the "Matricule-se" row carries an `external: true` flag and the row map spreads the target/rel only when that flag is set — keeping the internal anchors (and the untouched "Área do aluno" link) as same-tab navigation. Verified: all four resolve to the exact WhatsApp URL (number 5516990482444, message "quero me matricular"), a real click opens a popup to that URL, and "Ver trilhas" still scrolls to `#formacoes`; lint + build clean.

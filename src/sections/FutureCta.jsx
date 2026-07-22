@@ -4,6 +4,7 @@ import Chapter from '../components/Chapter'
 import Button from '../components/Button'
 import { ArrowRight } from 'lucide-react'
 import { createEpilogueAnimations } from '../animations/chapters.timeline'
+import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
 /*
  * Chapter 10 — Your Future Starts Now. Full inversion to solid green
@@ -44,7 +45,9 @@ export default function FutureCta() {
         </h2>
 
         <Button
-          href="#inicio"
+          href={WHATSAPP_ENROLL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           variant="inverted"
           data-reveal
           className="mt-14 px-10 py-5 text-lg"

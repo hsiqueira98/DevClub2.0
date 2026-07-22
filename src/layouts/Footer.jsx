@@ -1,5 +1,6 @@
 import LogoMark from '../components/LogoMark'
 import NewsletterForm from '../components/NewsletterForm'
+import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
 /*
  * Sitemap footer (PO request — see DECISION_LOG.md): newsletter band
@@ -36,7 +37,7 @@ const COLUMNS = [
       { href: '#faq', label: 'FAQ' },
       { href: '#tutores', label: 'Quem ensina' },
       { href: 'https://alunos.devclub.com.br', label: 'Área do aluno' },
-      { href: '#futuro', label: 'Matricule-se' },
+      { href: WHATSAPP_ENROLL_URL, label: 'Matricule-se', external: true },
     ],
   },
 ]
@@ -104,6 +105,10 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
+                      {...(link.external && {
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                      })}
                       className="duration-fast text-sm text-gray-400 transition-colors hover:text-white"
                     >
                       {link.label}

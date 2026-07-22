@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import LogoMark from '../components/LogoMark'
 import { createNavbarTimeline } from '../animations/navbar.timeline'
+import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
 const LINKS = [
   { href: '#mercado', label: 'Mercado' },
@@ -64,7 +65,9 @@ export default function Navbar() {
             Login
           </a>
           <a
-            href="#futuro"
+            href={WHATSAPP_ENROLL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="duration-fast text-night-950 rounded-full bg-green-500 px-4 py-2 text-sm font-semibold transition-colors hover:bg-green-400"
           >
             Matricule-se

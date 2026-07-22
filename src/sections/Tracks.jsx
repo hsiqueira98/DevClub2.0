@@ -4,6 +4,7 @@ import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import Button from '../components/Button'
 import { TRACKS } from '../data/tracks'
+import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
 /*
  * Chapter 05 — Trilhas de Formação. Typographic numbered index
@@ -75,7 +76,12 @@ export default function Tracks() {
               <p className="leading-relaxed text-gray-400">
                 {track.description}
               </p>
-              <Button href="#futuro" className="mt-6">
+              <Button
+                href={WHATSAPP_ENROLL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6"
+              >
                 Quero essa trilha
                 <ArrowRight size={18} aria-hidden="true" />
               </Button>
