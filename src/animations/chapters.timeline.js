@@ -43,15 +43,18 @@ export function createChallengeAnimations(section) {
     })
 
     if (photo) {
-      // From the current dimmed state to fully gone, reaching 0 as the
-      // section's bottom hits the viewport bottom (before TheTurn).
+      // The photo is already heavily masked, so it reads faint — a fade
+      // that starts early looks like it vanishes mid-section. Keep it
+      // present through the reading and only fade as the section itself
+      // leaves: begin at the section's midpoint, finish as it exits
+      // upward (physically gone with the section before TheTurn).
       gsap.to(photo, {
         autoAlpha: 0,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: 'bottom bottom',
+          start: 'center center',
+          end: 'bottom top',
           scrub: true,
         },
       })
