@@ -351,7 +351,7 @@ Numbers.
 
 Signature moment: an animated salary comparison bar chart — Junior/Pleno/Senior, gray → purple → green, exactly as the current DevClub site already does (real existing content, not a borrowed idea — see `BRAND.md`). Keep the source-citation line (e.g. "Fonte: GlassDoor e LinkedIn...") even with invented numbers — it's a cheap, real credibility signal already in use.
 
-Second signature moment, beside the bars: "Quanto custa NÃO começar hoje?" — two scroll-lit paths compared side by side, not a single journey. "Esperar 1 ano" (stay at today's salary, ends in a loss figure) beside "Começar hoje" (first job, ends in a gain figure) — both landing on the same magnitude (R$21.600), once as what you lose, once as what you gain. Turns the market snapshot on the left into an opportunity-cost story on the right (see `DECISION_LOG.md` for the evolution from a single career-journey path to this comparison).
+Second signature moment, beside the bars: "Quanto custa NÃO começar hoje?" — one giant number, R$21.600, assembling from a scattered state into place, the mirror of Chapter 01's shatter (same SplitText + randomized-transform technique, reversed) — a deliberate callback to the site's opening signature moment. A caption under it carries the loss/gain duality that used to be two separate paths: "R$1.800 a mais por mês. R$21.600 a mais por ano. A diferença entre esperar e começar." (see `DECISION_LOG.md` for the full evolution of this block, from bar-only, to a line chart, to a career journey, to a two-path comparison, to this).
 
 ## Visual Direction
 
@@ -379,7 +379,7 @@ Hover interactions.
 
 Bars grow into place on scroll entry, staggered per row.
 
-Both connecting lines draw themselves as the visitor scrolls (same scrub-linked technique as Chapter 07's timeline path — reused, not reinvented), in sync with each other; each dot/label lights up as its line reaches it. The two final figures (R$21.600 lost, R$21.600 gained) land at the same scroll position, not staggered — the comparison should read in one glance.
+The number assembles once on scroll entry (`toggleActions: "play none none reverse"`, per `MOTION.md`) — a single dramatic beat, not a continuous scrub. Characters start scattered (random x/y/rotation, same value ranges as the Chapter 01 shatter) and settle into the final number; the caption line fades in just after it lands.
 
 ---
 

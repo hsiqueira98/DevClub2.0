@@ -8,12 +8,14 @@ import {
   TESTIMONIALS,
   SALARIES,
   SALARY_SOURCE,
-  CAREER_COMPARISON,
+  COST_REVEAL,
   COMPANIES,
 } from '../data/testimonials'
 import { STATS } from '../data/stats'
-import CareerComparison from '../components/CareerComparison'
-import { createResultsAnimations } from '../animations/results.timeline'
+import {
+  createResultsAnimations,
+  createCostReveal,
+} from '../animations/results.timeline'
 
 /*
  * Chapter 08 — Real Results. Signature moment: the salary bar chart
@@ -28,6 +30,9 @@ export default function RealResults() {
   useGSAP(() => createResultsAnimations(sectionRef.current), {
     scope: sectionRef,
   })
+  // Separate hook: the assembling-number reveal owns a SplitText and
+  // returns a cleanup that must reach useGSAP to revert the split.
+  useGSAP(() => createCostReveal(sectionRef.current), { scope: sectionRef })
 
   return (
     <Chapter ref={sectionRef} id="resultados" bg="bg-night-950">
@@ -54,8 +59,8 @@ export default function RealResults() {
       </p>
 
       {/* Left: the market as a snapshot (bars). Right: the cost of
-          waiting — two scroll-lit paths that both land on R$ 21.600,
-          once lost, once gained (PO round — see DECISION_LOG.md) */}
+          waiting — one giant number that assembles on screen, the mirror
+          of Chapter 01's shatter (PO round — see DECISION_LOG.md) */}
       <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
         <div data-salary-chart>
           <p className="font-display mb-8 text-lg font-semibold text-white">
@@ -87,11 +92,26 @@ export default function RealResults() {
           <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
         </div>
 
-        <CareerComparison
-          title={CAREER_COMPARISON.title}
-          note={CAREER_COMPARISON.note}
-          paths={CAREER_COMPARISON.paths}
-        />
+        {/* The cost of waiting — one giant number assembling from a
+            scattered state (mirror of the hero shatter, run forwards) */}
+        <div data-cost>
+          <p className="font-display text-lg font-semibold text-white">
+            {COST_REVEAL.label}
+          </p>
+          <p
+            data-cost-number
+            aria-label={COST_REVEAL.amount}
+            className="font-display mt-6 text-5xl leading-none font-bold whitespace-nowrap text-green-500 sm:text-6xl lg:text-7xl"
+          >
+            {COST_REVEAL.amount}
+          </p>
+          <p
+            data-cost-caption
+            className="mt-8 max-w-md text-lg leading-relaxed text-gray-400"
+          >
+            {COST_REVEAL.caption}
+          </p>
+        </div>
       </div>
 
       {/* Numbers strip — every value from the single source in stats.js */}
