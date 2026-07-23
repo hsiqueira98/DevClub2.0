@@ -16,3 +16,6 @@ npm-debug.log*
 .idea
 .DS_Store
 *.local
+
+# Claude Code local settings (per-machine Bash allowlist; not shared)
+.claude/settings.local.json

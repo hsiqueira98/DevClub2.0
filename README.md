@@ -37,7 +37,7 @@ src/
   hooks/        useTypewriter etc.
 ```
 
-Decisões de produto e de design têm histórico em [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md); o sistema de motion (durações, easings, reduced-motion) em [`docs/MOTION.md`](docs/MOTION.md).
+Decisões de produto e de design têm histórico em [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md); o sistema de motion (durações, easings, reduced-motion) em [`docs/MOTION.md`](docs/MOTION.md). Uma leitura guiada de cada arquivo — o quê, o porquê, o que não é óbvio — está em [`docs/TECHNICAL_REPORT.md`](docs/TECHNICAL_REPORT.md).
 
 ## Detalhes que importam
 
