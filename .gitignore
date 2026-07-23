@@ -17,5 +17,7 @@ npm-debug.log*
 .DS_Store
 *.local
 
-# Claude Code local settings (per-machine Bash allowlist; not shared)
-.claude/settings.local.json
+# Internal planning/strategy docs and Claude Code project config — kept
+# locally only, not published (see docs/DECISION_LOG.md, local copy)
+docs/
+.claude/
