@@ -8,14 +8,10 @@ import {
   TESTIMONIALS,
   SALARIES,
   SALARY_SOURCE,
-  COST_REVEAL,
   COMPANIES,
 } from '../data/testimonials'
 import { STATS } from '../data/stats'
-import {
-  createResultsAnimations,
-  createCostReveal,
-} from '../animations/results.timeline'
+import { createResultsAnimations } from '../animations/results.timeline'
 
 /*
  * Chapter 08 — Real Results. Signature moment: the salary bar chart
@@ -30,9 +26,6 @@ export default function RealResults() {
   useGSAP(() => createResultsAnimations(sectionRef.current), {
     scope: sectionRef,
   })
-  // Separate hook: the assembling-number reveal owns a SplitText and
-  // returns a cleanup that must reach useGSAP to revert the split.
-  useGSAP(() => createCostReveal(sectionRef.current), { scope: sectionRef })
 
   return (
     <Chapter ref={sectionRef} id="resultados" bg="bg-night-950">
@@ -58,9 +51,9 @@ export default function RealResults() {
         mesma coisa para todos: o contracheque no fim do mês.
       </p>
 
-      {/* Left: the market as a snapshot (bars). Right: the cost of
-          waiting — one giant number that assembles on screen, the mirror
-          of Chapter 01's shatter (PO round — see DECISION_LOG.md) */}
+      {/* Left: the market as a snapshot (bars). Right: a "Contracheque"
+          card that transforms — a green line grows in, the total counts
+          up, a stamp lands (PO round — see DECISION_LOG.md) */}
       <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
         <div data-salary-chart>
           <p className="font-display mb-8 text-lg font-semibold text-white">
@@ -92,25 +85,58 @@ export default function RealResults() {
           <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
         </div>
 
-        {/* The cost of waiting — one giant number assembling from a
-            scattered state (mirror of the hero shatter, run forwards) */}
-        <div data-cost>
-          <p className="font-display text-lg font-semibold text-white">
-            {COST_REVEAL.label}
+        {/* The cost of waiting — a payslip that transforms in place */}
+        <div data-payslip>
+          <p className="font-display mb-8 text-lg font-semibold text-white">
+            Quanto custa NÃO começar hoje?
           </p>
-          <p
-            data-cost-number
-            aria-label={COST_REVEAL.amount}
-            className="font-display mt-6 text-5xl leading-none font-bold whitespace-nowrap text-green-500 sm:text-6xl lg:text-7xl"
-          >
-            {COST_REVEAL.amount}
-          </p>
-          <p
-            data-cost-caption
-            className="mt-8 max-w-md text-lg leading-relaxed text-gray-400"
-          >
-            {COST_REVEAL.caption}
-          </p>
+
+          <div className="border-night-700 bg-night-900 relative rounded-2xl border p-6 md:p-8">
+            {/* stamp badge — lands last */}
+            <span
+              data-payslip-badge
+              className="bg-green-500 text-night-950 absolute -top-3 right-6 rounded-full px-3 py-1 text-sm font-bold shadow-lg shadow-green-500/20"
+            >
+              +R$ 21.600/ano
+            </span>
+
+            {/* card header */}
+            <div className="border-night-800 mb-5 flex items-center justify-between border-b pb-4">
+              <span className="font-display font-semibold text-white">
+                Contracheque
+              </span>
+              <span className="text-xs tracking-widest text-gray-600 uppercase">
+                mensal
+              </span>
+            </div>
+
+            <dl className="flex flex-col">
+              <div className="flex items-baseline justify-between">
+                <dt className="text-gray-400">Salário Base</dt>
+                <dd className="font-display text-gray-300">R$ 2.000</dd>
+              </div>
+
+              {/* the DevClub difference — grows in (fade) */}
+              <div
+                data-payslip-diff
+                className="mt-4 flex items-baseline justify-between overflow-hidden"
+              >
+                <dt className="text-green-400">+ Diferença DevClub</dt>
+                <dd className="font-display text-green-400">+ R$ 1.800</dd>
+              </div>
+
+              <div className="border-night-800 mt-5 flex items-baseline justify-between border-t pt-5">
+                <dt className="font-display text-lg text-white">Total</dt>
+                <dd
+                  data-payslip-total
+                  data-countup-format="brl"
+                  className="font-display text-2xl font-bold text-white md:text-3xl"
+                >
+                  R$ 3.800
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </div>
 

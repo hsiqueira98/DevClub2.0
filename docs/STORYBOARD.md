@@ -351,7 +351,7 @@ Numbers.
 
 Signature moment: an animated salary comparison bar chart — Junior/Pleno/Senior, gray → purple → green, exactly as the current DevClub site already does (real existing content, not a borrowed idea — see `BRAND.md`). Keep the source-citation line (e.g. "Fonte: GlassDoor e LinkedIn...") even with invented numbers — it's a cheap, real credibility signal already in use.
 
-Second signature moment, beside the bars: "Quanto custa NÃO começar hoje?" — one giant number, R$21.600, assembling from a scattered state into place, the mirror of Chapter 01's shatter (same SplitText + randomized-transform technique, reversed) — a deliberate callback to the site's opening signature moment. A caption under it carries the loss/gain duality that used to be two separate paths: "R$1.800 a mais por mês. R$21.600 a mais por ano. A diferença entre esperar e começar." (see `DECISION_LOG.md` for the full evolution of this block, from bar-only, to a line chart, to a career journey, to a two-path comparison, to this).
+Second signature moment, beside the bars: "Quanto custa NÃO começar hoje?" — a stylized payslip ("Contracheque") card that transforms in place from sparse/gray (today's salary, R$2.000) to full/green (first dev job, R$3.800 + a "+R$21.600/ano" badge) as the visitor scrolls into it. Ties directly to this chapter's own bridging copy ("o contracheque no fim do mês") — a concrete, recognizable object rather than an abstract chart or number (see `DECISION_LOG.md` for the full evolution of this block — this is the final iteration, not another checkpoint).
 
 ## Visual Direction
 
@@ -379,7 +379,7 @@ Hover interactions.
 
 Bars grow into place on scroll entry, staggered per row.
 
-The number assembles once on scroll entry (`toggleActions: "play none none reverse"`, per `MOTION.md`) — a single dramatic beat, not a continuous scrub. Characters start scattered (random x/y/rotation, same value ranges as the Chapter 01 shatter) and settle into the final number; the caption line fades in just after it lands.
+The payslip transforms once on scroll entry (`toggleActions: "play none none reverse"`, per `MOTION.md`) — a single sequential timeline, not continuous scrub: gray line item first, then the green "+ diferença" line fades in, then the total counts up (reusing the existing `data-countup` mechanic from the salary bars), then the yearly badge lands last.
 
 ---
 

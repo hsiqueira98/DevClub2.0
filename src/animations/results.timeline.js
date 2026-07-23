@@ -1,16 +1,27 @@
-import { gsap, SplitText } from '../lib/gsap'
+import { gsap } from '../lib/gsap'
 import { DURATION, EASE } from './motion.tokens'
+import { makeCountUp } from './counters'
 
 /*
  * Chapter 08 (docs/STORYBOARD.md): salary bars grow into place on
  * scroll entry, staggered per row — scaleX, not width, per the
  * transform-only rule in docs/MOTION.md. The companies strip loops as
  * a continuous marquee (docs/DESIGN_SYSTEM.md — Amphora pattern).
+ *
+ * Beside the bars, the "Contracheque" (payslip) card transforms once on
+ * entry: a green line grows in, the total counts up from R$ 2.000 to
+ * R$ 3.800 (reusing the shared count-up mechanic, not a second counter),
+ * and a stamp badge lands last. One sequenced timeline, played on entry
+ * and reversed on scroll-back (toggleActions play/reverse — a single
+ * beat, not a continuous scrub). The dim/hidden start state lives in
+ * this no-preference block, so reduced-motion users see the finished
+ * payslip (green line, total already R$ 3.800, badge).
  */
 export function createResultsAnimations(section) {
   const bars = section.querySelectorAll('[data-salary-bar]')
   const chart = section.querySelector('[data-salary-chart]')
   const marquee = section.querySelector('[data-marquee-inner]')
+  const payslip = section.querySelector('[data-payslip]')
 
   const mm = gsap.matchMedia(section)
 
@@ -28,6 +39,45 @@ export function createResultsAnimations(section) {
       },
     })
 
+    if (payslip) {
+      const diff = payslip.querySelector('[data-payslip-diff]')
+      const total = payslip.querySelector('[data-payslip-total]')
+      const badge = payslip.querySelector('[data-payslip-badge]')
+      const { counter, to, vars } = makeCountUp(total, { from: 2000, to: 3800 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: payslip,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      // 1. the green "DevClub difference" line grows in
+      tl.from(diff, {
+        height: 0,
+        marginTop: 0,
+        autoAlpha: 0,
+        duration: DURATION.base,
+        ease: EASE.out,
+      })
+      // 2. the total counts up (shared mechanic), as the difference lands
+      tl.to(counter, { value: to, ...vars }, '>-0.1')
+      // 3. the badge stamps in last
+      tl.fromTo(
+        badge,
+        { autoAlpha: 0, scale: 0.5, rotation: -8 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          rotation: 3,
+          duration: DURATION.base,
+          ease: 'back.out(2)',
+        },
+        '>-0.15',
+      )
+    }
+
     if (marquee) {
       gsap.to(marquee, {
         xPercent: -50,
@@ -39,77 +89,4 @@ export function createResultsAnimations(section) {
   })
 
   return mm
-}
-
-/*
- * Chapter 08 second moment (docs/STORYBOARD.md): one giant number that
- * assembles on screen — the mirror of Chapter 01's shatter. Same
- * technique (SplitText into chars + randomized per-char x/y/rotation,
- * the same random ranges as hero.timeline.js) run forwards: chars start
- * scattered/rotated and settle into place, instead of flying apart. Not
- * an import from the hero — the same idea applied to a new element.
- *
- * Motion is a ONE-SHOT reveal on scroll entry (toggleActions
- * play/reverse — docs/MOTION.md's rule for single-headline reveals), NOT
- * a continuous scrub: a single dramatic beat that replays on re-entry.
- *
- * Same robustness rules as the hero (see hero.timeline.js / DECISION_LOG):
- * a plain window.matchMedia check (NOT gsap.matchMedia, whose add-callback
- * isn't captured by the useGSAP context) and a returned cleanup that
- * reverts the split — so a StrictMode remount can't leave a nested split
- * or chars frozen mid-animation. Caller (useGSAP) runs the cleanup.
- */
-export function createCostReveal(section) {
-  const number = section.querySelector('[data-cost-number]')
-  const caption = section.querySelector('[data-cost-caption]')
-  if (!number) return
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.from([number, caption], {
-      autoAlpha: 0,
-      duration: DURATION.fast,
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: number,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-    })
-    return
-  }
-
-  const split = new SplitText(number, { type: 'chars' })
-  gsap.set(number, { transformPerspective: 800 })
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: number,
-      start: 'top 80%',
-      toggleActions: 'play none none reverse',
-    },
-  })
-
-  // Reverse of the shatter: from scattered/rotated (the hero's random
-  // ranges) into the settled number.
-  tl.from(split.chars, {
-    x: () => gsap.utils.random(-420, 420),
-    y: () => gsap.utils.random(-260, 520),
-    rotation: () => gsap.utils.random(-140, 140),
-    rotationY: () => gsap.utils.random(-90, 90),
-    autoAlpha: 0,
-    duration: 0.7,
-    ease: EASE.out,
-    stagger: { each: 0.03, from: 'random' },
-  })
-
-  // The caption surfaces just after the number lands.
-  if (caption) {
-    tl.from(
-      caption,
-      { autoAlpha: 0, y: 20, duration: DURATION.base, ease: EASE.out },
-      '>-0.15',
-    )
-  }
-
-  return () => split.revert()
 }

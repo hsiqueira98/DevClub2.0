@@ -42,21 +42,6 @@ export const SALARY_SOURCE =
   'Fonte: Glassdoor e LinkedIn. *Valores aproximados — variam por região, empresa e senioridade.'
 
 /*
- * Chapter 08 second moment (PO round — see DECISION_LOG.md): one giant
- * number, R$ 21.600, that assembles on screen (the mirror of Chapter
- * 01's shatter). The caption carries the loss/gain duality a two-path
- * diagram used to — the same figure as a monthly and a yearly gain. The
- * maths stays consistent with the bars: R$ 3.800 (≈ the Júnior bar) −
- * R$ 2.000 = R$ 1.800/mês × 12 = R$ 21.600/ano. Invented but plausible.
- */
-export const COST_REVEAL = {
-  label: 'Quanto custa NÃO começar hoje?',
-  amount: 'R$ 21.600',
-  caption:
-    'R$ 1.800 a mais por mês. R$ 21.600 a mais por ano. A diferença entre esperar e começar.',
-}
-
-/*
  * Hiring-company wordmarks, rendered as styled text (no fake logo
  * files). Real companies; the claim of hired alumni is invented but
  * plausible, per contest rules.
