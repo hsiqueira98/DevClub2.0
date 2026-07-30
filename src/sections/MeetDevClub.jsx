@@ -5,7 +5,7 @@ import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import AvatarCluster from '../components/AvatarCluster'
 import StarBadge from '../components/StarBadge'
-import LogoMark from '../components/LogoMark'
+import logoDevClub from '../assets/img/LogoDevClub.png'
 import { STATS } from '../data/stats'
 import { createOrbitAnimations } from '../animations/chapters.timeline'
 
@@ -100,7 +100,12 @@ export default function MeetDevClub() {
             className="border-night-500 absolute inset-0 rounded-full border border-dashed"
           />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <LogoMark size={72} className="text-green-500" />
+            <img
+              src={logoDevClub}
+              alt=""
+              loading="lazy"
+              className="size-[72px]"
+            />
           </div>
           <ul>
             {PILLARS.map((pillar, i) => (

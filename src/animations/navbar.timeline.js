@@ -27,6 +27,7 @@ const barState = () => ({
 
 export function createNavbarTimeline(header) {
   const nav = header.querySelector('nav')
+  const navLogo = header.querySelector('[data-nav-logo]')
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.set(nav, pillState())
@@ -51,6 +52,16 @@ export function createNavbarTimeline(header) {
     nav.style.maxWidth = `${lerp(pill.maxWidth, bar.maxWidth)}px`
     nav.style.marginTop = `${lerp(pill.marginTop, bar.marginTop)}px`
     nav.style.borderRadius = `${lerp(pill.borderRadius, bar.borderRadius)}px`
+
+    // The navbar's own mark only starts appearing once the pill has
+    // fully become a bar — the last 10% of this same scroll range
+    // fades it from 0 to 1. `progress` here is a real 0-1 fraction of
+    // the scroll (unlike the hero's own scrub timeline, whose internal
+    // position numbers are NOT fractions of 1 — see hero.timeline.js),
+    // so this is the only place that can reliably drive the handoff.
+    if (navLogo) {
+      navLogo.style.opacity = gsap.utils.clamp(0, 1, (progress - 0.9) / 0.1)
+    }
   }
 
   apply(0)

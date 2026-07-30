@@ -34,9 +34,10 @@ export function createHeroTimeline(section) {
   const photo = section.querySelector('[data-hero-photo]')
   const blackout = section.querySelector('[data-hero-blackout]')
   const content = section.querySelector('[data-hero-content]')
+  const logo = section.querySelector('[data-hero-logo]')
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.from([headline, kicker, typeLine], {
+    gsap.from([headline, kicker, typeLine, logo], {
       autoAlpha: 0,
       duration: DURATION.fast,
       stagger: 0.1,
@@ -90,6 +91,19 @@ export function createHeroTimeline(section) {
   // lands on Ch02's dark background, not on the photo.
   tl.to(blackout, { opacity: 1, duration: 0.45 }, 0.35)
   tl.to(glow, { opacity: 0, duration: 0.25 }, 0.6)
+
+  // The mark stays centered — no x/y translation — and only shrinks
+  // and dims, in lockstep with scroll (ease: 'none', spanning the tl's
+  // full duration so far) rather than as a discrete beat. It hands off
+  // to the navbar's own logo, but that fade-in is owned entirely by
+  // navbar.timeline.js off its own scroll progress — a scrubbed
+  // timeline's position numbers here (0.3, 0.6...) are internal time
+  // units, not a 0-1 fraction of the scroll range, so this timeline
+  // can't reliably drive a second, independently-scrubbed timeline in
+  // another file.
+  if (logo) {
+    tl.to(logo, { scale: 0.6, opacity: 0.3, ease: 'none', duration: tl.duration() }, 0)
+  }
 
   return () => split.revert()
 }

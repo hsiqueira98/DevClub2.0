@@ -28,7 +28,19 @@ export default function RealResults() {
   })
 
   return (
-    <Chapter ref={sectionRef} id="resultados" bg="bg-night-950">
+    <Chapter
+      ref={sectionRef}
+      id="resultados"
+      bg="bg-night-950"
+      className="overflow-hidden"
+      backdrop={
+        <canvas
+          data-particle-canvas
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] w-full opacity-70"
+        />
+      }
+    >
       <Kicker className="mb-6" data-reveal>
         salário
       </Kicker>

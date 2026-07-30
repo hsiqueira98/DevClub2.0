@@ -1,4 +1,4 @@
-import LogoMark from '../components/LogoMark'
+import logoDevClub from '../assets/img/LogoDevClub.png'
 import NewsletterForm from '../components/NewsletterForm'
 import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
@@ -73,7 +73,7 @@ export default function Footer() {
         <div className="grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3">
-              <LogoMark size={24} className="text-green-500" />
+              <img src={logoDevClub} alt="" loading="lazy" className="size-6" />
               <div>
                 <p className="font-display text-white">DevClub</p>
                 <p className="text-sm text-gray-600">

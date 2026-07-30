@@ -212,3 +212,31 @@ body {
     opacity: 0.6;
   }
 }
+
+/*
+ * Chapter 06 compact treatment: a common notebook viewport (≤1280
+ * wide, ≤720 tall) doesn't have room for the section's default
+ * vertical padding plus full-size portrait cards while the section is
+ * pinned — the pinned content ends up taller than the viewport, with
+ * no scroll left to reach whatever falls below the fold. Tighter
+ * padding/rhythm and smaller (but same-ratio) cards, only in this
+ * compound range — every larger viewport keeps the default sizing.
+ * Tailwind's breakpoints are width-only, so this can't be expressed as
+ * a utility class; #tutores [data-chapter-inner] is Chapter.jsx's own
+ * padding wrapper (data-chapter-inner), scoped to this chapter only.
+ */
+@media (max-width: 1280px) and (max-height: 720px) {
+  #tutores [data-chapter-inner] {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  #tutores [data-filmstrip] {
+    margin-top: 2rem;
+  }
+
+  [data-filmstrip] figure {
+    width: 14rem;
+    height: 19rem;
+  }
+}

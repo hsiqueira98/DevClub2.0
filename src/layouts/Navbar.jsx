@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
-import LogoMark from '../components/LogoMark'
+import logoDevClub from '../assets/img/LogoDevClub.png'
 import { createNavbarTimeline } from '../animations/navbar.timeline'
 import { WHATSAPP_ENROLL_URL } from '../lib/constants'
 
@@ -40,7 +40,13 @@ export default function Navbar() {
         className="border-night-600 bg-night-950/75 mx-auto flex w-full items-center justify-between gap-6 border px-6 py-2.5 backdrop-blur-md md:px-8"
       >
         <a href="#inicio" className="flex shrink-0 items-center gap-2.5">
-          <LogoMark size={22} className="text-green-500" />
+          {/* Fades in 0→1 once the pill has fully become a bar (last 10%
+              of the hero's scroll range) — see navbar.timeline.js. The
+              hero's own mark (data-hero-logo) shrinks and dims
+              independently over that same range; see hero.timeline.js. */}
+          <span data-nav-logo>
+            <img src={logoDevClub} alt="" className="size-[22px]" />
+          </span>
           <span className="font-display text-white">DevClub</span>
         </a>
 

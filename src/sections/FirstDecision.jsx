@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import { ChevronDown } from 'lucide-react'
 import { createHeroTimeline } from '../animations/hero.timeline'
 import { useTypewriter } from '../hooks/useTypewriter'
+import logoDevClub from '../assets/img/LogoDevClub.png'
 
 const ROLES = ['Front-End', 'Back-End', 'FullStack', 'Mobile']
 
@@ -59,6 +60,14 @@ export default function FirstDecision() {
         data-hero-content
         className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center pt-24 pb-24 text-center"
       >
+        {/* Stays centered and only shrinks + dims as the hero shatters
+            (never flies) — see hero.timeline.js. The navbar's own mark
+            takes over separately, once the pill finishes becoming a
+            full-width bar — see navbar.timeline.js. */}
+        <div data-hero-logo aria-hidden="true" className="mb-8">
+          <img src={logoDevClub} alt="" className="size-12" />
+        </div>
+
         <p
           data-hero-kicker
           className="font-display mb-8 text-sm font-semibold tracking-[0.3em] text-green-500 lowercase"

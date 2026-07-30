@@ -27,8 +27,8 @@ export default function Instructors() {
       ref={sectionRef}
       id="tutores"
       bg="bg-night-900"
-      className="overflow-hidden"
-      innerClassName="max-w-none px-0 py-28 md:py-40"
+      className="min-h-screen overflow-hidden"
+      innerClassName="flex min-h-screen max-w-none flex-col justify-center px-0 py-28 md:py-40"
     >
       <div className="mx-auto max-w-[1280px]">
         <Kicker className="mb-6" data-reveal>
@@ -50,8 +50,12 @@ export default function Instructors() {
       <ul
         data-filmstrip
         data-reveal-group
-        className="mt-16 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 pl-[max(1.5rem,calc((100vw-1280px)/2))]"
+        className="mt-16 flex snap-x snap-mandatory gap-8 overflow-x-auto pb-6"
       >
+        <li
+          aria-hidden="true"
+          className="w-[max(3rem,calc((100vw-1280px)/2))] shrink-0"
+        />
         {INSTRUCTORS.map((person) => (
           <li key={person.name} className="shrink-0 snap-center">
             <figure
@@ -80,6 +84,10 @@ export default function Instructors() {
             </figure>
           </li>
         ))}
+        <li
+          aria-hidden="true"
+          className="w-[max(3rem,calc((100vw-1280px)/2))] shrink-0"
+        />
       </ul>
     </Chapter>
   )
