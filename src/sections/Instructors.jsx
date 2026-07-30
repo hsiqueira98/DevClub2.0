@@ -52,10 +52,7 @@ export default function Instructors() {
         data-reveal-group
         className="mt-16 flex snap-x snap-mandatory gap-8 overflow-x-auto pb-6"
       >
-        <li
-          aria-hidden="true"
-          className="w-[max(3rem,calc((100vw-1280px)/2))] shrink-0"
-        />
+        <li data-filmstrip-edge aria-hidden="true" className="shrink-0" />
         {INSTRUCTORS.map((person) => (
           <li key={person.name} className="shrink-0 snap-center">
             <figure
@@ -84,10 +81,7 @@ export default function Instructors() {
             </figure>
           </li>
         ))}
-        <li
-          aria-hidden="true"
-          className="w-[max(3rem,calc((100vw-1280px)/2))] shrink-0"
-        />
+        <li data-filmstrip-edge aria-hidden="true" className="shrink-0" />
       </ul>
     </Chapter>
   )
