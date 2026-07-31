@@ -5,9 +5,9 @@ import { gsap } from '../lib/gsap'
  * continuously — texture, not a moment. Never resolves into a fixed
  * shape and never stops, low opacity throughout, so it reads as
  * atmosphere behind the chapter's real content rather than a
- * competing element. Same idle-float spirit as createOrbitAnimations
- * in chapters.timeline.js (per-item drift, randomized duration/phase),
- * just canvas-drawn instead of per-DOM-node tweens.
+ * competing element. Same idle-float spirit as other ambient
+ * animations in this project (per-item drift, randomized
+ * duration/phase), just canvas-drawn instead of per-DOM-node tweens.
  *
  * Each particle's gray-to-green tone is fixed at creation — a
  * per-particle blend, not a global transition — giving the field a
