@@ -3,9 +3,10 @@ import { DURATION, EASE } from './motion.tokens'
 
 /*
  * Chapter 01 signature moment (docs/MOTION.md, revised after PO review
- * — see DECISION_LOG.md): a settled, legible opening (time-based
- * Prólogo), then rest → shatter driven by the visitor's scroll while
- * the hero stays pinned.
+ * — see DECISION_LOG.md): rest → shatter, driven by the visitor's
+ * scroll while the hero stays pinned. The opening beat that precedes it
+ * is framer-motion's now (hero.variants.js) — this file owns the exit
+ * only.
  *
  * Two structural rules, learned the hard way (see DECISION_LOG.md):
  *
@@ -16,11 +17,14 @@ import { DURATION, EASE } from './motion.tokens'
  *    captured, deterministic, reverted on unmount. (A live change of
  *    the OS motion setting needs a reload; acceptable.)
  *
- * 2. The intro and the scrub timeline share NO targets. The intro
- *    rises the content wrapper and fades the photo in; chars, kicker,
- *    glow and blackout belong exclusively to the scrub. Two owners on
- *    one element freeze it whenever a kill or refresh lands between
- *    them.
+ * 2. The entrance and this scrub share NO targets. Two owners on one
+ *    element freeze it whenever a kill or refresh lands between them.
+ *    That rule now spans two libraries, so FirstDecision.jsx keeps it
+ *    structurally rather than by discipline: every element this file
+ *    drives — kicker, typeline, cue, glow, logo, the headline's split
+ *    chars — is animated on entrance through its own wrapper element,
+ *    never directly. The section itself is likewise untouched by
+ *    framer-motion, since GSAP pins it.
  *
  * Caller must run the returned cleanup (useGSAP does this with the
  * callback's return value) so SplitText unwraps the headline.
@@ -31,9 +35,7 @@ export function createHeroTimeline(section) {
   const typeLine = section.querySelector('[data-hero-typeline]')
   const glow = section.querySelector('[data-hero-glow]')
   const cue = section.querySelector('[data-hero-cue]')
-  const photo = section.querySelector('[data-hero-photo]')
   const blackout = section.querySelector('[data-hero-blackout]')
-  const content = section.querySelector('[data-hero-content]')
   const logo = section.querySelector('[data-hero-logo]')
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -48,12 +50,14 @@ export function createHeroTimeline(section) {
   const split = new SplitText(headline, { type: 'chars,words' })
   gsap.set(headline, { transformPerspective: 800 })
 
-  // Prólogo — time-based, plays once, wrapper + photo only.
-  gsap
-    .timeline({ defaults: { ease: EASE.out } })
-    .from(photo, { opacity: 0, duration: DURATION.cinematic })
-    .from(content, { autoAlpha: 0, y: 48, duration: DURATION.slow }, 0.2)
-
+  // The Prólogo intro that used to live here — a time-based fade of the
+  // photo and content wrapper — now belongs to framer-motion
+  // (hero.variants.js), which choreographs the same beat as a
+  // per-layer, depth-of-field settle. Rule 2 below didn't just survive
+  // that move, it's what made it safe: because the intro never shared a
+  // target with the scrub, handing it to another library changed
+  // nothing about what this file owns.
+  //
   // Rest → shatter. Plain .to() tweens: their start values are
   // captured lazily on first render, which is safe precisely BECAUSE
   // the intro never touches these targets — they are always in the

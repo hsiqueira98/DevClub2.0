@@ -96,6 +96,119 @@
 }
 
 /*
+ * Chapter 04's pillar cards (PillarStack.jsx): an animated gradient
+ * ring around each card, native CSS — no shadcn/component-library
+ * dependency. `@property` types `--border-angle` as a real <angle>,
+ * which is what makes it interpolatable across the keyframe animation
+ * at all (untyped custom properties can't be smoothly animated).
+ * Degrades gracefully without `@property` support: the conic-gradient
+ * ring still renders using its `initial-value`, just without rotation.
+ *
+ * `-webkit-mask-composite: xor` + `mask-composite: exclude` is the
+ * standard cross-browser pairing (old WebKit syntax vs. the current
+ * spec) for the same trick: two overlapping mask layers cancel out
+ * everywhere they overlap, leaving only the border-width ring defined
+ * by `padding` visible.
+ */
+/* inherits: true so pillars.timeline.js can write this once on the
+   frame and have all five cards pick it up, instead of writing five
+   elements every scroll frame. */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+
+/*
+ * In @layer components, NOT unlayered — this is load-bearing, not
+ * tidiness. Tailwind v4's `@import 'tailwindcss'` orders its layers
+ * theme → base → components → utilities, and unlayered CSS beats every
+ * layered rule regardless of specificity. Unlayered, `position:
+ * relative` here silently overrode the `absolute` utility on each card
+ * (PillarStack.jsx), dropping all five cards back into normal flow:
+ * `inset-0` became a no-op, each card collapsed to its own content
+ * height, and they stacked vertically instead of overlapping — which
+ * is exactly the "card doesn't fill the screen / doesn't stack" defect
+ * this chapter kept reproducing. In `components`, Tailwind's own
+ * utilities layer comes after and wins, so `relative` stays a sensible
+ * default for any element that doesn't set its own position.
+ */
+@layer components {
+  [data-glow-border] {
+    position: relative;
+  }
+
+  [data-glow-border]::before {
+    content: '';
+    position: absolute;
+    /* inset: 0, not -1px. The card itself now carries `overflow-hidden`
+       (it has to: a scaled card must keep its `scale-105` photo clipped
+       to its own rounded frame), and `overflow: hidden` clips
+       pseudo-elements to the padding box — so a ring drawn 1px outside
+       that box loses all but ~0.5px of its 1.5px width. At inset 0 the
+       whole ring sits inside and stays fully visible. */
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    /* Two arcs chasing each other rather than one, in both brand
+       colours — the mesh-gradient richness of React Bits' BorderGlow,
+       but not driven by the pointer. That component measures cursor
+       distance to the nearest edge, which suits a small card you hover
+       over; on a card this size the cursor sits near the centre while
+       you scroll, so its glow would read as mostly off. The angle here
+       is driven by scroll progress instead (pillars.timeline.js), so
+       the ring is alive wherever the mouse happens to be. */
+    background: conic-gradient(
+      from var(--border-angle),
+      transparent 0%,
+      var(--color-green-500) 8%,
+      var(--color-green-300) 15%,
+      transparent 28%,
+      transparent 48%,
+      var(--color-purple-500) 58%,
+      var(--color-purple-300) 65%,
+      transparent 78%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /*
+   * Clears the middle of the ring field so the arcs never cross the
+   * copy sitting over them (PillarStack.jsx).
+   *
+   * The shader already leaves a hole — it draws outward from
+   * `uBaseRadius` — but that hole is a circle, measured against the
+   * card's shorter side, while the text is a wide block. Growing
+   * `uBaseRadius` until a circle cleared the text horizontally would
+   * push the rings past the card's top and bottom edges entirely. An
+   * elliptical mask matches the text's own proportions instead.
+   *
+   * Mask semantics: opaque keeps, transparent removes. So the centre
+   * is transparent (rings hidden) and fades to black outward (rings
+   * shown). The two percentages are the tuning knobs — the first pair
+   * sizes the ellipse against the element, the stops set how much of
+   * it stays clear and how quickly the rings come back.
+   */
+  [data-rings-mask] {
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at center,
+      transparent 48%,
+      black 88%
+    );
+    mask-image: radial-gradient(
+      ellipse 80% 70% at center,
+      transparent 48%,
+      black 88%
+    );
+  }
+}
+
+/*
  * Chapter 05 track rows (native <details> accordion). The click
  * affordance depends on input type (PO round — see DECISION_LOG.md):
  *  - real-mouse desktop: a cursor-following glow in the track color.
