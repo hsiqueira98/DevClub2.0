@@ -1,58 +1,40 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import AvatarCluster from '../components/AvatarCluster'
 import StarBadge from '../components/StarBadge'
-import LogoMark from '../components/LogoMark'
 import { STATS } from '../data/stats'
-import { createOrbitAnimations } from '../animations/chapters.timeline'
 
-/*
- * Chapter 04 — Meet DevClub. Trust: the answer to Chapter 03. The five
- * method pillars orbit the mark in a radial layout (docs/DESIGN_SYSTEM.md
- * — Amphora orbital pattern) instead of a card grid.
- */
-const PILLARS = ['Comunidade', 'Método', 'Mentoria', 'Projetos', 'Suporte']
-
-// Precomputed positions on the orbit circle (5 points, starting at top).
-const ORBIT_POSITIONS = [
-  'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
-  'top-[38%] right-0 translate-x-1/2 -translate-y-1/2',
-  'bottom-0 right-[19%] translate-y-1/2',
-  'bottom-0 left-[19%] translate-y-1/2',
-  'top-[38%] left-0 -translate-x-1/2 -translate-y-1/2',
+const PILLARS = [
+  'Comunidade',
+  'Método',
+  'Mentoria',
+  'Projetos',
+  'Suporte',
 ]
 
 export default function MeetDevClub() {
-  const sectionRef = useRef(null)
-
-  useGSAP(() => createOrbitAnimations(sectionRef.current), {
-    scope: sectionRef,
-  })
-
   return (
     <Chapter
-      ref={sectionRef}
       id="devclub"
       bg="bg-night-850"
       className="overflow-hidden"
+      innerClassName="py-20 md:py-28"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 size-[40rem] translate-x-1/3 -translate-y-1/3 rounded-full bg-purple-700/25 blur-[140px]"
+        className="pointer-events-none absolute top-0 right-0 size-[28rem] translate-x-1/3 -translate-y-1/3 rounded-full bg-purple-700/20 blur-[120px]"
       />
 
-      <div className="relative grid items-center gap-20 lg:grid-cols-2">
+      <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         <div>
-          <Kicker className="mb-6" data-reveal>
+          <Kicker className="mb-5" data-reveal>
             apresentação
           </Kicker>
 
           <h2
             data-reveal
-            className="font-display text-4xl leading-tight text-white md:text-6xl"
+            className="font-display max-w-2xl text-3xl leading-tight text-white sm:text-4xl md:text-5xl"
           >
             O DevClub não é um curso. É um{' '}
             <AccentText color="green">caminho</AccentText>.
@@ -60,20 +42,19 @@ export default function MeetDevClub() {
 
           <p
             data-reveal
-            className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400"
+            className="mt-6 max-w-xl text-base leading-relaxed text-gray-400 md:text-lg"
           >
             Uma metodologia que já formou {STATS.studentsLong}, com roadmap
             claro, mentoria de quem está no mercado e uma comunidade que não
             deixa ninguém travado para trás.
           </p>
 
-          <div data-reveal className="mt-10 flex flex-wrap items-center gap-6">
+          <div data-reveal className="mt-8 flex flex-wrap items-center gap-4">
             <AvatarCluster label={`${STATS.students} alunos formados`} />
             <StarBadge rating={STATS.rating} />
           </div>
 
-          {/* Institutional trust — BRAND.md voice pillar */}
-          <ul data-reveal className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+          <ul data-reveal className="mt-8 flex flex-wrap gap-x-6 gap-y-2.5">
             {[
               'Pós-graduação reconhecida pelo MEC',
               'Certificações internacionais',
@@ -93,35 +74,26 @@ export default function MeetDevClub() {
           </ul>
         </div>
 
-        {/* Orbital pillars — desktop; collapses to pills on mobile */}
-        <div className="relative mx-auto hidden aspect-square w-full max-w-md lg:block">
-          <div
-            aria-hidden="true"
-            className="border-night-500 absolute inset-0 rounded-full border border-dashed"
-          />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <LogoMark size={72} className="text-green-500" />
-          </div>
-          <ul>
-            {PILLARS.map((pillar, i) => (
-              <li
-                key={pillar}
-                data-orbit-pillar
-                className={`border-night-500 bg-night-750 absolute rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300 ${ORBIT_POSITIONS[i]}`}
-              >
-                {pillar}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <ul className="flex flex-wrap gap-3 lg:hidden">
-          {PILLARS.map((pillar) => (
+        <ul
+          data-presentation-pillars
+          data-reveal-group
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:gap-2"
+        >
+          {PILLARS.map((pillar, index) => (
             <li
               key={pillar}
-              className="border-night-500 bg-night-750 rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300"
+              className="border-night-500 bg-night-900/70 group relative overflow-hidden rounded-2xl border p-5 transition-colors duration-300 hover:border-green-500/60"
             >
-              {pillar}
+              <span className="font-display text-xs tracking-[0.18em] text-green-500">
+                0{index + 1}
+              </span>
+              <p className="font-display mt-7 text-lg text-white lg:mt-10 lg:[writing-mode:vertical-rl] lg:rotate-180">
+                {pillar}
+              </p>
+              <span
+                aria-hidden="true"
+                className="absolute right-0 bottom-0 size-16 translate-x-1/2 translate-y-1/2 rounded-full bg-green-500/10 blur-xl transition-colors duration-300 group-hover:bg-green-500/20"
+              />
             </li>
           ))}
         </ul>

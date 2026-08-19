@@ -13,13 +13,13 @@ import {
 import { STATS } from '../data/stats'
 import { createResultsAnimations } from '../animations/results.timeline'
 
-/*
- * Chapter 08 — Real Results. Signature moment: the salary bar chart
- * that already exists on the current DevClub site (gray→purple→green,
- * with source citation — docs/BRAND.md "Cited data"). Bars grow and
- * values count up on scroll entry; companies loop as a continuous
- * marquee (duplicated list for a seamless -50% translate).
- */
+const PROOF_STATS = [
+  { value: STATS.students, label: 'alunos formados' },
+  { value: STATS.hiringCompanies, label: 'empresas contratando' },
+  { value: STATS.projectsBuilt, label: 'projetos por formação' },
+  { value: STATS.rating, label: 'avaliação dos alunos' },
+]
+
 export default function RealResults() {
   const sectionRef = useRef(null)
 
@@ -28,51 +28,67 @@ export default function RealResults() {
   })
 
   return (
-    <Chapter ref={sectionRef} id="resultados" bg="bg-night-950">
-      <Kicker className="mb-6" data-reveal>
-        salário
+    <Chapter
+      ref={sectionRef}
+      id="resultados"
+      bg="bg-night-950"
+      innerClassName="py-20 md:py-32"
+    >
+      <Kicker className="mb-5" data-reveal>
+        resultados
       </Kicker>
 
       <h2
         data-reveal
-        className="font-display max-w-3xl text-4xl leading-tight text-white md:text-6xl"
+        className="font-display max-w-3xl text-3xl leading-tight text-white sm:text-4xl md:text-5xl"
       >
         Histórias <AccentText color="green">reais</AccentText>. Salários reais.
       </h2>
 
-      {/* Bridge: connect the transformation stories to the salary data
-          — answer "why does this matter to me" before the numbers */}
       <p
         data-reveal
-        className="mt-6 max-w-2xl text-xl leading-relaxed text-gray-400"
+        className="mt-5 max-w-2xl text-base leading-relaxed text-gray-400 md:text-lg"
       >
         Motorista de aplicativo, atendente, analista financeiro — cada aluno
-        chegou de um lugar diferente. O que muda quando a transição dá certo é a
-        mesma coisa para todos: o contracheque no fim do mês.
+        chegou de um lugar diferente. Quando a transição dá certo, o resultado
+        aparece no contracheque no fim do mês.
       </p>
 
-      {/* Left: the market as a snapshot (bars). Right: a "Contracheque"
-          card that transforms — a green line grows in, the total counts
-          up, a stamp lands (PO round — see DECISION_LOG.md) */}
-      <div className="mt-20 grid gap-16 lg:grid-cols-2 lg:items-center lg:gap-12">
-        <div data-salary-chart>
-          <p className="font-display mb-8 text-lg font-semibold text-white">
+      <dl
+        data-reveal-group
+        className="border-night-700 bg-night-900/50 mt-12 grid grid-cols-2 gap-x-6 gap-y-7 rounded-2xl border p-6 sm:grid-cols-4 md:mt-14 md:p-8"
+      >
+        {PROOF_STATS.map((stat) => (
+          <div key={stat.label}>
+            <dd className="font-display text-3xl text-white md:text-4xl">
+              {stat.value}
+            </dd>
+            <dt className="mt-1.5 text-xs leading-snug text-gray-500 md:text-sm">
+              {stat.label}
+            </dt>
+          </div>
+        ))}
+      </dl>
+
+      <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div data-salary-chart className="rounded-2xl bg-night-900/40 p-5 md:p-7">
+          <p className="font-display mb-7 text-base font-semibold text-white">
             O mercado hoje
           </p>
-          <dl className="flex flex-col gap-8">
+          <dl className="flex flex-col gap-6">
             {SALARIES.map((row) => (
               <div key={row.level} data-salary-row>
-                <dt className="flex items-baseline justify-between text-lg text-gray-400">
+                <dt className="flex items-baseline justify-between gap-4 text-base text-gray-400">
                   {row.level}
                   <span
                     data-countup={row.amount}
                     data-countup-format="brl"
-                    className="font-display text-2xl text-white md:text-3xl"
+                    className="font-display text-xl whitespace-nowrap text-white md:text-2xl"
                   >
                     R$ {row.amount.toLocaleString('pt-BR')}
                   </span>
                 </dt>
-                <dd className="bg-night-750 mt-3 h-3 overflow-hidden rounded-full">
+                <dd className="bg-night-750 mt-3 h-2.5 overflow-hidden rounded-full">
                   <div
                     data-salary-bar
                     className={`h-full rounded-full ${row.barClass}`}
@@ -82,47 +98,39 @@ export default function RealResults() {
               </div>
             ))}
           </dl>
-          <p className="mt-6 text-xs text-gray-600">{SALARY_SOURCE}</p>
+          <p className="mt-5 text-xs leading-relaxed text-gray-600">{SALARY_SOURCE}</p>
         </div>
 
-        {/* The cost of waiting — a payslip that transforms in place */}
         <div data-payslip>
-          <p className="font-display mb-8 text-lg font-semibold text-white">
-            Quanto custa NÃO começar hoje?
+          <p className="font-display mb-5 text-base font-semibold text-white">
+            Quanto custa não começar hoje?
           </p>
 
-          <div className="border-night-700 bg-night-900 relative rounded-2xl border p-6 md:p-8">
-            {/* stamp badge — lands last */}
+          <div className="border-night-700 bg-night-900 relative rounded-2xl border p-6 shadow-2xl shadow-black/20 md:p-8">
             <span
               data-payslip-badge
-              className="bg-green-500 text-night-950 absolute -top-3 right-6 rounded-full px-3 py-1 text-sm font-bold shadow-lg shadow-green-500/20"
+              className="bg-green-500 text-night-950 absolute -top-3 right-5 rounded-full px-3 py-1 text-xs font-bold shadow-lg shadow-green-500/20"
             >
               +R$ 21.600/ano
             </span>
 
-            {/* card header */}
             <div className="border-night-800 mb-5 flex items-center justify-between border-b pb-4">
-              <span className="font-display font-semibold text-white">
-                Contracheque
-              </span>
-              <span className="text-xs tracking-widest text-gray-600 uppercase">
-                mensal
-              </span>
+              <span className="font-display font-semibold text-white">Contracheque</span>
+              <span className="text-xs tracking-widest text-gray-600 uppercase">mensal</span>
             </div>
 
             <dl className="flex flex-col">
-              <div className="flex items-baseline justify-between">
-                <dt className="text-gray-400">Salário Base</dt>
-                <dd className="font-display text-gray-300">R$ 2.000</dd>
+              <div className="flex items-baseline justify-between gap-4">
+                <dt className="text-gray-400">Salário base</dt>
+                <dd className="font-display whitespace-nowrap text-gray-300">R$ 2.000</dd>
               </div>
 
-              {/* the DevClub difference — grows in (fade) */}
               <div
                 data-payslip-diff
-                className="mt-4 flex items-baseline justify-between overflow-hidden"
+                className="mt-4 flex items-baseline justify-between gap-4 overflow-hidden"
               >
                 <dt className="text-green-400">+ Diferença DevClub</dt>
-                <dd className="font-display text-green-400">+ R$ 1.800</dd>
+                <dd className="font-display whitespace-nowrap text-green-400">+ R$ 1.800</dd>
               </div>
 
               <div className="border-night-800 mt-5 flex items-baseline justify-between border-t pt-5">
@@ -140,62 +148,47 @@ export default function RealResults() {
         </div>
       </div>
 
-      {/* Numbers strip — every value from the single source in stats.js */}
-      <dl
+      <ul
+        data-results-proof
         data-reveal-group
-        className="border-night-700 mt-24 grid grid-cols-2 gap-10 border-t pt-12 md:grid-cols-4"
+        className="mt-16 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-3"
       >
-        {[
-          { value: STATS.students, label: 'alunos formados' },
-          { value: STATS.hiringCompanies, label: 'empresas contratando' },
-          { value: STATS.projectsBuilt, label: 'projetos por formação' },
-          { value: STATS.rating, label: 'avaliação dos alunos' },
-        ].map((stat) => (
-          <div key={stat.label}>
-            <dd className="font-display text-4xl text-white md:text-5xl">
-              {stat.value}
-            </dd>
-            <dt className="mt-2 text-sm text-gray-500">{stat.label}</dt>
-          </div>
-        ))}
-      </dl>
-
-      {/* Minimal testimonials */}
-      <ul data-reveal-group className="mt-28 grid gap-10 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <li key={t.name} className="flex flex-col">
-            <blockquote className="text-xl leading-relaxed text-gray-300">
+          <li
+            key={t.name}
+            className="border-night-700 bg-night-900/45 flex flex-col rounded-2xl border p-6"
+          >
+            <blockquote className="text-base leading-relaxed text-gray-300 md:text-lg">
               “{t.quote}”
             </blockquote>
-            <figure className="mt-6 flex items-center gap-4">
+            <figure className="mt-6 flex items-center gap-3">
               <img
                 src={t.photo}
                 alt=""
                 loading="lazy"
-                className="size-12 rounded-full ring-2 ring-green-500"
+                className="size-11 rounded-full ring-2 ring-green-500"
               />
-              <figcaption>
-                <p className="font-semibold text-white">{t.name}</p>
-                <p className="text-sm text-gray-500">{t.role}</p>
+              <figcaption className="min-w-0">
+                <p className="truncate font-semibold text-white">{t.name}</p>
+                <p className="truncate text-sm text-gray-500">{t.role}</p>
               </figcaption>
-              <StarBadge rating={STATS.rating} className="ml-auto" />
+              <StarBadge rating={STATS.rating} className="ml-auto shrink-0" />
             </figure>
           </li>
         ))}
       </ul>
 
-      {/* Hiring companies — text wordmarks in a continuous marquee */}
-      <div data-reveal className="mt-28">
+      <div data-reveal className="mt-16 border-t border-night-800 pt-8 md:mt-20">
         <p className="text-sm text-gray-600">
           Alunos contratados por {STATS.hiringCompanies} empresas, incluindo
         </p>
-        <div className="mt-8 overflow-hidden">
+        <div className="mt-6 overflow-hidden">
           <ul data-marquee-inner className="flex w-max">
             {[...COMPANIES, ...COMPANIES].map((company, i) => (
               <li
                 key={`${company}-${i}`}
                 aria-hidden={i >= COMPANIES.length || undefined}
-                className="font-display pr-14 text-2xl whitespace-nowrap text-gray-600"
+                className="font-display pr-10 text-xl whitespace-nowrap text-gray-600 md:pr-14 md:text-2xl"
               >
                 {company}
               </li>
