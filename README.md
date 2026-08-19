@@ -51,4 +51,6 @@ tests/          asserções de estrutura sobre o próprio source
 - **Dispositivos nativos do DevClub preservados**: rótulos com cursor de terminal (`mercado_`), efeito de digitação no hero, cor própria por trilha de formação, avatar-cluster de alunos, gráfico salarial com citação de fonte.
 - **`prefers-reduced-motion` respeitado**: todo o sistema de motion degrada para transições curtas sem perder conteúdo — nada depende de animação para ser lido.
 - **Acessibilidade de base**: HTML semântico, hierarquia de heading única, foco visível em todo elemento interativo, navegação completa por teclado (inclusive no film-strip de instrutores e no accordion de formações).
+- **O índice de pilares é o argumento** (Capítulo 4): os cinco cards descem em escada e uma única luz atravessa os cinco em ordem — "não é um curso, é um caminho" dito em movimento, não só em texto.
+- **A faixa de contratantes responde ao visitante** (Capítulo 8): velocidade, direção e inclinação saem da velocidade real do scroll (`ScrollTrigger.getVelocity`), em dois planos que se cruzam. Parado, ela só deriva.
 - **Fonte única de números**: todo dado exibido na página (alunos, salários, avaliações) vem de um único arquivo de dados — nenhum número é repetido ou digitado duas vezes em lugares diferentes.

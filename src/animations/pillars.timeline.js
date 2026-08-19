@@ -46,9 +46,31 @@ export function createPillarsTimeline(section) {
 // line-wrapping breaking between words rather than between individual,
 // now-independently-positioned character spans.
 function setupTitleReveal(title) {
-  const split = new SplitText(title, { type: 'chars,words' })
+  // The gradient accent word is handed to SplitText's `ignore` as an
+  // ELEMENT, not a selector string (no scope resolution to get wrong).
+  // Without this it rendered as a blank gap in the middle of the
+  // headline: SplitText re-wraps every character in its own
+  // inline-block span, and AccentText's background-clip:text does not
+  // survive that — the same hazard FirstDecision.jsx documents for the
+  // hero, which is why the hero's accent is a flat colour. Ignored, the
+  // <em> stays one intact node, keeps its gradient, and earns its own
+  // beat below.
+  const accent = title.querySelector('[data-split-ignore]')
+  const split = new SplitText(title, {
+    type: 'chars,words',
+    ignore: accent || undefined,
+  })
 
-  gsap.fromTo(
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: title,
+      start: 'center bottom+=50%',
+      end: 'bottom bottom-=40%',
+      scrub: true,
+    },
+  })
+
+  tl.fromTo(
     split.chars,
     {
       opacity: 0,
@@ -65,14 +87,22 @@ function setupTitleReveal(title) {
       duration: 1,
       ease: 'back.inOut(2)',
       stagger: 0.03,
-      scrollTrigger: {
-        trigger: title,
-        start: 'center bottom+=50%',
-        end: 'bottom bottom-=40%',
-        scrub: true,
-      },
     },
   )
+
+  // The payoff word wipes in after the sentence has finished
+  // assembling, rather than arriving inside the same stagger as
+  // everything else. A clip-path wipe, not opacity: the gradient has to
+  // stay painted across the whole word for it to read as one surface
+  // being uncovered.
+  if (accent) {
+    tl.fromTo(
+      accent,
+      { clipPath: 'inset(0 100% 0 0)' },
+      { clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'power2.out' },
+      '>-0.25',
+    )
+  }
 
   return () => split.revert()
 }

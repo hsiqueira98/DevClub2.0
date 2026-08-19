@@ -2,12 +2,15 @@ import { gsap } from '../lib/gsap'
 import { DURATION, EASE } from './motion.tokens'
 import { makeCountUp } from './counters'
 import { createParticleField } from './particles'
+import { createCompaniesMarquee } from './marquee.timeline'
 
 /*
  * Chapter 08 (docs/STORYBOARD.md): salary bars grow into place on
  * scroll entry, staggered per row — scaleX, not width, per the
- * transform-only rule in docs/MOTION.md. The companies strip loops as
- * a continuous marquee (docs/DESIGN_SYSTEM.md — Amphora pattern).
+ * transform-only rule in docs/MOTION.md. The hiring band below is its
+ * own choreography now (marquee.timeline.js): it answers to the
+ * visitor's scroll velocity rather than to this chapter's entry
+ * sequence, so it does not belong on this timeline.
  *
  * Beside the bars, the "Contracheque" (payslip) card transforms once on
  * entry: a green line grows in, the total counts up from R$ 2.000 to
@@ -19,9 +22,10 @@ import { createParticleField } from './particles'
  * payslip (green line, total already R$ 3.800, badge).
  */
 export function createResultsAnimations(section) {
+  createCompaniesMarquee(section)
+
   const bars = section.querySelectorAll('[data-salary-bar]')
   const chart = section.querySelector('[data-salary-chart]')
-  const marquee = section.querySelector('[data-marquee-inner]')
   const payslip = section.querySelector('[data-payslip]')
   const particleCanvas = section.querySelector('[data-particle-canvas]')
 
@@ -87,15 +91,6 @@ export function createResultsAnimations(section) {
         },
         '>-0.15',
       )
-    }
-
-    if (marquee) {
-      gsap.to(marquee, {
-        xPercent: -50,
-        ease: 'none',
-        duration: 28,
-        repeat: -1,
-      })
     }
 
     return () => particleCleanup?.()

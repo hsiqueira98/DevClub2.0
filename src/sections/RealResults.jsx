@@ -4,12 +4,8 @@ import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
 import AccentText from '../components/AccentText'
 import StarBadge from '../components/StarBadge'
-import {
-  TESTIMONIALS,
-  SALARIES,
-  SALARY_SOURCE,
-  COMPANIES,
-} from '../data/testimonials'
+import CompaniesBand from '../components/CompaniesBand'
+import { TESTIMONIALS, SALARIES, SALARY_SOURCE } from '../data/testimonials'
 import { STATS } from '../data/stats'
 import { createResultsAnimations } from '../animations/results.timeline'
 
@@ -214,19 +210,7 @@ export default function RealResults() {
         <p className="text-sm text-gray-600">
           Alunos contratados por {STATS.hiringCompanies} empresas, incluindo
         </p>
-        <div className="mt-6 overflow-hidden">
-          <ul data-marquee-inner className="flex w-max">
-            {[...COMPANIES, ...COMPANIES].map((company, i) => (
-              <li
-                key={`${company}-${i}`}
-                aria-hidden={i >= COMPANIES.length || undefined}
-                className="font-display pr-10 text-xl whitespace-nowrap text-gray-600 md:pr-14 md:text-2xl"
-              >
-                {company}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <CompaniesBand />
       </div>
     </Chapter>
   )

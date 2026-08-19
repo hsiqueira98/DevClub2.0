@@ -16,6 +16,7 @@ export default function AccentText({
   color = 'green',
   className = '',
   children,
+  ...props
 }) {
   return (
     <em
@@ -24,6 +25,7 @@ export default function AccentText({
         GRADIENTS[color],
         className,
       )}
+      {...props}
     >
       {children}
     </em>
