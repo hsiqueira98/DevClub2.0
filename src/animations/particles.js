@@ -21,25 +21,25 @@ export function createParticleField(canvas) {
   const ctx = canvas.getContext('2d')
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
   const COUNT = 70
-  const GRAY = [102, 102, 102] // --color-gray-600
-  const GREEN = [57, 211, 83] // --color-green-500
+  // These must stay the literal values of the tokens they name: #666 was
+  // not --color-gray-600 (that token is #777c81), so the field was drawn
+  // in a grey the design system does not contain.
+  const GRAY = [119, 124, 129] // --color-gray-600  #777c81
+  const GREEN = [57, 211, 83] // --color-green-500  #39d353
 
   let width = 0
   let height = 0
   let points = []
 
-  function layout() {
-    const rect = canvas.getBoundingClientRect()
-    width = rect.width
-    height = rect.height
-    canvas.width = width * dpr
-    canvas.height = height * dpr
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-    points = Array.from({ length: COUNT }, () => {
+  function seed() {
+    return Array.from({ length: COUNT }, () => {
       const tone = Math.random()
+      // Rounded: interpolate returns floats, and the legacy comma form of
+      // rgba() is only reliably parsed with integer channels — a rejected
+      // fillStyle is silently ignored, leaving the previous particle's
+      // colour.
       const [r, g, b] = GRAY.map((c, i) =>
-        gsap.utils.interpolate(c, GREEN[i], tone),
+        Math.round(gsap.utils.interpolate(c, GREEN[i], tone)),
       )
       return {
         baseX: Math.random() * width,
@@ -55,14 +55,44 @@ export function createParticleField(canvas) {
     })
   }
 
+  // Resize re-measures and rescales the existing field; it does NOT
+  // re-seed it. `resize` fires continuously while a window is dragged,
+  // and building a whole new random field on every event made the
+  // backdrop visibly teleport mid-drag instead of drifting.
+  function layout() {
+    const rect = canvas.getBoundingClientRect()
+    const nextWidth = rect.width || 1
+    const nextHeight = rect.height || 1
+    const scaleX = width ? nextWidth / width : 1
+    const scaleY = height ? nextHeight / height : 1
+
+    width = nextWidth
+    height = nextHeight
+    // Assigning width/height resets the context, transform included.
+    canvas.width = width * dpr
+    canvas.height = height * dpr
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+    if (points.length === 0) {
+      points = seed()
+      return
+    }
+    points.forEach((point) => {
+      point.baseX *= scaleX
+      point.baseY *= scaleY
+    })
+  }
+
   layout()
   window.addEventListener('resize', layout)
 
   function draw(time) {
     ctx.clearRect(0, 0, width, height)
     points.forEach((point) => {
-      const x = point.baseX + Math.sin(time * point.freqX + point.phase) * point.ampX
-      const y = point.baseY + Math.cos(time * point.freqY + point.phase) * point.ampY
+      const x =
+        point.baseX + Math.sin(time * point.freqX + point.phase) * point.ampX
+      const y =
+        point.baseY + Math.cos(time * point.freqY + point.phase) * point.ampY
       ctx.fillStyle = point.color
       ctx.beginPath()
       ctx.arc(x, y, point.size, 0, Math.PI * 2)

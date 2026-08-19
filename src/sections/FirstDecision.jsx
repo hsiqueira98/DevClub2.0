@@ -53,7 +53,11 @@ export default function FirstDecision() {
     >
       {/* Layered backdrop (PO request — see DECISION_LOG.md):
           photo blurred at the bottom of the stack, purple mask
-          obscuring it, black mask that the shatter phase fades in. */}
+          obscuring it, black mask that the shatter phase fades in.
+          The photo is also the LCP element — the largest above-the-fold
+          paint, which the Prólogo fades in — so it is fetched at high
+          priority instead of queueing behind the lazy portraits and
+          gallery further down the document. */}
       <motion.img
         src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=70"
         alt=""
@@ -61,6 +65,8 @@ export default function FirstDecision() {
         data-hero-photo
         variants={backdrop}
         {...enter}
+        fetchPriority="high"
+        decoding="async"
         className="absolute inset-0 size-full scale-105 object-cover blur-sm"
       />
       <div

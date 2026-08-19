@@ -5,22 +5,25 @@ import { gsap } from '../lib/gsap'
  *
  * Two mutually exclusive modes, chosen by matchMedia:
  *
- * PINNED (pointer:fine, no-preference, viewport ≥1080px tall): the
- * strip is pinned and translated horizontally via a GSAP transform,
- * scrubbed by the visitor's own vertical scroll. Below 1080px tall,
- * pinned content can end up taller than the viewport with nowhere for
- * the visitor to scroll to reach whatever falls below the fold
- * (see DECISION_LOG.md) — rather than keep shrinking cards to fit an
- * ever-shorter viewport, short viewports get a completely different,
- * un-cuttable mode instead:
+ * PINNED (pointer:fine and no-preference): the strip is pinned and
+ * translated horizontally via a GSAP transform, scrubbed by the
+ * visitor's own vertical scroll.
  *
- * NATIVE SCROLL (touch, reduced motion, or <1080px tall): the strip
- * is a plain overflow-x:auto scroller — same content, no pin, no
- * transform. A vertical mouse wheel is redirected into horizontal
- * scroll (see setupNative) since the visible scrollbar that used to
- * be the only way a plain-wheel mouse could move it is hidden
- * (index.css); touch swipe and trackpad two-finger scroll already
- * work natively and are unaffected.
+ * NATIVE SCROLL (touch or reduced motion): the strip is a plain
+ * overflow-x:auto scroller — same content, no pin, no transform. A
+ * vertical mouse wheel is redirected into horizontal scroll (see
+ * setupNative) since the visible scrollbar that used to be the only
+ * way a plain-wheel mouse could move it is hidden (index.css); touch
+ * swipe and trackpad two-finger scroll already work natively and are
+ * unaffected.
+ *
+ * Viewport HEIGHT is deliberately not one of these conditions, and
+ * this comment used to claim it was — describing a "<1080px tall falls
+ * back to native scroll" mode that the code has no query for. The PO
+ * wants pin+scrub every time for pointer:fine (docs/DECISION_LOG.md),
+ * so short viewports are handled by shrinking instead of by switching
+ * modes: the height-only tiers at the end of index.css tighten the
+ * chapter's padding and, below 650px, the card itself.
  *
  * GSAP's matchMedia only invokes its callback when at least one named
  * condition matches — `pinned` alone has no "the opposite always
@@ -35,8 +38,7 @@ export function createFilmstripTimeline(section) {
 
   mm.add(
     {
-      pinned:
-        '(prefers-reduced-motion: no-preference) and (pointer: fine)',
+      pinned: '(prefers-reduced-motion: no-preference) and (pointer: fine)',
       all: 'all',
     },
     (context) =>

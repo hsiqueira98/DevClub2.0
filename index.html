@@ -21,8 +21,17 @@
       property="og:description"
       content="Toda carreira em tecnologia começa com uma decisão. Formações, mentoria e comunidade para sua transição de carreira."
     />
-    <meta property="og:image" content="/og.png" />
+    <!-- og:image and og:url must be ABSOLUTE — a relative path is
+         unresolvable for every crawler. %VITE_SITE_URL% is replaced at
+         build time by Vite from .env (set it to the real domain). -->
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og.png" />
+    <meta
+      property="og:image:alt"
+      content="DevClub — Toda carreira em tecnologia começa com uma decisão."
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

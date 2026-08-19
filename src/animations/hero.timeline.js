@@ -106,7 +106,11 @@ export function createHeroTimeline(section) {
   // can't reliably drive a second, independently-scrubbed timeline in
   // another file.
   if (logo) {
-    tl.to(logo, { scale: 0.6, opacity: 0.3, ease: 'none', duration: tl.duration() }, 0)
+    tl.to(
+      logo,
+      { scale: 0.6, opacity: 0.3, ease: 'none', duration: tl.duration() },
+      0,
+    )
   }
 
   return () => split.revert()

@@ -25,6 +25,10 @@ export default function Button({
   return (
     <Tag
       href={href}
+      // A bare <button> defaults to type="submit": dropped inside any
+      // form (the footer newsletter, say) it would submit it. Callers
+      // can still override via ...props.
+      {...(href ? null : { type: 'button' })}
       className={cn(
         'duration-fast inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-sans text-base font-semibold transition-colors',
         VARIANTS[variant],

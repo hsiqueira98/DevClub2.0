@@ -30,15 +30,28 @@ export default function WhyTechnology() {
         <AccentText color="green">liberdade</AccentText>.
       </h2>
 
+      {/*
+       * A <dd> may not precede its own <dt>, and a <p> is not allowed
+       * inside a <dl>'s grouping <div> at all. DOM order is therefore
+       * dt -> dd with the source folded into the term; flex-col-reverse
+       * keeps the big number reading first, as designed.
+       */}
       <dl data-reveal-group className="mt-20 grid gap-6 md:grid-cols-3">
         {MARKET_STATS.map((stat) => (
-          <div key={stat.label} className="bg-night-800 rounded-3xl p-10">
+          <div
+            key={stat.label}
+            className="bg-night-800 flex flex-col-reverse rounded-3xl p-10"
+          >
+            <dt className="mt-4 text-lg text-gray-400">
+              {stat.label}
+              <span className="mt-3 block text-xs text-gray-600">
+                Fonte: {stat.source}
+              </span>
+            </dt>
             <dd className="font-display text-6xl text-green-500 md:text-7xl">
               <span data-countup={stat.value}>{stat.value}</span>
               <span className="text-4xl md:text-5xl">{stat.suffix}</span>
             </dd>
-            <dt className="mt-4 text-lg text-gray-400">{stat.label}</dt>
-            <p className="mt-3 text-xs text-gray-600">Fonte: {stat.source}</p>
           </div>
         ))}
       </dl>

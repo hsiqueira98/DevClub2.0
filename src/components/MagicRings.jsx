@@ -131,7 +131,12 @@ export default function MagicRings({
       uFadeOut: { value: 0.5 },
     }
 
-    const program = new Program(gl, { vertex, fragment, uniforms, transparent: true })
+    const program = new Program(gl, {
+      vertex,
+      fragment,
+      uniforms,
+      transparent: true,
+    })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
 
     const resize = () => {

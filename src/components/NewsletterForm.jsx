@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Check } from 'lucide-react'
 
 /*
@@ -8,10 +8,23 @@ import { ArrowRight, Check } from 'lucide-react'
  */
 export default function NewsletterForm() {
   const [subscribed, setSubscribed] = useState(false)
+  const confirmationRef = useRef(null)
+
+  // Submitting unmounts the form, so the focused submit button vanishes
+  // and focus falls back to <body> — a keyboard user loses their place
+  // in the footer. Move focus onto the confirmation instead.
+  useEffect(() => {
+    if (subscribed) confirmationRef.current?.focus()
+  }, [subscribed])
 
   if (subscribed) {
     return (
-      <p role="status" className="flex items-center gap-2 text-green-500">
+      <p
+        ref={confirmationRef}
+        tabIndex={-1}
+        role="status"
+        className="flex items-center gap-2 text-green-500"
+      >
         <Check size={18} aria-hidden="true" />
         Inscrição confirmada — o primeiro guia chega esta semana.
       </p>

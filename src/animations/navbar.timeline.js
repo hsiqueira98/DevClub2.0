@@ -12,7 +12,17 @@ import { gsap, ScrollTrigger } from '../lib/gsap'
  * re-capture the from-state mid-scroll on the window load refresh and
  * lose the pill's max-width. No gsap.matchMedia here (its cleanup is
  * not captured by the useGSAP context — see hero.timeline.js).
+ *
+ * The hero element is resolved with a direct DOM lookup, NOT a "#inicio"
+ * string handed to ScrollTrigger: this runs inside useGSAP({ scope:
+ * headerRef }), and gsap resolves selector strings against the active
+ * context scope (gsap.utils.toArray -> _context.selector). The hero
+ * lives outside <header>, so the string form resolved to nothing —
+ * ScrollTrigger logged "Element not found: #inicio" and fell back to a
+ * viewport-relative range that only coincidentally resembled the hero's.
  */
+const HERO_ID = 'inicio'
+
 const pillState = () => ({
   maxWidth: Math.min(1120, window.innerWidth - 32),
   marginTop: 20,
@@ -28,6 +38,8 @@ const barState = () => ({
 export function createNavbarTimeline(header) {
   const nav = header.querySelector('nav')
   const navLogo = header.querySelector('[data-nav-logo]')
+  const hero = document.getElementById(HERO_ID)
+  if (!nav || !hero) return
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.set(nav, pillState())
@@ -65,10 +77,18 @@ export function createNavbarTimeline(header) {
   }
 
   apply(0)
-  ScrollTrigger.create({
-    trigger: '#inicio',
+  const trigger = ScrollTrigger.create({
+    trigger: hero,
     start: 'top top',
     end: '+=160%',
     onUpdate: (self) => apply(self.progress),
   })
+
+  // The pill's rest width is derived from window.innerWidth, so a
+  // resize while parked at progress 0 (or anywhere) must re-run the
+  // interpolation — ScrollTrigger's own refresh does not call onUpdate.
+  const onResize = () => apply(trigger.progress)
+  window.addEventListener('resize', onResize)
+
+  return () => window.removeEventListener('resize', onResize)
 }

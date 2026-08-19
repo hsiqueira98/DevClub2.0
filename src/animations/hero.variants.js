@@ -59,10 +59,17 @@ export function layer(depth, delay = 0) {
  * fades in.
  */
 export const backdrop = {
-  hidden: { opacity: 0, scale: 1.08 },
+  hidden: { opacity: 0, scale: 1.13 },
   visible: {
     opacity: 1,
-    scale: 1,
+    // 1.05, NOT 1 — this lands back exactly on the img's CSS
+    // `scale-105`. framer-motion writes `transform` inline, which beats
+    // the Tailwind class, so settling at 1 would have thrown away the
+    // very overscan the comment above says the blur requires: a
+    // `blur-sm` image at its natural size shows soft, half-transparent
+    // edges all the way round. Both numbers are therefore relative to
+    // 1.05, not to 1 — it still breathes inward by the same amount.
+    scale: 1.05,
     transition: { duration: 1.8, ease: EASE },
   },
 }

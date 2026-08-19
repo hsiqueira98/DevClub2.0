@@ -21,3 +21,6 @@ npm-debug.log*
 # locally only, not published (see docs/DECISION_LOG.md, local copy)
 docs/
 .claude/
+
+# Local Git worktrees
+.worktrees/

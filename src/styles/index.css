@@ -248,8 +248,17 @@
   }
 }
 
+/*
+ * No `scroll-behavior: smooth` here on purpose: Lenis animates the
+ * scroll position from the GSAP ticker, and a native smooth scroll
+ * fights it on every in-page anchor. Lenis owns the anchors instead
+ * (SmoothScrollProvider, `anchors: true`) and reads scroll-padding-top
+ * from this rule for the landing offset — so the fixed-navbar clearance
+ * is declared once here and also covers the reduced-motion path, where
+ * Lenis is off and the browser scrolls natively.
+ */
 html {
-  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {

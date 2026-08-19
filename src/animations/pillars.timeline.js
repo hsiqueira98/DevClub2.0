@@ -29,7 +29,8 @@ export function createPillarsTimeline(section) {
   }
 
   const cleanupTitle = setupTitleReveal(title)
-  const isDesktop = container && window.matchMedia('(min-width: 1024px)').matches
+  const isDesktop =
+    container && window.matchMedia('(min-width: 1024px)').matches
   const cleanupStack = isDesktop ? setupStack(container, blackout) : undefined
 
   return () => {
@@ -49,7 +50,13 @@ function setupTitleReveal(title) {
 
   gsap.fromTo(
     split.chars,
-    { opacity: 0, yPercent: 120, scaleY: 2.3, scaleX: 0.7, transformOrigin: '50% 0%' },
+    {
+      opacity: 0,
+      yPercent: 120,
+      scaleY: 2.3,
+      scaleX: 0.7,
+      transformOrigin: '50% 0%',
+    },
     {
       opacity: 1,
       yPercent: 0,
@@ -100,11 +107,14 @@ function setupStack(stage, blackout) {
   const progressFill = stage.querySelector('[data-pillars-progress-fill]')
   const mark = stage.querySelector('[data-pillars-mark]')
 
-  const splitTexts = cards.map((card) =>
-    new SplitText(
-      card.querySelectorAll('[data-slide-heading], [data-slide-qualifier], [data-slide-description]'),
-      { type: 'words' },
-    ),
+  const splitTexts = cards.map(
+    (card) =>
+      new SplitText(
+        card.querySelectorAll(
+          '[data-slide-heading], [data-slide-qualifier], [data-slide-description]',
+        ),
+        { type: 'words' },
+      ),
   )
 
   // Card 0 on screen, every other one exactly one height below it and
@@ -122,10 +132,20 @@ function setupStack(stage, blackout) {
   const WORD_HIDDEN = { autoAlpha: 0, yPercent: -40, filter: 'blur(10px)' }
   const WORD_SHOWN = { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)' }
 
-  gsap.set(cards[0], { yPercent: 0, scale: 1, rotation: 0, transformOrigin: 'top center' })
+  gsap.set(cards[0], {
+    yPercent: 0,
+    scale: 1,
+    rotation: 0,
+    transformOrigin: 'top center',
+  })
   gsap.set(splitTexts[0].words, WORD_SHOWN)
   cards.slice(1).forEach((card, i) => {
-    gsap.set(card, { yPercent: 100, scale: 1, rotation: 0, transformOrigin: 'top center' })
+    gsap.set(card, {
+      yPercent: 100,
+      scale: 1,
+      rotation: 0,
+      transformOrigin: 'top center',
+    })
     gsap.set(splitTexts[i + 1].words, WORD_HIDDEN)
   })
 
@@ -159,7 +179,8 @@ function setupStack(stage, blackout) {
       scrub: 0.5,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
-        if (progressFill) gsap.set(progressFill, { width: `${self.progress * 100}%` })
+        if (progressFill)
+          gsap.set(progressFill, { width: `${self.progress * 100}%` })
         if (mark) gsap.set(mark, { rotation: self.progress * 180 })
         // One write on the frame, inherited by all five cards
         // (`--border-angle` is declared `inherits: true` in index.css).
@@ -171,8 +192,10 @@ function setupStack(stage, blackout) {
       },
       onEnter: () => gsap.to([progress, mark], { opacity: 1, duration: 0.3 }),
       onLeave: () => gsap.to([progress, mark], { opacity: 0, duration: 0.3 }),
-      onEnterBack: () => gsap.to([progress, mark], { opacity: 1, duration: 0.3 }),
-      onLeaveBack: () => gsap.to([progress, mark], { opacity: 0, duration: 0.3 }),
+      onEnterBack: () =>
+        gsap.to([progress, mark], { opacity: 1, duration: 0.3 }),
+      onLeaveBack: () =>
+        gsap.to([progress, mark], { opacity: 0, duration: 0.3 }),
     },
   })
 
@@ -188,7 +211,13 @@ function setupStack(stage, blackout) {
     // the middle of the frame.
     tl.to(
       cards[i],
-      { scale: 0.92, rotation: 2, transformOrigin: 'top center', duration: SHIFT, ease: 'none' },
+      {
+        scale: 0.92,
+        rotation: 2,
+        transformOrigin: 'top center',
+        duration: SHIFT,
+        ease: 'none',
+      },
       base,
     )
     tl.to(cards[i + 1], { yPercent: 0, duration: SHIFT, ease: 'none' }, base)

@@ -37,7 +37,10 @@ export function useTypewriter(words) {
       timer = setTimeout(tick, s.deleting ? DELETE_MS : TYPE_MS)
     }
 
-    timer = setTimeout(tick, HOLD_MS)
+    // The first word starts already fully typed, so the opening tick
+    // only has to flip into deleting — scheduling it at HOLD_MS made
+    // that word hold 2x HOLD_MS before erasing, unlike every later one.
+    timer = setTimeout(tick, 0)
     return () => clearTimeout(timer)
   }, [words])
 

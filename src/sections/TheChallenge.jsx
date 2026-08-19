@@ -71,7 +71,7 @@ export default function TheChallenge() {
           <li
             key={struggle}
             data-struggle
-            className={`border-night-600 bg-night-850 w-fit rounded-xl border px-6 py-4 text-lg text-gray-500 ${FRAGMENT_STYLES[i]}`}
+            className={`border-night-600 bg-night-850 w-fit rounded-xl border px-6 py-4 text-lg text-gray-500 ${FRAGMENT_STYLES[i % FRAGMENT_STYLES.length]}`}
           >
             {struggle}
           </li>

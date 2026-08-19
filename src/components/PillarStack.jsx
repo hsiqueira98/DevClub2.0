@@ -53,25 +53,24 @@ const ICONS = { Users, Route, UserCheck, FolderKanban, LifeBuoy }
  */
 export default function PillarStack({ pillars }) {
   return (
-    <>
+    <div
+      data-pillars-stack
+      className="relative mx-[calc(50%-50vw)] hidden h-screen w-screen overflow-hidden lg:motion-safe:block"
+    >
       <div
-        data-pillars-stack
-        className="relative hidden h-screen w-screen mx-[calc(50%-50vw)] overflow-hidden lg:motion-safe:block"
+        data-pillars-frame
+        className="absolute inset-x-6 top-[9.5rem] bottom-0 overflow-hidden rounded-t-[3rem] lg:inset-x-12"
       >
-        <div
-          data-pillars-frame
-          className="absolute inset-x-6 top-[9.5rem] bottom-0 overflow-hidden rounded-t-[3rem] lg:inset-x-12"
-        >
-          {pillars.map(({ name, qualifier, description, icon }, i) => {
-            const Icon = ICONS[icon]
-            return (
-              <article
-                key={name}
-                data-pillar-card
-                data-glow-border
-                className="bg-night-950 absolute inset-0 overflow-hidden rounded-t-[3rem]"
-              >
-                {/* Rings per card, behind the copy. Five WebGL contexts
+        {pillars.map(({ name, qualifier, description, icon }, i) => {
+          const Icon = ICONS[icon]
+          return (
+            <article
+              key={name}
+              data-pillar-card
+              data-glow-border
+              className="bg-night-950 absolute inset-0 overflow-hidden rounded-t-[3rem]"
+            >
+              {/* Rings per card, behind the copy. Five WebGL contexts
                     exist, but at most the one or two cards actually on
                     screen ever render: a card parked at `yPercent: 100`
                     sits outside this frame's `overflow-hidden`, and
@@ -85,76 +84,80 @@ export default function PillarStack({ pillars }) {
                     enough to clear it sideways would push the rings off
                     the card entirely. The mask cuts an ellipse instead,
                     shaped like the text. */}
-                <div
-                  data-rings-mask
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 opacity-70"
-                >
-                  <MagicRings
-                    color="#39d353"
-                    colorTwo="#8532f2"
-                    ringCount={6}
-                    lineThickness={2.5}
-                    baseRadius={0.41}
-                    radiusStep={0.12}
-                    noiseAmount={0.05}
-                    rotation={i * 24}
-                  />
-                </div>
-                {/* One drop-shadow on the wrapper, not per element: a
+              <div
+                data-rings-mask
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 opacity-70"
+              >
+                <MagicRings
+                  color="#39d353"
+                  colorTwo="#8532f2"
+                  ringCount={6}
+                  lineThickness={2.5}
+                  baseRadius={0.41}
+                  radiusStep={0.12}
+                  noiseAmount={0.05}
+                  rotation={i * 24}
+                />
+              </div>
+              {/* One drop-shadow on the wrapper, not per element: a
                     single filter pass covers icon and all three text
                     blocks. */}
-                <div className="relative flex size-full flex-col items-center justify-center px-8 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-                  <Icon size={56} className="text-green-400" aria-hidden="true" />
-                  <h3 data-slide-heading className="font-display mt-8 text-5xl text-white md:text-7xl">
-                    {name}
-                  </h3>
-                  <p data-slide-qualifier className="mt-4 text-xl text-green-400">
-                    {qualifier}
-                  </p>
-                  <p data-slide-description className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl">
-                    {description}
-                  </p>
-                </div>
-              </article>
-            )
-          })}
+              <div className="relative flex size-full flex-col items-center justify-center px-8 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
+                <Icon size={56} className="text-green-400" aria-hidden="true" />
+                <h3
+                  data-slide-heading
+                  className="font-display mt-8 text-5xl text-white md:text-7xl"
+                >
+                  {name}
+                </h3>
+                <p data-slide-qualifier className="mt-4 text-xl text-green-400">
+                  {qualifier}
+                </p>
+                <p
+                  data-slide-description
+                  className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-300 md:text-xl"
+                >
+                  {description}
+                </p>
+              </div>
+            </article>
+          )
+        })}
+      </div>
 
-        </div>
+      <div
+        data-pillars-progress
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 z-30 h-1 bg-white/10 opacity-0"
+      >
+        <div data-pillars-progress-fill className="h-full w-0 bg-green-500" />
+      </div>
 
-        <div
-          data-pillars-progress
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 z-30 h-1 bg-white/10 opacity-0"
-        >
-          <div data-pillars-progress-fill className="h-full w-0 bg-green-500" />
-        </div>
-
-        {/* top-24, not top-6: Navbar.jsx is `fixed top-0 z-50` and ~46px
+      {/* top-24, not top-6: Navbar.jsx is `fixed top-0 z-50` and ~46px
             tall with a 75%-opaque blurred background, so anything above
             ~46px here renders behind it. A `top-6` mark (24px, size-10)
             would sit half-buried under that bar — the same "marca
             cortada pelo navbar" defect a previous round already fixed by
             moving to this offset. */}
-        <img
-          data-pillars-mark
-          src={logoDevClub}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute top-24 left-1/2 z-30 size-10 -translate-x-1/2 opacity-0"
-        />
-      </div>
+      <img
+        data-pillars-mark
+        src={logoDevClub}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute top-24 left-1/2 z-30 size-10 -translate-x-1/2 opacity-0"
+      />
 
-      <ul className="mt-16 flex flex-wrap gap-3 lg:motion-safe:hidden">
-        {pillars.map(({ name }) => (
-          <li
-            key={name}
-            className="border-night-500 bg-night-750 rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300"
-          >
-            {name}
-          </li>
-        ))}
-      </ul>
-    </>
+      {/* Tail handoff into Chapter 05 — pillars.timeline.js fades this
+            up over the last card's dwell. It belongs INSIDE the stage,
+            not beside it: the stage is what GSAP pins, so an absolute
+            layer anywhere else would scroll out from under the pin
+            instead of covering the frozen viewport. */}
+      <div
+        data-pillars-blackout
+        aria-hidden="true"
+        className="bg-night-950 pointer-events-none absolute inset-0 z-40 opacity-0"
+      />
+    </div>
   )
 }

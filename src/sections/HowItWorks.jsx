@@ -62,7 +62,11 @@ export default function HowItWorks() {
         .
       </h2>
 
-      <ol className="relative mt-20 max-w-2xl">
+      {/* The path is a SIBLING of the <ol>, not a child: <ol> accepts
+          only <li> (plus script/template), so a bare <div> inside it was
+          invalid markup. The wrapper carries the positioning context the
+          absolutely-placed path needs. */}
+      <div className="relative mt-20 max-w-2xl">
         {/* Timeline path — drawn on scroll */}
         <div
           aria-hidden="true"
@@ -70,30 +74,32 @@ export default function HowItWorks() {
           className="bg-night-950/15 absolute top-2 bottom-2 left-[1.35rem] w-px"
         />
 
-        {JOURNEY_STEPS.map((step) => (
-          <li
-            key={step.number}
-            data-step
-            data-reveal
-            className="relative flex gap-8 pb-16 last:pb-0"
-          >
-            <span
-              aria-hidden="true"
-              className="font-display bg-night-950 z-10 flex size-11 shrink-0 items-center justify-center rounded-full text-sm text-green-500"
+        <ol>
+          {JOURNEY_STEPS.map((step) => (
+            <li
+              key={step.number}
+              data-step
+              data-reveal
+              className="relative flex gap-8 pb-16 last:pb-0"
             >
-              {step.number}
-            </span>
-            <div className="pt-1.5">
-              <h3 className="font-display text-night-950 text-2xl md:text-3xl">
-                {step.title}
-              </h3>
-              <p className="text-night-500 mt-3 max-w-xl text-lg leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
+              <span
+                aria-hidden="true"
+                className="font-display bg-night-950 z-10 flex size-11 shrink-0 items-center justify-center rounded-full text-sm text-green-500"
+              >
+                {step.number}
+              </span>
+              <div className="pt-1.5">
+                <h3 className="font-display text-night-950 text-2xl md:text-3xl">
+                  {step.title}
+                </h3>
+                <p className="text-night-500 mt-3 max-w-xl text-lg leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </Chapter>
   )
 }
