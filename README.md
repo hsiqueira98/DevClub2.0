@@ -32,7 +32,7 @@ npm run lint     # ESLint
 ```
 src/
   animations/   timelines GSAP isoladas (uma coreografia por arquivo)
-  components/   UI reutilizável dos dispositivos de marca (Kicker, LogoMark…)
+  components/   UI reutilizável dos dispositivos de marca (Kicker, StarBadge…)
   sections/     um arquivo por capítulo da narrativa
   data/         todo conteúdo centralizado — números e textos consistentes
   providers/    Lenis ↔ ScrollTrigger

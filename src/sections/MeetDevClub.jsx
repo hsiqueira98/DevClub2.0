@@ -2,33 +2,31 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
-import AccentText from '../components/AccentText'
 import AvatarCluster from '../components/AvatarCluster'
 import StarBadge from '../components/StarBadge'
-import LogoMark from '../components/LogoMark'
+import PillarStack from '../components/PillarStack'
 import { STATS } from '../data/stats'
-import { createOrbitAnimations } from '../animations/chapters.timeline'
+import { PILLARS } from '../data/pillars'
+import { createPillarsTimeline } from '../animations/pillars.timeline'
 
 /*
- * Chapter 04 — Meet DevClub. Trust: the answer to Chapter 03. The five
- * method pillars orbit the mark in a radial layout (docs/DESIGN_SYSTEM.md
- * — Amphora orbital pattern) instead of a card grid.
+ * Chapter 04 — Meet DevClub. Trust: the answer to Chapter 03. One
+ * column: full-screen pillar cards are the whole chapter's own Fase B.
+ * No WebGL centerpiece in Fase A anymore (a Prism accent briefly lived
+ * here — removed once this chapter's real mechanism settled, no longer
+ * needed). Opens with the centered institutional case (Fase A, normal
+ * document flow), then the pillar stack (Fase B): all 5 cards
+ * absolutely positioned inside one pinned, full-bleed stage, a single
+ * scrubbed GSAP timeline stacking them — the previous card shrinking
+ * and rotating in place as the next rises over it — handing off into
+ * Chapter 05 via `Chapter`'s own `backdrop` blackout. See DECISION_LOG.md for
+ * the full history of this chapter's mechanisms and why Chapter 01's
+ * own restraint decision doesn't apply here.
  */
-const PILLARS = ['Comunidade', 'Método', 'Mentoria', 'Projetos', 'Suporte']
-
-// Precomputed positions on the orbit circle (5 points, starting at top).
-const ORBIT_POSITIONS = [
-  'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
-  'top-[38%] right-0 translate-x-1/2 -translate-y-1/2',
-  'bottom-0 right-[19%] translate-y-1/2',
-  'bottom-0 left-[19%] translate-y-1/2',
-  'top-[38%] left-0 -translate-x-1/2 -translate-y-1/2',
-]
-
 export default function MeetDevClub() {
   const sectionRef = useRef(null)
 
-  useGSAP(() => createOrbitAnimations(sectionRef.current), {
+  useGSAP(() => createPillarsTimeline(sectionRef.current), {
     scope: sectionRef,
   })
 
@@ -38,94 +36,85 @@ export default function MeetDevClub() {
       id="devclub"
       bg="bg-night-850"
       className="overflow-hidden"
+      // Chapter's own bottom padding would otherwise show a strip of
+      // bg-night-850 below the runway spacer at the end of the pillar
+      // stack — the stack's own blackout is already this chapter's
+      // real close.
+      // Needs both pb-0 AND md:pb-0: Chapter.jsx's default is
+      // `py-28 md:py-40`, and Tailwind's compiled output places
+      // unprefixed `pb-0` BEFORE `md:py-40` in the stylesheet — same
+      // specificity, so source order wins, and `md:py-40` would win
+      // at exactly the desktop widths this chapter is visible at
+      // (confirmed by inspecting the built CSS, not assumed). A plain
+      // `pb-0` alone silently only works below the md breakpoint.
+      innerClassName="pb-0 md:pb-0"
+      // Lives in Chapter's own backdrop, not inside PillarStack itself,
+      // so it's this chapter's real close regardless of what PillarStack's
+      // own internal structure looks like — driven by the last card's
+      // own pin progress in pillars.timeline.js.
+      backdrop={
+        <div
+          data-pillars-blackout
+          aria-hidden="true"
+          className="bg-gradient-to-t from-night-950 via-night-950/70 to-transparent pointer-events-none absolute inset-0 z-40 opacity-0"
+        />
+      }
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-0 right-0 size-[40rem] translate-x-1/3 -translate-y-1/3 rounded-full bg-purple-700/25 blur-[140px]"
-      />
+      <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
+        <Kicker className="mb-6" data-reveal>
+          apresentação
+        </Kicker>
 
-      <div className="relative grid items-center gap-20 lg:grid-cols-2">
-        <div>
-          <Kicker className="mb-6" data-reveal>
-            apresentação
-          </Kicker>
+        <h2
+          data-pillars-title
+          className="font-display text-4xl leading-tight text-white md:text-6xl"
+        >
+          O DevClub não é um curso. É um{' '}
+          <em className="text-green-500 italic drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]">
+            caminho
+          </em>
+          .
+        </h2>
 
-          <h2
-            data-reveal
-            className="font-display text-4xl leading-tight text-white md:text-6xl"
-          >
-            O DevClub não é um curso. É um{' '}
-            <AccentText color="green">caminho</AccentText>.
-          </h2>
+        <p
+          data-reveal
+          className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400"
+        >
+          Uma metodologia que já formou {STATS.studentsLong}, com roadmap
+          claro, mentoria de quem está no mercado e uma comunidade que não
+          deixa ninguém travado para trás.
+        </p>
 
-          <p
-            data-reveal
-            className="mt-8 max-w-xl text-xl leading-relaxed text-gray-400"
-          >
-            Uma metodologia que já formou {STATS.studentsLong}, com roadmap
-            claro, mentoria de quem está no mercado e uma comunidade que não
-            deixa ninguém travado para trás.
-          </p>
-
-          <div data-reveal className="mt-10 flex flex-wrap items-center gap-6">
-            <AvatarCluster label={`${STATS.students} alunos formados`} />
-            <StarBadge rating={STATS.rating} />
-          </div>
-
-          {/* Institutional trust — BRAND.md voice pillar */}
-          <ul data-reveal className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
-            {[
-              'Pós-graduação reconhecida pelo MEC',
-              'Certificações internacionais',
-              'Garantia de 7 dias',
-            ].map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-2 text-sm text-gray-500"
-              >
-                <span
-                  aria-hidden="true"
-                  className="size-1.5 rounded-full bg-green-500"
-                />
-                {item}
-              </li>
-            ))}
-          </ul>
+        <div data-reveal className="mt-10 flex flex-wrap items-center gap-6">
+          <AvatarCluster label={`${STATS.students} alunos formados`} />
+          <StarBadge rating={STATS.rating} />
         </div>
 
-        {/* Orbital pillars — desktop; collapses to pills on mobile */}
-        <div className="relative mx-auto hidden aspect-square w-full max-w-md lg:block">
-          <div
-            aria-hidden="true"
-            className="border-night-500 absolute inset-0 rounded-full border border-dashed"
-          />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <LogoMark size={72} className="text-green-500" />
-          </div>
-          <ul>
-            {PILLARS.map((pillar, i) => (
-              <li
-                key={pillar}
-                data-orbit-pillar
-                className={`border-night-500 bg-night-750 absolute rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300 ${ORBIT_POSITIONS[i]}`}
-              >
-                {pillar}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <ul className="flex flex-wrap gap-3 lg:hidden">
-          {PILLARS.map((pillar) => (
+        {/* Institutional trust — BRAND.md voice pillar */}
+        <ul
+          data-reveal
+          className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3"
+        >
+          {[
+            'Pós-graduação reconhecida pelo MEC',
+            'Certificações internacionais',
+            'Garantia de 7 dias',
+          ].map((item) => (
             <li
-              key={pillar}
-              className="border-night-500 bg-night-750 rounded-full border px-5 py-2.5 text-sm font-medium text-gray-300"
+              key={item}
+              className="flex items-center gap-2 text-sm text-gray-500"
             >
-              {pillar}
+              <span
+                aria-hidden="true"
+                className="size-1.5 rounded-full bg-green-500"
+              />
+              {item}
             </li>
           ))}
         </ul>
       </div>
+
+      <PillarStack pillars={PILLARS} />
     </Chapter>
   )
 }

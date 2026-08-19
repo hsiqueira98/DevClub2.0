@@ -31,6 +31,7 @@ export default function Chapter({
           Callers that use it pass overflow-hidden via className. */}
       {backdrop}
       <div
+        data-chapter-inner
         className={cn(
           'relative mx-auto max-w-[1280px] py-28 md:py-40',
           innerClassName,

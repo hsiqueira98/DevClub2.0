@@ -106,27 +106,6 @@ export function createTurnAnimations(section) {
   return mm
 }
 
-/* Chapter 04: floating elements — the orbit pillars drift gently. */
-export function createOrbitAnimations(section) {
-  const pillars = section.querySelectorAll('[data-orbit-pillar]')
-  const mm = gsap.matchMedia(section)
-
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    pillars.forEach((el, i) => {
-      gsap.to(el, {
-        y: i % 2 ? 10 : -10,
-        duration: gsap.utils.random(2.4, 3.4),
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        delay: i * 0.3,
-      })
-    })
-  })
-
-  return mm
-}
-
 /* Chapter 07: scroll-driven timeline — the connecting path draws
  * itself as the visitor moves through the steps. The full-bleed photo
  * gets a subtle scroll-linked Ken Burns zoom (PO round). */

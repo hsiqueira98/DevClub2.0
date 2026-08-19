@@ -1,6 +1,7 @@
 import { gsap } from '../lib/gsap'
 import { DURATION, EASE } from './motion.tokens'
 import { makeCountUp } from './counters'
+import { createParticleField } from './particles'
 
 /*
  * Chapter 08 (docs/STORYBOARD.md): salary bars grow into place on
@@ -22,10 +23,20 @@ export function createResultsAnimations(section) {
   const chart = section.querySelector('[data-salary-chart]')
   const marquee = section.querySelector('[data-marquee-inner]')
   const payslip = section.querySelector('[data-payslip]')
+  const particleCanvas = section.querySelector('[data-particle-canvas]')
 
   const mm = gsap.matchMedia(section)
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
+    let particleCleanup
+
+    // Ambient backdrop behind the chart/payslip below: a continuous,
+    // low-opacity drift — texture, not a moment. See
+    // animations/particles.js for why it never resolves or stops.
+    if (particleCanvas) {
+      particleCleanup = createParticleField(particleCanvas).cleanup
+    }
+
     gsap.from(bars, {
       scaleX: 0,
       transformOrigin: 'left center',
@@ -86,6 +97,8 @@ export function createResultsAnimations(section) {
         repeat: -1,
       })
     }
+
+    return () => particleCleanup?.()
   })
 
   return mm
