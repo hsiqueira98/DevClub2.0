@@ -1,0 +1,46 @@
+/*
+ * Chapter 04's five method pillars, carried through the pinned stack
+ * in animations/pillars.timeline.js. `icon` is a lucide-react
+ * export name — the consumer maps name → component (see
+ * components/PillarStack.jsx), the same pattern already used for
+ * WhyTechnology.jsx's FREEDOMS list. There is no `photo` field here
+ * anymore — each card's backdrop is a WebGL ring field
+ * (components/MagicRings.jsx), not a per-pillar image.
+ */
+export const PILLARS = [
+  {
+    name: 'Comunidade',
+    qualifier: 'ninguém fica travado sozinho',
+    icon: 'Users',
+    description:
+      'Milhares de alunos e ex-alunos trocando código, dúvida e oportunidade todos os dias. Quando você trava, alguém no grupo já passou exatamente por ali — e te tira de lá.',
+  },
+  {
+    name: 'Método',
+    qualifier: 'um roteiro, não um labirinto',
+    icon: 'Route',
+    description:
+      'Nada de decidir sozinho o que estudar depois. Um roadmap claro, testado em mais de 30 mil formações, leva você do primeiro "Hello, World" à primeira vaga sem perder tempo com o que não importa.',
+  },
+  {
+    name: 'Mentoria',
+    qualifier: 'quem te ensina, está no mercado hoje',
+    icon: 'UserCheck',
+    description:
+      'Instrutores que resolvem os mesmos problemas em produção, não só em slide. A dúvida que trava seu código já travou o mentor antes — e ele sabe exatamente como destravar a sua.',
+  },
+  {
+    name: 'Projetos',
+    qualifier: 'portfólio, não certificado',
+    icon: 'FolderKanban',
+    description:
+      'Você sai com aplicações reais no GitHub, não com um PDF de conclusão. É o que o recrutador abre primeiro — e o que prova que você sabe entregar, não só entender.',
+  },
+  {
+    name: 'Suporte',
+    qualifier: 'nunca sozinho num erro',
+    icon: 'LifeBuoy',
+    description:
+      'Dúvida não espera até segunda. Suporte ativo pra destravar o que te trava agora — porque um erro sem resposta é o motivo nº 1 de quem desiste no meio do caminho.',
+  },
+]

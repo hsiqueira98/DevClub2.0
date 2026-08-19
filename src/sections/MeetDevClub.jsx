@@ -1,6 +1,5 @@
 import Chapter from '../components/Chapter'
 import Kicker from '../components/Kicker'
-import AccentText from '../components/AccentText'
 import AvatarCluster from '../components/AvatarCluster'
 import StarBadge from '../components/StarBadge'
 import { STATS } from '../data/stats'
@@ -98,6 +97,8 @@ export default function MeetDevClub() {
           ))}
         </ul>
       </div>
+
+      <PillarStack pillars={PILLARS} />
     </Chapter>
   )
 }
